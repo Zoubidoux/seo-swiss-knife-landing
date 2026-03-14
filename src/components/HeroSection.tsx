@@ -2,6 +2,20 @@ import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 
+// Toolbar badge callout — always-on indicator
+function ToolbarBadge() {
+  return (
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+      <span className="text-white/40 text-[10px]">Chrome toolbar</span>
+      <div className="flex items-center gap-1 px-1.5 py-0.5 rounded" style={{ background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.25)' }}>
+        <img src="/src/assets/icon.png" alt="" className="w-3.5 h-3.5" style={{ imageRendering: 'pixelated' }} />
+        <span className="text-[9px] font-black" style={{ color: '#a78bfa' }}>7</span>
+      </div>
+      <span className="text-white/35 text-[10px]">issues detected — without opening</span>
+    </div>
+  )
+}
+
 export function HeroSection() {
   const { lang } = useLanguage()
   const t = translations[lang].hero
@@ -24,24 +38,37 @@ export function HeroSection() {
           {t.eyebrow}
         </div>
 
-        {/* H1 — extension name */}
-        <h1
-          className="text-center font-bold tracking-tight bg-clip-text text-transparent leading-tight"
-          style={{
-            fontSize: 'clamp(48px, 10vw, 96px)',
-            backgroundImage: 'linear-gradient(180deg, #f0f0f2 0%, #a78bfa 100%)',
-          }}
-        >
-          {t.headline}
-        </h1>
+        {/* H1 — extension name with logo */}
+        <div className="flex items-center justify-center gap-4 mb-2">
+          <img
+            src="/src/assets/icon.png"
+            alt="SEO Swiss Knife icon"
+            className="flex-shrink-0"
+            style={{ width: 52, height: 52, imageRendering: 'pixelated', filter: 'drop-shadow(0 0 24px rgba(167,139,250,0.6))' }}
+          />
+          <h1
+            className="font-bold tracking-tight bg-clip-text text-transparent leading-tight"
+            style={{
+              fontSize: 'clamp(42px, 9vw, 86px)',
+              backgroundImage: 'linear-gradient(180deg, #f0f0f2 0%, #a78bfa 100%)',
+            }}
+          >
+            {t.headline}
+          </h1>
+        </div>
 
         {/* Sub headline */}
-        <p className="text-hero-sub text-center text-lg leading-8 max-w-xl mt-6 opacity-80">
+        <p className="text-hero-sub text-center text-lg leading-8 max-w-xl mt-4 opacity-80">
           {t.sub}
         </p>
 
+        {/* Toolbar badge callout */}
+        <div className="mt-6">
+          <ToolbarBadge />
+        </div>
+
         {/* CTA */}
-        <div className="mt-10 flex flex-col items-center gap-3">
+        <div className="mt-8 flex flex-col items-center gap-3">
           <Button variant="hero" className="px-8 py-4 text-base rounded-full">
             {t.cta}
           </Button>
@@ -49,7 +76,7 @@ export function HeroSection() {
         </div>
 
         {/* Arrow down to content */}
-        <div className="mt-16 mb-4 text-foreground/20 text-2xl animate-bounce">↓</div>
+        <div className="mt-14 mb-4 text-foreground/20 text-2xl animate-bounce">↓</div>
       </div>
     </section>
   )

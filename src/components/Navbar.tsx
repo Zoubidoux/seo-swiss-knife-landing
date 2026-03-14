@@ -11,8 +11,11 @@ export function Navbar() {
     <div className="w-full sticky top-0 z-50" style={{ background: 'rgba(4,2,18,0.85)', backdropFilter: 'blur(12px)' }}>
       <nav className="flex items-center justify-between py-4 px-8 max-w-7xl mx-auto">
         {/* Left — Logo / Brand */}
-        <a href="#" className="text-foreground font-bold text-base tracking-tight no-underline" style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          SEO Swiss Knife
+        <a href="#" className="flex items-center gap-2.5 no-underline group">
+          <img src="/src/assets/icon.png" alt="SEO Swiss Knife" className="w-6 h-6 flex-shrink-0" style={{ imageRendering: 'pixelated' }} />
+          <span className="font-bold text-base tracking-tight" style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            SEO Swiss Knife
+          </span>
         </a>
 
         {/* Center — Anchor nav items */}

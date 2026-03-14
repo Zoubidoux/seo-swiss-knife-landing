@@ -1,154 +1,270 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 
-type SiteKey = 'dior' | 'apple' | 'shopify' | 'lemonde' | 'custom'
+type SiteKey = 'dior' | 'apple' | 'shopify' | 'lemonde'
 
-const PRESETS: { key: SiteKey; label: string; url: string; flag: string }[] = [
-  { key: 'dior',    label: 'Dior',     url: 'dior.com/en_us',       flag: '🇫🇷' },
-  { key: 'apple',   label: 'Apple',    url: 'apple.com',             flag: '🇺🇸' },
-  { key: 'shopify', label: 'Shopify',  url: 'shopify.com',           flag: '🇨🇦' },
-  { key: 'lemonde', label: 'Le Monde', url: 'lemonde.fr',            flag: '🇫🇷' },
+const PRESETS: { key: SiteKey; label: string; url: string; flag: string; industry: string }[] = [
+  { key: 'dior',    label: 'Dior',     url: 'dior.com/en_us',  flag: '🇫🇷', industry: 'Luxury Fashion' },
+  { key: 'apple',   label: 'Apple',    url: 'apple.com',        flag: '🇺🇸', industry: 'Tech' },
+  { key: 'shopify', label: 'Shopify',  url: 'shopify.com',      flag: '🇨🇦', industry: 'SaaS' },
+  { key: 'lemonde', label: 'Le Monde', url: 'lemonde.fr',       flag: '🇫🇷', industry: 'News' },
 ]
 
+type FieldStatus = 'good' | 'warn' | 'bad'
 const SITE_DATA: Record<SiteKey, {
-  score: number
-  scoreColor: string
-  title: string
-  canonical: string
-  h1: string
-  schema: string
-  issues: string[]
-  goods: string[]
-  fields: { label: string; value: string; status: 'good' | 'warn' | 'bad' }[]
+  score: number; scoreColor: string
+  pageBg: string; pageAccent: string
+  navItems: string[]; brand: string; heroTitle: string; heroCopy: string
+  fields: { label: string; value: string; status: FieldStatus }[]
+  goods: string[]; issues: string[]
+  activeTab: string
 }> = {
   dior: {
     score: 82, scoreColor: '#22c55e',
-    title: 'DIOR | Official Website — Haute Couture & Fashion',
-    canonical: 'https://www.dior.com/en_us',
-    h1: 'The Art of Living by Dior',
-    schema: 'Organization, WebSite, BreadcrumbList',
-    goods: ['HTTPS + valid canonical', 'H1 unique and present', 'robots: index, follow'],
-    issues: ['3 images missing alt text', '2 hreflang tags missing x-default', 'OG description too short (48 chars)'],
+    pageBg: '#080808', pageAccent: '#c8966040',
+    navItems: ['Collections','Beauty','Watches','Men'], brand: 'DIOR',
+    heroTitle: 'The Art of Living by Dior', heroCopy: 'Spring — Summer 2026',
     fields: [
-      { label: 'Title',       value: 'DIOR | Official Website — Haute Couture & Fashion', status: 'good' },
-      { label: 'Description', value: 'Discover the latest Dior collections, fashion shows and...', status: 'warn' },
-      { label: 'Canonical',   value: 'https://www.dior.com/en_us', status: 'good' },
-      { label: 'Robots',      value: 'index, follow', status: 'good' },
-      { label: 'H1',          value: 'The Art of Living by Dior', status: 'good' },
-      { label: 'Hreflang',    value: '38 tags — 2 missing x-default ⚠', status: 'warn' },
-      { label: 'Schema',      value: 'Organization, WebSite, BreadcrumbList', status: 'good' },
-      { label: 'Images',      value: '14 images — 3 missing alt ⚠', status: 'warn' },
+      { label: 'Title',    value: 'DIOR | Official Website — Haute Couture & Fashion', status: 'good' },
+      { label: 'Canonical',value: 'https://www.dior.com/en_us', status: 'good' },
+      { label: 'H1',       value: 'The Art of Living by Dior', status: 'good' },
+      { label: 'Schema',   value: 'Organization, WebSite, BreadcrumbList', status: 'good' },
+      { label: 'Hreflang', value: '38 tags — 2 missing x-default ⚠', status: 'warn' },
+      { label: 'Images',   value: '14 images — 3 missing alt ⚠', status: 'warn' },
     ],
+    goods: ['HTTPS + canonical valid', 'H1 unique & present', '3 schema types detected'],
+    issues: ['3 images missing alt', '2 hreflang missing x-default'],
+    activeTab: 'Overview',
   },
   apple: {
     score: 96, scoreColor: '#22c55e',
-    title: 'Apple',
-    canonical: 'https://www.apple.com/',
-    h1: 'iPhone 17 Pro. Hello, Apple Intelligence.',
-    schema: 'WebSite, Organization, ItemList',
-    goods: ['Perfect title length', 'All images have alt text', 'Schema valid — no errors'],
-    issues: ['No hreflang tags detected', 'H2 hierarchy skip on product pages'],
+    pageBg: '#000000', pageAccent: 'rgba(255,255,255,0.05)',
+    navItems: ['Store','Mac','iPad','iPhone','Watch'], brand: 'apple',
+    heroTitle: 'iPhone 17 Pro', heroCopy: 'Hello, Apple Intelligence.',
     fields: [
-      { label: 'Title',       value: 'Apple', status: 'good' },
-      { label: 'Description', value: 'Discover the innovative world of Apple and shop...', status: 'good' },
-      { label: 'Canonical',   value: 'https://www.apple.com/', status: 'good' },
-      { label: 'Robots',      value: 'index, follow', status: 'good' },
-      { label: 'H1',          value: 'iPhone 17 Pro. Hello, Apple Intelligence.', status: 'good' },
-      { label: 'Hreflang',    value: 'None detected — international pages?', status: 'warn' },
-      { label: 'Schema',      value: 'WebSite, Organization — valid ✓', status: 'good' },
-      { label: 'Core Web',    value: 'LCP 1.2s · CLS 0.02 · INP 48ms', status: 'good' },
+      { label: 'Title',    value: 'Apple', status: 'good' },
+      { label: 'Canonical',value: 'https://www.apple.com/', status: 'good' },
+      { label: 'H1',       value: 'iPhone 17 Pro. Hello, Apple Intelligence.', status: 'good' },
+      { label: 'Schema',   value: 'WebSite, Organization — valid ✓', status: 'good' },
+      { label: 'Hreflang', value: 'None detected ⚠', status: 'warn' },
+      { label: 'Speed',    value: 'LCP 1.2s · CLS 0.02 · INP 48ms ✓', status: 'good' },
     ],
+    goods: ['Perfect Core Web Vitals', 'All images have alt text', 'Schema valid — no errors'],
+    issues: ['No hreflang tags detected', 'Title too short (5 chars)'],
+    activeTab: 'Overview',
   },
   shopify: {
     score: 88, scoreColor: '#22c55e',
-    title: 'Shopify — Build your business',
-    canonical: 'https://www.shopify.com/',
-    h1: 'The commerce platform for entrepreneurs',
-    schema: 'WebSite, Organization, SoftwareApplication, FAQPage',
-    goods: ['Rich schema — 4 types valid', 'Perfect meta description', 'Hreflang on all 20 locales'],
-    issues: ['Title 42 chars — below optimal 50+', '1 broken link detected in footer'],
+    pageBg: '#0a0c10', pageAccent: 'rgba(150,200,100,0.06)',
+    navItems: ['Products','Pricing','Blog','Partners'], brand: 'Shopify',
+    heroTitle: 'The commerce platform for entrepreneurs', heroCopy: 'Build your business from anywhere.',
     fields: [
-      { label: 'Title',       value: 'Shopify — Build your business', status: 'warn' },
-      { label: 'Description', value: 'Millions of the world\'s most successful brands trust...', status: 'good' },
-      { label: 'Canonical',   value: 'https://www.shopify.com/', status: 'good' },
-      { label: 'H1',          value: 'The commerce platform for entrepreneurs', status: 'good' },
-      { label: 'Hreflang',    value: '20 locales — x-default present ✓', status: 'good' },
-      { label: 'Schema',      value: 'WebSite, Org, SoftwareApp, FAQPage', status: 'good' },
-      { label: 'Links',       value: '142 links — 1 broken ⚠', status: 'warn' },
-      { label: 'Images',      value: '22 images — all have alt text ✓', status: 'good' },
+      { label: 'Title',    value: 'Shopify — Build your business', status: 'warn' },
+      { label: 'Canonical',value: 'https://www.shopify.com/', status: 'good' },
+      { label: 'H1',       value: 'The commerce platform for entrepreneurs', status: 'good' },
+      { label: 'Schema',   value: 'WebSite, Org, SoftwareApp, FAQPage ✓', status: 'good' },
+      { label: 'Hreflang', value: '20 locales — x-default present ✓', status: 'good' },
+      { label: 'Links',    value: '142 links — 1 broken ⚠', status: 'warn' },
     ],
+    goods: ['Rich schema — 4 types', 'Hreflang on 20 locales', 'Perfect meta description'],
+    issues: ['Title too short (30 chars)', '1 broken link in footer'],
+    activeTab: 'Overview',
   },
   lemonde: {
     score: 71, scoreColor: '#facc15',
-    title: 'Le Monde — Actualités et infos en direct',
-    canonical: 'https://www.lemonde.fr/',
-    h1: 'L\'actualité en direct',
-    schema: 'NewsArticle, WebSite, Organization',
-    goods: ['News schema present', 'HTTPS valid', 'robots.txt well-structured'],
-    issues: ['Missing OG image on some articles', 'Duplicate H1 on home + category', 'Large JS bundle (2.4MB) affects Crawl Budget'],
+    pageBg: '#0e0e0e', pageAccent: 'rgba(200,50,50,0.05)',
+    navItems: ['International','Politique','Société','Économie'], brand: 'Le Monde',
+    heroTitle: "L'actualité en direct", heroCopy: 'Retrouvez toute l\'info en continu.',
     fields: [
-      { label: 'Title',       value: 'Le Monde.fr - Actualités et Infos en France et dans le monde', status: 'warn' },
-      { label: 'Description', value: 'Retrouvez toute l\'actualité en direct et en continu...', status: 'good' },
-      { label: 'Canonical',   value: 'https://www.lemonde.fr/', status: 'good' },
-      { label: 'H1',          value: 'L\'actualité en direct — 2 found ⚠', status: 'warn' },
-      { label: 'Schema',      value: 'NewsArticle, WebSite, Org — valid ✓', status: 'good' },
-      { label: 'OG Image',    value: 'Missing on 3 article types ⚠', status: 'warn' },
-      { label: 'PageSpeed',   value: 'LCP 3.8s ⚠ · CLS 0.18 ⚠', status: 'bad' },
-      { label: 'Images',      value: '31 images — 7 missing alt ⚠', status: 'warn' },
+      { label: 'Title',    value: 'Le Monde.fr — Actualités et Infos en France et dans le monde', status: 'warn' },
+      { label: 'H1',       value: "L'actualité en direct — 2 found ⚠", status: 'warn' },
+      { label: 'Schema',   value: 'NewsArticle, WebSite, Org — valid ✓', status: 'good' },
+      { label: 'OG Image', value: 'Missing on 3 article types ⚠', status: 'warn' },
+      { label: 'Speed',    value: 'LCP 3.8s ⚠ · CLS 0.18 ⚠', status: 'bad' },
+      { label: 'Images',   value: '31 images — 7 missing alt ⚠', status: 'warn' },
     ],
+    goods: ['News schema present', 'HTTPS valid', 'robots.txt well-structured'],
+    issues: ['Duplicate H1 on home', 'LCP 3.8s above threshold', '7 images missing alt'],
+    activeTab: 'Overview',
   },
-  custom: {
-    score: 0, scoreColor: '#a78bfa',
-    title: '', canonical: '', h1: '', schema: '',
-    goods: [], issues: [],
-    fields: [],
-  },
+}
+
+function SiteMock({ site }: { site: SiteKey }) {
+  const d = SITE_DATA[site]
+  return (
+    <div className="flex-1 overflow-hidden select-none" style={{ background: d.pageBg, minWidth: 0 }}>
+      {/* Nav */}
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.07]">
+        <div className="flex gap-4">{d.navItems.map(l=>(<span key={l} className="text-[8.5px] text-white/30 uppercase tracking-[0.15em]">{l}</span>))}</div>
+        <span className={`font-semibold tracking-widest uppercase ${site === 'dior' ? 'font-serif text-sm tracking-[0.35em]' : 'text-sm'} text-white/80`}>{d.brand}</span>
+        <div className="flex gap-2">
+          <span className="text-[8px] text-white/25">Search</span>
+          <span className="text-[8px] text-white/25">Account</span>
+        </div>
+      </div>
+      {/* Hero */}
+      <div className="relative overflow-hidden" style={{ height: 170, background: `linear-gradient(150deg, ${site==='dior'?'#14090e, #200d18':'#0a0a12, #080810'})` }}>
+        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 60% 50% at 65% 40%, ${d.pageAccent} 0%, transparent 70%)` }} />
+        {site === 'dior' && (
+          <>
+            <div className="absolute" style={{ right:'22%', top:'8%', width:50, height:155, background:'linear-gradient(180deg,rgba(190,140,80,0.1)0%,transparent 100%)', borderRadius:'40% 40% 20% 20%', filter:'blur(1px)' }} />
+            <div className="absolute" style={{ right:'27%', top:'10%', width:1.5, height:130, background:'rgba(200,155,90,0.15)', borderRadius:1 }} />
+          </>
+        )}
+        <div className="absolute inset-0 flex flex-col justify-end pb-5 px-5">
+          <p className="text-[7px] text-white/25 uppercase tracking-[0.4em] mb-1.5">{d.heroCopy}</p>
+          <h2 className={`text-white text-lg font-semibold leading-snug mb-2.5 ${site==='dior'?'font-serif italic':''}`}>{d.heroTitle}</h2>
+          <button className="self-start text-[8px] uppercase tracking-[0.2em] px-3 py-1.5 border border-white/25 text-white/50">
+            {site === 'dior' ? 'Discover' : site === 'apple' ? 'Learn more' : 'Get started'}
+          </button>
+        </div>
+      </div>
+      {/* Content rows */}
+      <div className="px-4 py-2 flex flex-col gap-0.5">
+        {[0,1,2,3].map(i=>(
+          <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/[0.04]">
+            <div className="w-8 h-6 rounded bg-white/[0.04] flex-shrink-0" />
+            <div className="flex-1">
+              <div className="h-2 rounded bg-white/[0.06] mb-1" style={{ width: `${65+i*8}%` }} />
+              <div className="h-1.5 rounded bg-white/[0.03]" style={{ width: `${40+i*5}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ExtensionPanel({ site, step }: { site: SiteKey; step: number }) {
+  const d = SITE_DATA[site]
+  const statusColor = (s: FieldStatus) => s === 'good' ? '#22c55e' : s === 'warn' ? '#facc15' : '#ef4444'
+
+  return (
+    <div className="flex-shrink-0 flex flex-col" style={{ width: 210, background: '#040D1A', borderLeft: '1px solid rgba(255,255,255,0.07)' }}>
+      <div className="h-[3px]" style={{ background: 'linear-gradient(90deg, #a78bfa, #39d3ff, #2dd4bf, #facc15)' }} />
+      {/* Header */}
+      <div className="flex items-center justify-between px-2.5 py-2 border-b border-white/[0.06]">
+        <div className="flex items-center gap-1.5">
+          <img src="/src/assets/icon.png" alt="" className="w-3.5 h-3.5" style={{ imageRendering: 'pixelated' }} />
+          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>SEO Swiss Knife</span>
+        </div>
+        <span className="text-[6px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background:'rgba(34,197,94,0.15)', color:'#22c55e' }}>Allowed</span>
+      </div>
+
+      {/* Mini tab bar */}
+      <div className="flex border-b border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
+        {['Overview','Schema','Images'].map((tab, i) => (
+          <div key={tab} className="flex-1 py-1 text-center text-[6px] uppercase tracking-wide font-bold cursor-pointer" style={{ color: i === 0 ? '#a78bfa' : 'rgba(255,255,255,0.2)', borderBottom: i === 0 ? '1px solid #a78bfa' : '1px solid transparent' }}>
+            {tab}
+          </div>
+        ))}
+      </div>
+
+      {/* Score */}
+      <div className="flex items-center gap-2.5 px-2.5 py-2 border-b border-white/[0.04]">
+        <div>
+          <span className="font-black text-2xl" style={{ color: d.scoreColor }}>{step > 0 ? d.score : '…'}</span>
+          <p className="text-[6px] text-white/30 uppercase tracking-wide">SEO Score</p>
+        </div>
+        <div className="flex-1">
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden mb-1">
+            <div className="h-full rounded-full transition-all duration-700" style={{ width: step > 0 ? `${d.score}%` : '5%', background: `linear-gradient(90deg, ${d.scoreColor}, #a78bfa)` }} />
+          </div>
+          <div className="flex gap-2">
+            <span className="text-[7px]" style={{ color: '#22c55e' }}>✓ {d.goods.length}</span>
+            <span className="text-[7px]" style={{ color: '#facc15' }}>⚠ {d.issues.length}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Fields */}
+      <div className="flex-1 overflow-y-auto px-2 py-1.5" style={{ scrollbarWidth: 'none' }}>
+        {d.fields.slice(0, step).map((f) => (
+          <div key={f.label} className="flex items-start gap-1.5 py-1 border-b border-white/[0.04]">
+            <span className="w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0" style={{ background: statusColor(f.status) }} />
+            <div className="min-w-0">
+              <span className="text-[6px] text-white/30 uppercase tracking-wide font-semibold">{f.label}</span>
+              <p className="text-[7.5px] text-white/60 truncate leading-tight">{f.value}</p>
+            </div>
+          </div>
+        ))}
+        {step < d.fields.length && (
+          <div className="flex items-center gap-1.5 py-2">
+            <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#39d3ff' }} />
+            <span className="text-[7px]" style={{ color: '#39d3ff' }}>Scanning…</span>
+          </div>
+        )}
+      </div>
+
+      {/* Issues summary */}
+      {step >= d.fields.length && (
+        <div className="px-2.5 py-2 border-t border-white/[0.06]">
+          {d.issues.map(issue => (
+            <div key={issue} className="flex items-start gap-1.5 mb-1">
+              <span className="text-[8px] mt-0.5 flex-shrink-0" style={{ color: '#facc15' }}>⚠</span>
+              <span className="text-[7px] text-white/50 leading-tight">{issue}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function LiveDemoSection() {
   const { lang } = useLanguage()
   const [active, setActive] = useState<SiteKey>('dior')
-  const [input, setInput] = useState('')
-  const [analyzing, setAnalyzing] = useState(false)
-  const [analysisStep, setAnalysisStep] = useState(8)
+  const [step, setStep] = useState(0)
+  const [scanning, setScanning] = useState(false)
 
-  function selectPreset(key: SiteKey) {
+  function selectSite(key: SiteKey) {
     setActive(key)
-    setAnalysisStep(0)
-    setAnalyzing(true)
-    setTimeout(() => { setAnalyzing(false); setAnalysisStep(8) }, 1400)
+    setStep(0)
+    setScanning(true)
   }
 
-  const data = SITE_DATA[active]
+  useEffect(() => {
+    if (!scanning) return
+    setStep(0)
+    const maxSteps = SITE_DATA[active].fields.length
+    let cur = 0
+    const timer = setInterval(() => {
+      cur++
+      setStep(cur)
+      if (cur >= maxSteps) { setScanning(false); clearInterval(timer) }
+    }, 280)
+    return () => clearInterval(timer)
+  }, [scanning, active])
+
+  // Auto-start on mount
+  useEffect(() => { setTimeout(() => setScanning(true), 600) }, [])
+
+  const preset = PRESETS.find(p => p.key === active)!
 
   return (
-    <section className="relative bg-background py-28 px-6 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.025]" style={{ backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
-      <div className="absolute" style={{ inset: 0, background: 'radial-gradient(ellipse 50% 40% at 50% 0%, rgba(57,211,255,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+    <section className="relative bg-background py-24 px-6 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{ backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '48px 48px' }} />
+      <div className="absolute pointer-events-none" style={{ inset:0, background:'radial-gradient(ellipse 50% 40% at 50% 0%, rgba(57,211,255,0.06) 0%, transparent 70%)' }} />
 
       <div className="relative max-w-6xl mx-auto">
-        {/* Header */}
         <p className="text-center text-sm font-semibold tracking-widest uppercase mb-5" style={{ color: '#39d3ff' }}>
           {lang === 'fr' ? 'Demo Interactif' : 'Live Demo'}
         </p>
-        <h2
-          className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-4 tracking-tight"
-          style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #39d3ff 100%)' }}
-        >
-          {lang === 'fr' ? 'Testez-le sur n\'importe quel site' : 'Try it on any website'}
+        <h2 className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-4 tracking-tight" style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #39d3ff 100%)' }}>
+          {lang === 'fr' ? 'Testez sur n\'importe quel site' : 'See it running on real sites'}
         </h2>
         <p className="text-center text-muted-foreground text-lg mb-12 max-w-xl mx-auto">
           {lang === 'fr'
-            ? 'Sélectionnez un site pour voir ce que l\'extension détecterait en conditions réelles.'
-            : 'Select a site to see what the extension would detect in real conditions.'}
+            ? 'Sélectionnez un site et regardez l\'extension analyser la page en conditions réelles.'
+            : 'Pick a site and watch the extension analyse the page in real conditions.'}
         </p>
 
-        {/* Preset selector */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+        {/* Site selector */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
           {PRESETS.map((p) => (
             <button
               key={p.key}
-              onClick={() => selectPreset(p.key)}
+              onClick={() => selectSite(p.key)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200"
               style={{
                 background: active === p.key ? 'rgba(57,211,255,0.12)' : 'rgba(255,255,255,0.04)',
@@ -158,131 +274,72 @@ export function LiveDemoSection() {
             >
               <span>{p.flag}</span>
               <span>{p.label}</span>
+              <span className="text-[9px] opacity-50">{p.industry}</span>
             </button>
           ))}
         </div>
 
-        {/* Main panel */}
-        <div className="liquid-glass rounded-2xl overflow-hidden" style={{ boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
-          {/* URL bar */}
-          <div className="flex items-center gap-3 px-5 py-3 border-b border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <div className="flex gap-1.5 flex-shrink-0">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+        {/* Full browser frame */}
+        <div className="relative rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.09)', boxShadow: '0 40px 100px rgba(0,0,0,0.7)' }}>
+          {/* Glow */}
+          <div className="absolute -inset-10 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(57,211,255,0.07) 0%, transparent 70%)' }} />
+
+          {/* Browser chrome */}
+          <div className="flex items-center gap-2 px-4 py-2.5 relative z-10" style={{ background: '#080f1c', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+              <div className="w-3 h-3 rounded-full bg-[#28c840]" />
             </div>
-            <div className="flex-1 flex items-center gap-2 rounded-lg px-3 py-1.5" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <span className="text-[10px] text-white/30">🔒</span>
-              <span className="text-[11px] text-white/50">https://www.{active !== 'custom' ? PRESETS.find(p => p.key === active)?.url : (input || 'yoursite.com')}</span>
-              {analyzing && <span className="ml-auto text-[9px] animate-pulse" style={{ color: '#39d3ff' }}>Scanning…</span>}
+            {/* Tab bar */}
+            <div className="flex items-end gap-0.5 ml-2 h-7">
+              <div className="flex items-center gap-2 px-3 h-full rounded-t-lg" style={{ background: '#0d1a2e', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}>
+                <img src="/src/assets/icon.png" alt="" className="w-3 h-3" style={{ imageRendering: 'pixelated' }} />
+                <span className="text-[9px] text-white/60 truncate max-w-[100px]">https://www.{preset.url}</span>
+                <span className="text-[8px] text-white/20 ml-0.5">✕</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 h-full" style={{ background: 'transparent' }}>
+                <span className="text-[8px] text-white/20">+</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              <div className="w-5 h-5 rounded flex items-center justify-center text-[9px]" style={{ background: 'rgba(167,139,250,0.2)', color: '#a78bfa' }}>🔪</div>
-              <span className="text-[9px] font-bold" style={{ color: '#a78bfa' }}>SEO Swiss Knife</span>
+            <div className="flex-1" />
+            {/* Toolbar extension badge */}
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.2)' }}>
+              <img src="/src/assets/icon.png" alt="" className="w-4 h-4" style={{ imageRendering: 'pixelated' }} />
+              {scanning
+                ? <span className="text-[8px] animate-pulse" style={{ color: '#39d3ff' }}>…</span>
+                : <span className="text-[8px] font-black px-1 rounded-full" style={{ background: '#facc15', color: '#000' }}>{SITE_DATA[active].issues.length}</span>
+              }
             </div>
           </div>
 
-          {/* Content area */}
-          <div className="flex flex-col md:flex-row" style={{ minHeight: 380 }}>
-            {/* Left: findings list */}
-            <div className="flex-1 p-6 flex flex-col gap-4">
-              {/* Score */}
-              <div className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="text-center">
-                  <div className="font-black text-4xl" style={{ color: data.scoreColor }}>{analyzing ? '…' : data.score}</div>
-                  <div className="text-[9px] text-white/30 uppercase tracking-wider mt-0.5">SEO Score</div>
-                </div>
-                <div className="flex-1">
-                  <div className="h-2 bg-white/10 rounded-full overflow-hidden mb-2">
-                    <div className="h-full rounded-full transition-all duration-700" style={{ width: analyzing ? '10%' : `${data.score}%`, background: `linear-gradient(90deg, ${data.scoreColor}, #a78bfa)` }} />
-                  </div>
-                  <div className="flex gap-3 flex-wrap">
-                    <span className="text-[10px]" style={{ color: '#22c55e' }}>✓ {data.goods.length} passed</span>
-                    <span className="text-[10px]" style={{ color: '#facc15' }}>⚠ {data.issues.length} warnings</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Fields */}
-              <div className="grid gap-1.5">
-                {(analyzing ? [] : data.fields.slice(0, analysisStep)).map((f) => (
-                  <div key={f.label} className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: f.status === 'good' ? '#22c55e' : f.status === 'warn' ? '#facc15' : '#ef4444' }} />
-                    <span className="text-[10px] font-semibold text-white/40 uppercase tracking-wide w-20 flex-shrink-0">{f.label}</span>
-                    <span className="text-[11px] text-white/65 truncate">{f.value}</span>
-                  </div>
-                ))}
-                {analyzing && (
-                  <div className="flex items-center gap-2 px-3 py-3 rounded-lg" style={{ background: 'rgba(57,211,255,0.05)', border: '1px solid rgba(57,211,255,0.15)' }}>
-                    <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#39d3ff' }} />
-                    <span className="text-[11px]" style={{ color: '#39d3ff' }}>Analyzing page…</span>
-                  </div>
-                )}
-              </div>
+          {/* URL bar row */}
+          <div className="flex items-center gap-2 px-4 py-2 relative z-10" style={{ background: '#0a1220', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+            <div className="flex-1 flex items-center gap-2 rounded-lg px-3 py-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+              <span className="text-[9px] text-white/25">🔒</span>
+              <span className="text-[10px] text-white/45">https://www.{preset.url}</span>
+              {scanning && <span className="ml-auto text-[8px] animate-pulse" style={{ color: '#39d3ff' }}>Analysing page…</span>}
             </div>
+          </div>
 
-            {/* Right: issues + goods */}
-            <div className="md:w-72 p-6 border-t md:border-t-0 md:border-l border-white/[0.06] flex flex-col gap-5">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: '#22c55e' }}>✓ {lang === 'fr' ? 'Points forts' : 'Passed'}</p>
-                <div className="flex flex-col gap-2">
-                  {(analyzing ? [] : data.goods).map((g) => (
-                    <div key={g} className="flex items-start gap-2">
-                      <span className="mt-0.5 text-[10px]" style={{ color: '#22c55e' }}>✓</span>
-                      <span className="text-[11px] text-white/60 leading-relaxed">{g}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{ color: '#facc15' }}>⚠ {lang === 'fr' ? 'À corriger' : 'Issues found'}</p>
-                <div className="flex flex-col gap-2">
-                  {(analyzing ? [] : data.issues).map((issue) => (
-                    <div key={issue} className="flex items-start gap-2">
-                      <span className="mt-0.5 text-[10px]" style={{ color: '#facc15' }}>⚠</span>
-                      <span className="text-[11px] text-white/60 leading-relaxed">{issue}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="mt-auto pt-4 border-t border-white/[0.06]">
-                <p className="text-[10px] text-white/30 mb-3 leading-relaxed">
-                  {lang === 'fr'
-                    ? 'Installez l\'extension pour analyser n\'importe quelle page en conditions réelles.'
-                    : 'Install the extension to analyse any real page instantly.'}
-                </p>
-                <button className="w-full py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.25), rgba(57,211,255,0.25))', color: '#e8e8e9', border: '1px solid rgba(167,139,250,0.3)' }}>
-                  {lang === 'fr' ? 'Installer gratuitement →' : 'Install for Free →'}
-                </button>
-              </div>
-            </div>
+          {/* Page + Extension */}
+          <div className="flex" style={{ minHeight: 380 }}>
+            <SiteMock site={active} />
+            <ExtensionPanel site={active} step={step} />
           </div>
         </div>
 
-        {/* Custom URL input */}
-        <div className="mt-6 flex items-center gap-3 max-w-lg mx-auto">
-          <input
-            type="text"
-            placeholder={lang === 'fr' ? 'Entrez votre URL…' : 'Enter your URL…'}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 px-4 py-3 rounded-xl text-sm text-foreground placeholder-muted-foreground outline-none focus:ring-1 focus:ring-white/20"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
-          />
-          <button
-            className="px-5 py-3 rounded-xl text-sm font-bold uppercase tracking-wider flex-shrink-0 opacity-50 cursor-not-allowed"
-            style={{ background: 'rgba(167,139,250,0.15)', color: '#a78bfa', border: '1px solid rgba(167,139,250,0.3)' }}
-            title={lang === 'fr' ? 'Disponible après installation' : 'Available after install'}
-          >
-            {lang === 'fr' ? 'Analyser' : 'Analyze'}
+        {/* CTA */}
+        <div className="mt-8 flex flex-col items-center gap-3">
+          <p className="text-muted-foreground text-sm text-center max-w-md">
+            {lang === 'fr'
+              ? '🔒 Pour analyser votre propre site en conditions réelles, installez l\'extension Chrome gratuite.'
+              : '🔒 To analyse your own site for real, install the free Chrome extension.'}
+          </p>
+          <button className="px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.25), rgba(57,211,255,0.2))', color: '#e8e8e9', border: '1px solid rgba(167,139,250,0.3)' }}>
+            {lang === 'fr' ? 'Installer gratuitement — Chrome' : 'Install Free — Chrome Web Store →'}
           </button>
         </div>
-        <p className="text-center text-muted-foreground text-xs mt-2">
-          {lang === 'fr' ? '🔒 Pour analyser votre propre site, installez l\'extension Chrome' : '🔒 To analyse your own site, install the Chrome extension'}
-        </p>
       </div>
     </section>
   )
