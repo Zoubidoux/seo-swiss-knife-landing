@@ -7,7 +7,9 @@ import { ProblemSection }     from '@/components/ProblemSection'
 import { SolutionBanner }     from '@/components/SolutionBanner'
 import { FeaturesSection }    from '@/components/FeaturesSection'
 import { FeatureSpotlight }   from '@/components/FeatureSpotlight'
+import { BenefitsSection }    from '@/components/BenefitsSection'
 import { VideoSection }       from '@/components/VideoSection'
+import { LiveDemoSection }    from '@/components/LiveDemoSection'
 import { ContextMenuSection } from '@/components/ContextMenuSection'
 import { AllFeaturesSection } from '@/components/AllFeaturesSection'
 import { HowItWorks }         from '@/components/HowItWorks'
@@ -36,8 +38,14 @@ function App() {
       <FeaturesSection />
       <FeatureSpotlight />
 
-      {/* Live demo video */}
+      {/* Benefits — before/after time savings */}
+      <BenefitsSection />
+
+      {/* Live demo video — Dior simulation */}
       <VideoSection />
+
+      {/* Interactive live demo */}
+      <LiveDemoSection />
 
       {/* Context menu quick-access */}
       <ContextMenuSection />

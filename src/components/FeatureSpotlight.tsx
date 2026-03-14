@@ -10,8 +10,8 @@ export function FeatureSpotlight() {
   const spotlights = translations[lang].spotlight
 
   return (
-    <section className="bg-background py-24 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-36">
+    <section className="bg-background py-14 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col gap-20">
         {spotlights.map((s, i) => (
           <div key={s.eyebrow} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16`}>
             <div className="flex-1 flex flex-col gap-5">
@@ -33,9 +33,9 @@ export function FeatureSpotlight() {
               </ul>
             </div>
             <div className="flex-1 flex justify-center">
-              <div className="relative">
+              <div className="relative" style={{ transform: 'scale(0.88)', transformOrigin: 'center' }}>
                 <div
-                  className="absolute inset-0 rounded-3xl blur-3xl opacity-30 pointer-events-none"
+                  className="absolute inset-0 rounded-3xl blur-3xl opacity-25 pointer-events-none"
                   style={{ background: `radial-gradient(circle, ${i % 2 === 0 ? '#7c3aed' : '#0891b2'} 0%, transparent 70%)`, transform: 'scale(1.2)' }}
                 />
                 <ExtensionMockup activeTab={TABS[i]} />
