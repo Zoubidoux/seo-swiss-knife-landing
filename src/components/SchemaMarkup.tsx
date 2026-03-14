@@ -21,7 +21,7 @@ export function SchemaMarkup() {
     injectSchema('schema-software', {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'SEO Swiss Knife',
+      name: 'Search Toolbox',
       applicationCategory: 'BrowserApplication',
       operatingSystem: 'Chrome, Edge, Brave, Arc',
       description:
@@ -56,11 +56,11 @@ export function SchemaMarkup() {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: [
-        { '@type': 'Question', name: 'Is SEO Swiss Knife free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The core extension is completely free — no account required, no credit card. Install directly from the Chrome Web Store.' } },
-        { '@type': 'Question', name: 'Which browsers does SEO Swiss Knife support?', acceptedAnswer: { '@type': 'Answer', text: 'SEO Swiss Knife works on Chrome, Edge, Brave, and Arc.' } },
-        { '@type': 'Question', name: 'Does SEO Swiss Knife work on any website?', acceptedAnswer: { '@type': 'Answer', text: 'It works on any public URL, staging, localhost, and authenticated pages. It analyses the live DOM so JavaScript-rendered content is fully supported.' } },
-        { '@type': 'Question', name: 'How is SEO Swiss Knife different from Chrome DevTools?', acceptedAnswer: { '@type': 'Answer', text: 'DevTools is for developers. SEO Swiss Knife is purpose-built for SEO workflows: schema validation, redirect chains, hreflang auditing, robots parsing, SERP VPN, PDF reports.' } },
-        { '@type': 'Question', name: 'Is my browsing data private?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. SEO Swiss Knife runs entirely in your browser. No page content or URL data is ever sent to external servers.' } },
+        { '@type': 'Question', name: 'Is Search Toolbox free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The core extension is completely free — no account required, no credit card. Install directly from the Chrome Web Store.' } },
+        { '@type': 'Question', name: 'Which browsers does Search Toolbox support?', acceptedAnswer: { '@type': 'Answer', text: 'Search Toolbox works on Chrome, Edge, Brave, and Arc.' } },
+        { '@type': 'Question', name: 'Does Search Toolbox work on any website?', acceptedAnswer: { '@type': 'Answer', text: 'It works on any public URL, staging, localhost, and authenticated pages. It analyses the live DOM so JavaScript-rendered content is fully supported.' } },
+        { '@type': 'Question', name: 'How is Search Toolbox different from Chrome DevTools?', acceptedAnswer: { '@type': 'Answer', text: 'DevTools is for developers. Search Toolbox is purpose-built for SEO workflows: schema validation, redirect chains, hreflang auditing, robots parsing, SERP VPN, PDF reports.' } },
+        { '@type': 'Question', name: 'Is my browsing data private?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Search Toolbox runs entirely in your browser. No page content or URL data is ever sent to external servers.' } },
         { '@type': 'Question', name: 'Can I export SEO reports?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The Report tab generates a weighted SEO score. Download as PDF or share via a standalone URL.' } },
       ],
     })

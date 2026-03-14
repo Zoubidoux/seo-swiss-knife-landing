@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { PixelHeart } from '@/components/PixelHeart'
 
 type SiteKey = 'dior' | 'apple' | 'shopify' | 'lemonde'
 
@@ -89,48 +90,24 @@ const SITE_DATA: Record<SiteKey, {
   },
 }
 
+const SITE_SCREENSHOTS: Record<SiteKey, string> = {
+  dior:    '/site-dior.jpg',
+  apple:   '/site-apple.jpg',
+  shopify: '/site-shopify.jpg',
+  lemonde: '/site-lemonde.jpg',
+}
+
 function SiteMock({ site }: { site: SiteKey }) {
-  const d = SITE_DATA[site]
   return (
-    <div className="flex-1 overflow-hidden select-none" style={{ background: d.pageBg, minWidth: 0 }}>
-      {/* Nav */}
-      <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.07]">
-        <div className="flex gap-4">{d.navItems.map(l=>(<span key={l} className="text-[8.5px] text-white/30 uppercase tracking-[0.15em]">{l}</span>))}</div>
-        <span className={`font-semibold tracking-widest uppercase ${site === 'dior' ? 'font-serif text-sm tracking-[0.35em]' : 'text-sm'} text-white/80`}>{d.brand}</span>
-        <div className="flex gap-2">
-          <span className="text-[8px] text-white/25">Search</span>
-          <span className="text-[8px] text-white/25">Account</span>
-        </div>
-      </div>
-      {/* Hero */}
-      <div className="relative overflow-hidden" style={{ height: 170, background: `linear-gradient(150deg, ${site==='dior'?'#14090e, #200d18':'#0a0a12, #080810'})` }}>
-        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 60% 50% at 65% 40%, ${d.pageAccent} 0%, transparent 70%)` }} />
-        {site === 'dior' && (
-          <>
-            <div className="absolute" style={{ right:'22%', top:'8%', width:50, height:155, background:'linear-gradient(180deg,rgba(190,140,80,0.1)0%,transparent 100%)', borderRadius:'40% 40% 20% 20%', filter:'blur(1px)' }} />
-            <div className="absolute" style={{ right:'27%', top:'10%', width:1.5, height:130, background:'rgba(200,155,90,0.15)', borderRadius:1 }} />
-          </>
-        )}
-        <div className="absolute inset-0 flex flex-col justify-end pb-5 px-5">
-          <p className="text-[7px] text-white/25 uppercase tracking-[0.4em] mb-1.5">{d.heroCopy}</p>
-          <h2 className={`text-white text-lg font-semibold leading-snug mb-2.5 ${site==='dior'?'font-serif italic':''}`}>{d.heroTitle}</h2>
-          <button className="self-start text-[8px] uppercase tracking-[0.2em] px-3 py-1.5 border border-white/25 text-white/50">
-            {site === 'dior' ? 'Discover' : site === 'apple' ? 'Learn more' : 'Get started'}
-          </button>
-        </div>
-      </div>
-      {/* Content rows */}
-      <div className="px-4 py-2 flex flex-col gap-0.5">
-        {[0,1,2,3].map(i=>(
-          <div key={i} className="flex items-center gap-3 py-1.5 border-b border-white/[0.04]">
-            <div className="w-8 h-6 rounded bg-white/[0.04] flex-shrink-0" />
-            <div className="flex-1">
-              <div className="h-2 rounded bg-white/[0.06] mb-1" style={{ width: `${65+i*8}%` }} />
-              <div className="h-1.5 rounded bg-white/[0.03]" style={{ width: `${40+i*5}%` }} />
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="flex-1 overflow-hidden select-none relative" style={{ minWidth: 0 }}>
+      <img
+        src={SITE_SCREENSHOTS[site]}
+        alt={site}
+        className="w-full h-full object-cover object-top"
+        style={{ display: 'block' }}
+      />
+      {/* subtle overlay so extension panel blends */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 60%, rgba(4,13,26,0.5) 100%)' }} />
     </div>
   )
 }
@@ -145,8 +122,8 @@ function ExtensionPanel({ site, step }: { site: SiteKey; step: number }) {
       {/* Header */}
       <div className="flex items-center justify-between px-2.5 py-2 border-b border-white/[0.06]">
         <div className="flex items-center gap-1.5">
-          <img src="/src/assets/icon.png" alt="" className="w-3.5 h-3.5" style={{ imageRendering: 'pixelated' }} />
-          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>SEO Swiss Knife</span>
+          <PixelHeart size={14} />
+          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Search Toolbox</span>
         </div>
         <span className="text-[6px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background:'rgba(34,197,94,0.15)', color:'#22c55e' }}>Allowed</span>
       </div>
@@ -294,7 +271,7 @@ export function LiveDemoSection() {
             {/* Tab bar */}
             <div className="flex items-end gap-0.5 ml-2 h-7">
               <div className="flex items-center gap-2 px-3 h-full rounded-t-lg" style={{ background: '#0d1a2e', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}>
-                <img src="/src/assets/icon.png" alt="" className="w-3 h-3" style={{ imageRendering: 'pixelated' }} />
+                <PixelHeart size={12} />
                 <span className="text-[9px] text-white/60 truncate max-w-[100px]">https://www.{preset.url}</span>
                 <span className="text-[8px] text-white/20 ml-0.5">✕</span>
               </div>
@@ -305,7 +282,7 @@ export function LiveDemoSection() {
             <div className="flex-1" />
             {/* Toolbar extension badge */}
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-md" style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.2)' }}>
-              <img src="/src/assets/icon.png" alt="" className="w-4 h-4" style={{ imageRendering: 'pixelated' }} />
+              <PixelHeart size={16} />
               {scanning
                 ? <span className="text-[8px] animate-pulse" style={{ color: '#39d3ff' }}>…</span>
                 : <span className="text-[8px] font-black px-1 rounded-full" style={{ background: '#facc15', color: '#000' }}>{SITE_DATA[active].issues.length}</span>

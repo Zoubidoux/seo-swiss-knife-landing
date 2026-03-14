@@ -16,11 +16,15 @@ import { HowItWorks }         from '@/components/HowItWorks'
 import { FAQSection }         from '@/components/FAQSection'
 import { CTASection }         from '@/components/CTASection'
 import { Footer }             from '@/components/Footer'
+import { BetaBanner }        from '@/components/BetaBanner'
+import { ComparisonSlider }  from '@/components/ComparisonSlider'
 
 function App() {
   return (
     <LanguageProvider>
       <SchemaMarkup />
+      {/* Beta announcement banner */}
+      <BetaBanner />
       {/* Sticky navbar with anchor links */}
       <Navbar />
 
@@ -33,6 +37,9 @@ function App() {
       {/* Problem → Solution narrative */}
       <ProblemSection />
       <SolutionBanner />
+
+      {/* Before / after comparison slider */}
+      <ComparisonSlider />
 
       {/* Feature sections — id="features" anchor */}
       <FeaturesSection />

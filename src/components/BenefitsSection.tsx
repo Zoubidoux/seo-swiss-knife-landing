@@ -1,4 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext'
+import { PixelHeart } from '@/components/PixelHeart'
 
 const FEATURE_GROUPS = [
   {
@@ -159,9 +160,9 @@ export function BenefitsSection() {
 
           <div className="liquid-glass rounded-2xl p-7 flex flex-col gap-4">
             <div className="flex items-center gap-3 mb-1">
-              <img src="/src/assets/icon.png" alt="" className="w-8 h-8" style={{ imageRendering: 'pixelated', filter: 'drop-shadow(0 0 10px rgba(167,139,250,0.5))' }} />
+              <PixelHeart size={32} style={{ filter: 'drop-shadow(0 0 10px rgba(167,139,250,0.5))' }} />
               <div>
-                <p className="text-foreground font-bold">SEO Swiss Knife</p>
+                <p className="text-foreground font-bold">Search Toolbox</p>
                 <p className="text-muted-foreground text-xs">{lang === 'fr' ? 'Un panel, tout le reste.' : 'One panel, everything else gone.'}</p>
               </div>
             </div>

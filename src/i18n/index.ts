@@ -10,8 +10,8 @@ const en = {
   },
   hero: {
     eyebrow: 'Chrome Extension · 100% Free',
-    headline: 'SEO Swiss Knife',
-    sub: 'The most powerful on-page SEO toolkit ever built for Chrome. 20+ tools in one sidebar — audit, inspect, report.',
+    headline: 'Search Toolbox',
+    sub: '60+ tools in one sidebar. The only Chrome extension that combines semantic analysis, technical SEO, redirect tracing, schema validation, SERP simulation, cookie management, and PDF reporting — all in one panel.',
     cta: 'Add to Chrome — Free',
     ctaSub: 'No account required',
   },
@@ -43,12 +43,12 @@ const en = {
   solution: {
     eyebrow: 'The Solution',
     headline: 'One panel.\nEvery SEO tool you need.',
-    sub: 'SEO Swiss Knife lives in your browser sidebar. Open a tab, get instant insights — no login, no API key, no context switching.',
+    sub: 'Search Toolbox lives in your browser sidebar. Open a tab, get instant insights — no login, no API key, no context switching. While other extensions check one or two things, Search Toolbox audits everything simultaneously.',
     cta: 'Add to Chrome — It\'s Free',
   },
   features: {
     eyebrow: 'Features',
-    headline: '20+ tools. One sidebar.',
+    headline: '60+ tools. One sidebar.',
     sub: 'Everything a technical SEO needs, grouped logically and accessible with a single click.',
     items: [
       {
@@ -210,7 +210,7 @@ const en = {
       {
         num: '02',
         title: 'Open the side panel',
-        body: 'Click the SEO Swiss Knife icon or use the keyboard shortcut. The panel opens on any page in under a second.',
+        body: 'Click the Search Toolbox icon or use the keyboard shortcut. The panel opens on any page in under a second.',
       },
       {
         num: '03',
@@ -240,11 +240,11 @@ const en = {
     eyebrow: 'FAQ',
     headline: 'Questions you\'ll ask anyway',
     items: [
-      { q: 'Is SEO Swiss Knife free?', a: 'Yes. The core extension is completely free — no account required, no credit card. Install directly from the Chrome Web Store and start auditing immediately.' },
-      { q: 'Which browsers are supported?', a: 'SEO Swiss Knife works on all Chromium-based browsers: Chrome, Edge, Brave, and Arc. Firefox support is on the roadmap.' },
+      { q: 'Is Search Toolbox free?', a: 'Yes. The core extension is completely free — no account required, no credit card. Install directly from the Chrome Web Store and start auditing immediately.' },
+      { q: 'Which browsers are supported?', a: 'Search Toolbox works on all Chromium-based browsers: Chrome, Edge, Brave, and Arc. Firefox support is on the roadmap.' },
       { q: 'Does it work on any website?', a: 'It works on any public URL, staging environments, localhost, and password-protected pages when you\'re already authenticated. It analyses the live DOM so JavaScript-rendered content is fully supported.' },
-      { q: 'How is it different from DevTools?', a: 'DevTools is built for developers. SEO Swiss Knife is purpose-built for SEO workflows — structured data validation, redirect chains, hreflang auditing, robots parsing, SERP VPN, PDF reports — things DevTools simply don\'t have.' },
-      { q: 'Is my data private?', a: 'Yes. SEO Swiss Knife runs entirely in your browser. No page content or URL data is ever sent to external servers. Your audits are fully local.' },
+      { q: 'How is it different from DevTools?', a: 'DevTools is built for developers. Search Toolbox is purpose-built for SEO workflows — structured data validation, redirect chains, hreflang auditing, robots parsing, SERP VPN, PDF reports — things DevTools simply don\'t have.' },
+      { q: 'Is my data private?', a: 'Yes. Search Toolbox runs entirely in your browser. No page content or URL data is ever sent to external servers. Your audits are fully local.' },
       { q: 'Can I export or share reports?', a: 'Yes. The Report tab generates a full weighted SEO score broken down by category. Download as PDF or open in a standalone shareable URL — client-ready in under 10 seconds.' },
       { q: 'Can I hide tabs I don\'t use?', a: 'Absolutely. The Settings panel lets you hide any tab, set a default landing tab, configure keyboard shortcuts for every section, and customise the context menu.' },
       { q: 'Does the SERP VPN route my real traffic?', a: 'No. SERP VPN spoofs browser headers and geolocation signals to simulate how Google serves results in a given country. It does not route your actual network traffic through a VPN server.' },
@@ -264,7 +264,7 @@ const en = {
   footer: {
     privacy: 'Privacy',
     store: 'Chrome Web Store',
-    rights: '© {year} SEO Swiss Knife',
+    rights: '© {year} Search Toolbox',
   },
 }
 
@@ -278,8 +278,8 @@ const fr: typeof en = {
   },
   hero: {
     eyebrow: 'Extension Chrome · 100% Gratuit',
-    headline: 'SEO Swiss Knife',
-    sub: "La suite SEO on-page la plus puissante jamais créée pour Chrome. 20+ outils dans un seul panneau — audit, inspection, rapport.",
+    headline: 'Search Toolbox',
+    sub: "60+ outils dans un seul panneau. La seule extension Chrome qui combine analyse sémantique, SEO technique, tracé de redirections, validation schema, simulation SERP, gestion des cookies et rapports PDF — tout en un.",
     cta: 'Ajouter à Chrome — Gratuit',
     ctaSub: 'Aucun compte requis',
   },
@@ -311,12 +311,12 @@ const fr: typeof en = {
   solution: {
     eyebrow: 'La Solution',
     headline: 'Un seul panneau.\nTous vos outils SEO.',
-    sub: 'SEO Swiss Knife vit dans la barre latérale de votre navigateur. Ouvrez un onglet, obtenez des insights instantanés — sans login, sans clé API, sans changer de contexte.',
+    sub: 'Search Toolbox vit dans la barre latérale de votre navigateur. Ouvrez un onglet, obtenez des insights instantanés — sans login, sans clé API, sans changer de contexte. Là où les autres extensions font une chose, Search Toolbox audite tout simultanément.',
     cta: 'Ajouter à Chrome — Gratuit',
   },
   features: {
     eyebrow: 'Fonctionnalités',
-    headline: '20+ outils. Une seule barre latérale.',
+    headline: '60+ outils. Une seule barre latérale.',
     sub: 'Tout ce dont un SEO technique a besoin, organisé logiquement et accessible en un clic.',
     items: [
       {
@@ -478,7 +478,7 @@ const fr: typeof en = {
       {
         num: '02',
         title: 'Ouvrez le panneau latéral',
-        body: 'Cliquez sur l\'icône SEO Swiss Knife ou utilisez le raccourci clavier. Le panneau s\'ouvre sur n\'importe quelle page en moins d\'une seconde.',
+        body: 'Cliquez sur l\'icône Search Toolbox ou utilisez le raccourci clavier. Le panneau s\'ouvre sur n\'importe quelle page en moins d\'une seconde.',
       },
       {
         num: '03',
@@ -508,11 +508,11 @@ const fr: typeof en = {
     eyebrow: 'FAQ',
     headline: 'Les questions que vous poserez de toute façon',
     items: [
-      { q: 'SEO Swiss Knife est-il gratuit ?', a: 'Oui. L\'extension de base est entièrement gratuite — aucun compte requis, aucune carte bancaire. Installez directement depuis le Chrome Web Store et commencez à auditer immédiatement.' },
-      { q: 'Quels navigateurs sont supportés ?', a: 'SEO Swiss Knife fonctionne sur tous les navigateurs basés sur Chromium : Chrome, Edge, Brave et Arc. Le support Firefox est en cours de développement.' },
+      { q: 'Search Toolbox est-il gratuit ?', a: 'Oui. L\'extension de base est entièrement gratuite — aucun compte requis, aucune carte bancaire. Installez directement depuis le Chrome Web Store et commencez à auditer immédiatement.' },
+      { q: 'Quels navigateurs sont supportés ?', a: 'Search Toolbox fonctionne sur tous les navigateurs basés sur Chromium : Chrome, Edge, Brave et Arc. Le support Firefox est en cours de développement.' },
       { q: 'Fonctionne-t-il sur tous les sites ?', a: 'Il fonctionne sur n\'importe quelle URL publique, environnements de staging, localhost et pages protégées par mot de passe quand vous êtes déjà authentifié. Il analyse le DOM live donc le contenu rendu par JavaScript est entièrement supporté.' },
-      { q: 'En quoi est-il différent des DevTools ?', a: 'Les DevTools sont conçus pour les développeurs. SEO Swiss Knife est conçu spécifiquement pour les workflows SEO — validation des données structurées, chaînes de redirections, audit hreflang, parsing robots, SERP VPN, rapports PDF — des choses que les DevTools n\'ont tout simplement pas.' },
-      { q: 'Mes données sont-elles privées ?', a: 'Oui. SEO Swiss Knife fonctionne entièrement dans votre navigateur. Aucun contenu de page ni donnée d\'URL n\'est jamais envoyé à des serveurs externes. Vos audits sont totalement locaux.' },
+      { q: 'En quoi est-il différent des DevTools ?', a: 'Les DevTools sont conçus pour les développeurs. Search Toolbox est conçu spécifiquement pour les workflows SEO — validation des données structurées, chaînes de redirections, audit hreflang, parsing robots, SERP VPN, rapports PDF — des choses que les DevTools n\'ont tout simplement pas.' },
+      { q: 'Mes données sont-elles privées ?', a: 'Oui. Search Toolbox fonctionne entièrement dans votre navigateur. Aucun contenu de page ni donnée d\'URL n\'est jamais envoyé à des serveurs externes. Vos audits sont totalement locaux.' },
       { q: 'Puis-je exporter ou partager des rapports ?', a: 'Oui. L\'onglet Rapport génère un score SEO pondéré complet ventilé par catégorie. Téléchargez en PDF ou ouvrez dans une URL autonome partageable — prêt pour les clients en moins de 10 secondes.' },
       { q: 'Puis-je masquer les onglets que je n\'utilise pas ?', a: 'Absolument. Le panneau Paramètres vous permet de masquer n\'importe quel onglet, définir un onglet de démarrage par défaut, configurer des raccourcis clavier pour chaque section et personnaliser le menu contextuel.' },
       { q: 'Le SERP VPN route-t-il vraiment mon trafic ?', a: 'Non. Le SERP VPN falsifie les en-têtes du navigateur et les signaux de géolocalisation pour simuler comment Google sert les résultats dans un pays donné. Il ne route pas votre trafic réseau réel via un serveur VPN.' },
@@ -532,7 +532,7 @@ const fr: typeof en = {
   footer: {
     privacy: 'Confidentialité',
     store: 'Chrome Web Store',
-    rights: '© {year} SEO Swiss Knife',
+    rights: '© {year} Search Toolbox',
   },
 }
 

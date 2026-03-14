@@ -12,56 +12,56 @@ const GROUPS: {
   bg: string
   tabs: { id: MockupTab; icon: string; label: string }[]
 }[] = [
-  {
-    label: 'Semantic',
-    color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.12)',
-    tabs: [
-      { id: 'overview',  icon: '◉',  label: 'Overview' },
-      { id: 'headings',  icon: '¶',  label: 'Headings' },
-      { id: 'social',    icon: '⬡',  label: 'Social' },
-      { id: 'schema',    icon: '{}', label: 'Schema' },
-      { id: 'hreflang',  icon: '☸',  label: 'Hreflang' },
-      { id: 'variants',  icon: '⬸',  label: 'Variants' },
-    ],
-  },
-  {
-    label: 'Technical',
-    color: '#39d3ff',
-    bg: 'rgba(57,211,255,0.12)',
-    tabs: [
-      { id: 'robots',    icon: '⊖',   label: 'Robots' },
-      { id: 'redirects', icon: '⇕',   label: 'Redirect' },
-      { id: 'images',    icon: '◇',   label: 'Images' },
-      { id: 'inspector', icon: '△',   label: 'Inspector' },
-      { id: 'source',    icon: '</>',  label: 'Source' },
-      { id: 'render',    icon: '⟨⟩',  label: 'Render' },
-    ],
-  },
-  {
-    label: 'Netlinking',
-    color: '#2dd4bf',
-    bg: 'rgba(45,212,191,0.12)',
-    tabs: [
-      { id: 'links', icon: '⇄', label: 'Links' },
-    ],
-  },
-  {
-    label: 'Toolbox',
-    color: '#facc15',
-    bg: 'rgba(250,204,21,0.12)',
-    tabs: [
-      { id: 'vpn',        icon: '🌐', label: 'SERP VPN' },
-      { id: 'tools',      icon: '⌘',  label: 'Tools' },
-      { id: 'dorks',      icon: '⚙',  label: 'Dorks' },
-      { id: 'useragent',  icon: '⬛',  label: 'UA' },
-      { id: 'cookies',    icon: '🍪', label: 'Cookies' },
-      { id: 'clearcache', icon: '♻',  label: 'Cache' },
-      { id: 'glossary',   icon: '≡',  label: 'Lexique' },
-      { id: 'report',     icon: '📋', label: 'Report' },
-    ],
-  },
-]
+    {
+      label: 'Semantic',
+      color: '#a78bfa',
+      bg: 'rgba(167,139,250,0.12)',
+      tabs: [
+        { id: 'overview', icon: '◉', label: 'Overview' },
+        { id: 'headings', icon: '¶', label: 'Headings' },
+        { id: 'social', icon: '⬡', label: 'Social' },
+        { id: 'schema', icon: '{}', label: 'Schema' },
+        { id: 'hreflang', icon: '☸', label: 'Hreflang' },
+        { id: 'variants', icon: '⬸', label: 'Variants' },
+      ],
+    },
+    {
+      label: 'Technical',
+      color: '#39d3ff',
+      bg: 'rgba(57,211,255,0.12)',
+      tabs: [
+        { id: 'robots', icon: '⊖', label: 'Robots' },
+        { id: 'redirects', icon: '⇕', label: 'Redirect' },
+        { id: 'images', icon: '◇', label: 'Images' },
+        { id: 'inspector', icon: '△', label: 'Inspector' },
+        { id: 'source', icon: '</>', label: 'Source' },
+        { id: 'render', icon: '⟨⟩', label: 'Render' },
+      ],
+    },
+    {
+      label: 'Netlinking',
+      color: '#2dd4bf',
+      bg: 'rgba(45,212,191,0.12)',
+      tabs: [
+        { id: 'links', icon: '⇄', label: 'Links' },
+      ],
+    },
+    {
+      label: 'Toolbox',
+      color: '#facc15',
+      bg: 'rgba(250,204,21,0.12)',
+      tabs: [
+        { id: 'vpn', icon: '🌐', label: 'SERP VPN' },
+        { id: 'tools', icon: '⌘', label: 'Tools' },
+        { id: 'dorks', icon: '⚙', label: 'Dorks' },
+        { id: 'useragent', icon: '⬛', label: 'UA' },
+        { id: 'cookies', icon: '🍪', label: 'Cookies' },
+        { id: 'clearcache', icon: '♻', label: 'Cache' },
+        { id: 'glossary', icon: '≡', label: 'Lexique' },
+        { id: 'report', icon: '📋', label: 'Report' },
+      ],
+    },
+  ]
 
 /* ── Panel content ── */
 function OverviewPanel() {
@@ -79,16 +79,16 @@ function OverviewPanel() {
       </div>
       {/* Stat bar */}
       <div className="grid grid-cols-3 gap-1 mb-1">
-        {[['H1s','1','#22c55e'],['H2s','4','#39d3ff'],['Imgs','12','#a78bfa']].map(([l,v,c])=>(
+        {[['H1s', '1', '#22c55e'], ['H2s', '4', '#39d3ff'], ['Imgs', '12', '#a78bfa']].map(([l, v, c]) => (
           <div key={l} className="bg-white/[0.04] rounded-md p-1.5 text-center">
-            <div className="font-bold text-base" style={{color:c}}>{v}</div>
+            <div className="font-bold text-base" style={{ color: c }}>{v}</div>
             <div className="text-white/30 text-[7px] uppercase tracking-wide">{l}</div>
           </div>
         ))}
       </div>
       {/* Fields */}
       {[
-        { label: 'Title', value: 'SEO Swiss Knife — Chrome Extension', chars: '38', status: 'good' },
+        { label: 'Title', value: 'Search Toolbox — Chrome Extension', chars: '38', status: 'good' },
         { label: 'Description', value: 'The most complete on-page SEO toolkit...', chars: '62', status: 'good' },
         { label: 'Canonical', value: 'https://example.com/', status: 'good' },
         { label: 'Robots', value: 'index, follow', status: 'good' },
@@ -121,7 +121,7 @@ function OverviewPanel() {
 
 function HeadingsPanel() {
   const headings = [
-    { level: 'H1', text: 'SEO Swiss Knife — The Complete Chrome Extension', color: '#9ec890' },
+    { level: 'H1', text: 'Search Toolbox — The Complete Chrome Extension', color: '#9ec890' },
     { level: 'H2', text: 'Features Overview', color: '#7ab8c8' },
     { level: 'H3', text: 'Page Meta Audit', color: '#c8a96e' },
     { level: 'H3', text: 'Schema Inspector', color: '#c8a96e' },
@@ -218,10 +218,10 @@ function RedirectPanel() {
 function ImagesPanel() {
   const imgs = [
     { src: '/hero-banner.webp', alt: 'SEO hero image', dims: '1200×630', size: '42kb', fmt: 'webp', ok: true },
-    { src: '/logo.png',         alt: '',               dims: '200×60',   size: '8kb',  fmt: 'png',  ok: false },
-    { src: '/feature-1.jpg',    alt: 'Feature screen', dims: '800×500',  size: '120kb',fmt: 'jpg',  ok: true },
-    { src: '/icon-seo.svg',     alt: 'SEO icon',       dims: '24×24',    size: '1kb',  fmt: 'svg',  ok: true },
-    { src: '/bg-texture.png',   alt: '',               dims: '1920×1080',size: '340kb',fmt: 'png',  ok: false },
+    { src: '/logo.png', alt: '', dims: '200×60', size: '8kb', fmt: 'png', ok: false },
+    { src: '/feature-1.jpg', alt: 'Feature screen', dims: '800×500', size: '120kb', fmt: 'jpg', ok: true },
+    { src: '/icon-seo.svg', alt: 'SEO icon', dims: '24×24', size: '1kb', fmt: 'svg', ok: true },
+    { src: '/bg-texture.png', alt: '', dims: '1920×1080', size: '340kb', fmt: 'png', ok: false },
   ]
   return (
     <div className="p-2.5 flex flex-col gap-1">
@@ -252,13 +252,13 @@ function ImagesPanel() {
 function ReportPanel() {
   const cats = [
     { name: 'Indexability', score: 95, color: '#22c55e' },
-    { name: 'On-Page',      score: 82, color: '#22c55e' },
-    { name: 'Structure',    score: 90, color: '#22c55e' },
-    { name: 'Technical',    score: 75, color: '#facc15' },
-    { name: 'Schema',       score: 88, color: '#22c55e' },
-    { name: 'Social',       score: 60, color: '#f97316' },
-    { name: 'Links',        score: 70, color: '#facc15' },
-    { name: 'Images',       score: 55, color: '#ef4444' },
+    { name: 'On-Page', score: 82, color: '#22c55e' },
+    { name: 'Structure', score: 90, color: '#22c55e' },
+    { name: 'Technical', score: 75, color: '#facc15' },
+    { name: 'Schema', score: 88, color: '#22c55e' },
+    { name: 'Social', score: 60, color: '#f97316' },
+    { name: 'Links', score: 70, color: '#facc15' },
+    { name: 'Images', score: 55, color: '#ef4444' },
   ]
   return (
     <div className="p-2.5 flex flex-col gap-1.5">
@@ -283,12 +283,12 @@ function ReportPanel() {
 }
 
 const DEFAULT_PANELS: Partial<Record<MockupTab, React.ReactNode>> = {
-  overview:  <OverviewPanel />,
-  headings:  <HeadingsPanel />,
-  schema:    <SchemaPanel />,
+  overview: <OverviewPanel />,
+  headings: <HeadingsPanel />,
+  schema: <SchemaPanel />,
   redirects: <RedirectPanel />,
-  images:    <ImagesPanel />,
-  report:    <ReportPanel />,
+  images: <ImagesPanel />,
+  report: <ReportPanel />,
 }
 
 function GenericPanel({ tab }: { tab: MockupTab }) {
@@ -347,7 +347,7 @@ export function ExtensionMockup({ activeTab = 'overview' }: ExtensionMockupProps
           <div className="w-1.5 h-1.5 rounded-full" style={{ background: activeGroup?.color ?? '#39d3ff' }} />
         </div>
         <span className="text-[9px] font-black tracking-wider uppercase" style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          SEO Swiss Knife
+          Search Toolbox
         </span>
         <div className="ml-auto flex items-center gap-1">
           <span className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>Allowed</span>

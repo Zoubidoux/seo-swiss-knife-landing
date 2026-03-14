@@ -100,7 +100,7 @@ export function ContextMenuSection() {
                 >
                   {/* Parent item */}
                   <div className="flex items-center justify-between px-3 py-2" style={{ background: 'rgba(167,139,250,0.15)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                    <span className="font-bold text-[#a78bfa]">🔪 SEO Swiss Knife</span>
+                    <span className="font-bold text-[#a78bfa]">🔪 Search Toolbox</span>
                     <span className="text-white/40 text-[9px]">▶</span>
                   </div>
 
