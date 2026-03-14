@@ -1,17 +1,36 @@
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 
-// Toolbar badge callout — always-on indicator
+// Cycles through HTTP status states — colors from background.js
+const BADGE_STATES = [
+  { code: '200', iconGlow: '#00b894', badgeBg: '#00b894', label: '200 OK' },
+  { code: '301', iconGlow: '#74b9ff', badgeBg: '#e0922a', label: '301 Redirect' },
+  { code: '404', iconGlow: '#ff6b6b', badgeBg: '#ff6b6b', label: '404 Not Found' },
+]
+
 function ToolbarBadge() {
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % BADGE_STATES.length), 1800)
+    return () => clearInterval(t)
+  }, [])
+  const s = BADGE_STATES[idx]
+
   return (
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-      <span className="text-white/40 text-[10px]">Chrome toolbar</span>
-      <div className="flex items-center gap-1 px-1.5 py-0.5 rounded" style={{ background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.25)' }}>
-        <img src="/src/assets/icon.png" alt="" className="w-3.5 h-3.5" style={{ imageRendering: 'pixelated' }} />
-        <span className="text-[9px] font-black" style={{ color: '#a78bfa' }}>7</span>
+    <div className="flex items-center gap-3 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.09)' }}>
+      <span className="text-white/35 text-[10px] tracking-wide">Chrome toolbar</span>
+      {/* Single extension badge — icon + code side by side, no overlap */}
+      <div
+        key={s.code}
+        className="flex items-center gap-1.5 px-2 py-1 rounded-md transition-all duration-500"
+        style={{ background: `${s.iconGlow}12`, border: `1px solid ${s.iconGlow}30` }}
+      >
+        <img src="/src/assets/icon.png" alt="" className="w-4 h-4 flex-shrink-0" style={{ imageRendering: 'pixelated', filter: `drop-shadow(0 0 5px ${s.iconGlow})` }} />
+        <span className="text-[9px] font-black min-w-[26px] text-center px-1 py-0.5 rounded" style={{ background: s.badgeBg, color: '#000' }}>{s.code}</span>
       </div>
-      <span className="text-white/35 text-[10px]">issues detected — without opening</span>
+      <span className="text-white/30 text-[10px]">{s.label} — without opening</span>
     </div>
   )
 }

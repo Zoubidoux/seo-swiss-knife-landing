@@ -330,7 +330,8 @@ export function ExtensionMockup({ activeTab = 'overview' }: ExtensionMockupProps
     <div
       className="rounded-2xl overflow-hidden shadow-2xl select-none flex-shrink-0"
       style={{
-        width: 280,
+        width: 360,
+        height: 300,
         background: '#040D1A',
         border: '1px solid rgba(255,255,255,0.08)',
         boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)',
@@ -341,7 +342,7 @@ export function ExtensionMockup({ activeTab = 'overview' }: ExtensionMockupProps
       <div className="h-[3px] w-full" style={{ background: 'linear-gradient(90deg, #a78bfa, #39d3ff, #2dd4bf, #facc15, #a78bfa)', backgroundSize: '200% 100%' }} />
 
       {/* Header */}
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-white/[0.06]">
+      <div className="flex items-center gap-2 px-3 py-1.5 border-b border-white/[0.06]">
         <div className="w-3 h-3 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
           <div className="w-1.5 h-1.5 rounded-full" style={{ background: activeGroup?.color ?? '#39d3ff' }} />
         </div>
@@ -354,9 +355,9 @@ export function ExtensionMockup({ activeTab = 'overview' }: ExtensionMockupProps
       </div>
 
       {/* Body */}
-      <div className="flex" style={{ minHeight: 420 }}>
+      <div className="flex overflow-hidden" style={{ height: 'calc(100% - 30px)' }}>
         {/* Sidebar */}
-        <div className="flex flex-col border-r border-white/[0.06] overflow-y-auto py-1" style={{ width: 56, background: '#020617', scrollbarWidth: 'none' }}>
+        <div className="flex flex-col border-r border-white/[0.06] overflow-y-auto py-1" style={{ width: 52, background: '#020617', scrollbarWidth: 'none' }}>
           {GROUPS.map((group) => (
             <div key={group.label}>
               <div className="px-1.5 pt-2 pb-0.5">

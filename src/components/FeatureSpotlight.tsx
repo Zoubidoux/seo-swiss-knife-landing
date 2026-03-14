@@ -38,7 +38,7 @@ export function FeatureSpotlight() {
 
               {/* Mockup side */}
               <div className="flex-1 flex justify-center">
-                <div className="relative" style={{ transform: 'scale(0.82)', transformOrigin: 'center' }}>
+                <div className="relative" style={{ transform: 'scale(0.78)', transformOrigin: 'center' }}>
                   <div
                     className="absolute inset-0 rounded-3xl blur-3xl opacity-20 pointer-events-none"
                     style={{ background: `radial-gradient(circle, ${i % 2 === 0 ? '#7c3aed' : '#0891b2'} 0%, transparent 70%)`, transform: 'scale(1.2)' }}
