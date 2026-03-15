@@ -179,7 +179,7 @@ export function AllFeaturesSection() {
                   {f.icon}
                 </div>
                 <div>
-                  <p className="text-foreground font-semibold text-sm leading-tight">{f.title}</p>
+                  <h4 className="text-foreground font-semibold text-sm leading-tight">{f.title}</h4>
                   <p className="text-muted-foreground text-xs mt-1 leading-relaxed">{f.desc}</p>
                 </div>
               </div>

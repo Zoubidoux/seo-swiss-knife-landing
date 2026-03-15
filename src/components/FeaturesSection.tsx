@@ -75,7 +75,7 @@ export function FeaturesSection() {
                     {f.icon}
                   </div>
                   <div>
-                    <p className="text-foreground font-semibold text-sm leading-tight">{f.title}</p>
+                    <h4 className="text-foreground font-semibold text-sm leading-tight">{f.title}</h4>
                     <p className="text-xs mt-0.5 font-medium" style={{ color: f.color }}>{f.label}</p>
                   </div>
                 </div>
