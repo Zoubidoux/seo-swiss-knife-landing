@@ -14,18 +14,19 @@ const TINTS: Record<string, string> = {
 
 // Orbites — variété de couleurs, tailles généreuses
 const ORBITS = [
-  { r: 115, size: 20, speed: 13, start:  20, opacity: 0.65, tint: 'purple' },
-  { r: 170, size: 28, speed: 21, start: 110, opacity: 0.60, tint: 'yellow' },
-  { r: 240, size: 22, speed: 31, start: 195, opacity: 0.55, tint: 'green'  },
-  { r: 150, size: 18, speed: 16, start: 285, opacity: 0.62, tint: 'red'    },
-  { r: 290, size: 24, speed: 42, start:  65, opacity: 0.48, tint: 'purple' },
-  { r: 200, size: 30, speed: 25, start: 340, opacity: 0.58, tint: 'yellow' },
-  { r: 320, size: 18, speed: 50, start: 150, opacity: 0.40, tint: 'green'  },
-  { r: 180, size: 22, speed: 19, start: 240, opacity: 0.52, tint: 'red'    },
-  { r: 260, size: 16, speed: 37, start:  80, opacity: 0.45, tint: 'purple' },
-  { r: 130, size: 18, speed: 17, start: 160, opacity: 0.58, tint: 'yellow' },
-  { r: 220, size: 20, speed: 28, start: 300, opacity: 0.42, tint: 'red'    },
-  { r: 350, size: 16, speed: 44, start:  30, opacity: 0.32, tint: 'green'  },
+  { r:  90, size: 22, speed: 11, start:  20, opacity: 0.70, tint: 'purple' },
+  { r: 140, size: 30, speed: 18, start: 110, opacity: 0.65, tint: 'yellow' },
+  { r: 190, size: 24, speed: 27, start: 195, opacity: 0.58, tint: 'green'  },
+  { r: 120, size: 20, speed: 14, start: 285, opacity: 0.66, tint: 'red'    },
+  { r: 230, size: 26, speed: 35, start:  65, opacity: 0.52, tint: 'purple' },
+  { r: 165, size: 32, speed: 22, start: 340, opacity: 0.62, tint: 'yellow' },
+  { r: 270, size: 20, speed: 42, start: 150, opacity: 0.44, tint: 'green'  },
+  { r: 145, size: 24, speed: 16, start: 240, opacity: 0.56, tint: 'red'    },
+  { r: 210, size: 18, speed: 31, start:  80, opacity: 0.48, tint: 'purple' },
+  { r: 105, size: 20, speed: 15, start: 160, opacity: 0.62, tint: 'yellow' },
+  { r: 175, size: 22, speed: 24, start: 300, opacity: 0.46, tint: 'red'    },
+  { r: 300, size: 18, speed: 46, start:  30, opacity: 0.35, tint: 'green'  },
+  { r: 250, size: 20, speed: 38, start: 220, opacity: 0.40, tint: 'purple' },
 ]
 
 const HERO_STYLE = `
@@ -120,7 +121,7 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden"
-      style={{ height: '100dvh', minHeight: '580px', display: 'flex', flexDirection: 'column' }}>
+      style={{ height: '65vh', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
 
       {/* ── Plasma — blobs floutés, pleine section ── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ overflow: 'hidden' }}>

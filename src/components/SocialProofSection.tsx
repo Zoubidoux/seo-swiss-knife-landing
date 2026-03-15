@@ -46,7 +46,7 @@ export function SocialProofSection() {
   const marqueeItems = [...BRANDS, ...BRANDS]
 
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full overflow-hidden" style={{ minHeight: '35vh' }}>
       <video ref={videoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0 }}>
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
