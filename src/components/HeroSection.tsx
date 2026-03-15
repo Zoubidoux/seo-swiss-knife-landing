@@ -83,41 +83,38 @@ export function HeroSection() {
       className="relative overflow-hidden"
       style={{ height: '100dvh', minHeight: '600px', display: 'flex', flexDirection: 'column' }}
     >
-      {/* ── Plasma — centre en haut de section, glow tombe vers le contenu ── */}
+      {/* ── Plasma Background ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Fond CSS gradient — couvre tout le haut */}
         <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse 80% 55% at 50% 0%, rgba(124,58,237,0.28) 0%, transparent 70%)',
+          position: 'absolute', top: '-15%', left: '50%', transform: 'translateX(-50%)',
+          width: '900px', height: '500px',
+          background: 'radial-gradient(ellipse, rgba(124,58,237,0.30) 0%, transparent 65%)',
         }} />
-        {/* Blob gauche animé */}
         <div style={{
-          position: 'absolute', top: '-60px', left: '15%',
-          width: '480px', height: '480px',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.20) 0%, transparent 65%)',
+          position: 'absolute', top: '0%', left: '18%',
+          width: '400px', height: '400px',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.17) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat1 9s ease-in-out infinite',
         }} />
-        {/* Blob droite animé */}
         <div style={{
-          position: 'absolute', top: '-80px', right: '10%',
-          width: '380px', height: '380px',
-          background: 'radial-gradient(circle, rgba(57,211,255,0.15) 0%, transparent 65%)',
+          position: 'absolute', top: '-8%', right: '12%',
+          width: '320px', height: '320px',
+          background: 'radial-gradient(circle, rgba(57,211,255,0.13) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat2 11s ease-in-out infinite',
         }} />
-        {/* Accent teal */}
         <div style={{
-          position: 'absolute', top: '30px', left: '52%',
-          width: '220px', height: '220px',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.10) 0%, transparent 70%)',
+          position: 'absolute', top: '6%', left: '54%',
+          width: '200px', height: '200px',
+          background: 'radial-gradient(circle, rgba(45,212,191,0.1) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat3 7s ease-in-out infinite',
         }} />
       </div>
 
-      {/* ── Contenu hero — centré verticalement ── */}
-      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4 w-full max-w-2xl mx-auto">
+      {/* ── Hero content — centré dans le viewport ── */}
+      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4">
 
         {/* Eyebrow */}
         <div
@@ -139,7 +136,7 @@ export function HeroSection() {
           <PixelHeart size={50} style={{ filter: 'drop-shadow(0 0 28px rgba(167,139,250,0.85))' }} />
           <span
             className="bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(180deg, #f0f0f2 0%, #a78bfa 100%)' }}
+            style={{ backgroundImage: 'linear-gradient(175deg, #f0f0f2 20%, #a78bfa 100%)' }}
           >
             {t.headline}
           </span>
@@ -147,11 +144,17 @@ export function HeroSection() {
 
         {/* Stat pills */}
         <div className="flex flex-wrap justify-center items-center gap-2">
-          <span className="px-3 py-1 rounded-full text-base font-black" style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.25)', color: '#c4b5fd' }}>
+          <span
+            className="px-3 py-1 rounded-full text-base font-black"
+            style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.25)', color: '#c4b5fd' }}
+          >
             +20 {lang === 'fr' ? 'apps en 1' : 'apps in one'}
           </span>
           <span className="text-white/20">·</span>
-          <span className="px-3 py-1 rounded-full text-base font-black" style={{ background: 'rgba(57,211,255,0.09)', border: '1px solid rgba(57,211,255,0.2)', color: '#67e8f9' }}>
+          <span
+            className="px-3 py-1 rounded-full text-base font-black"
+            style={{ background: 'rgba(57,211,255,0.09)', border: '1px solid rgba(57,211,255,0.2)', color: '#67e8f9' }}
+          >
             +60 {lang === 'fr' ? 'fonctionnalités' : 'features'}
           </span>
           <span className="text-white/20">·</span>
@@ -161,7 +164,10 @@ export function HeroSection() {
         </div>
 
         {/* Sub */}
-        <p className="text-center max-w-md leading-6" style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)' }}>
+        <p
+          className="text-center max-w-md leading-6"
+          style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)' }}
+        >
           {t.sub}
         </p>
 
@@ -177,11 +183,10 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* ── Flèche absolue au bas du viewport ── */}
-      <div
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 animate-bounce text-xl"
-        style={{ color: 'rgba(255,255,255,0.18)' }}
-      >↓</div>
+      {/* ── Flèche juste sous la ligne de flottaison ── */}
+      <div className="relative flex justify-center pb-5" style={{ color: 'rgba(255,255,255,0.18)' }}>
+        <div className="animate-bounce text-xl">↓</div>
+      </div>
     </section>
   )
 }
