@@ -51,8 +51,7 @@ export function SocialProofSection() {
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
-      <div className="relative z-10 flex flex-col items-center pt-16 pb-24 px-4 gap-20">
-        <div className="h-40" />
+      <div className="relative z-10 flex flex-col items-center pt-6 pb-8 px-4 gap-6">
         <div className="max-w-5xl w-full flex items-center gap-10 overflow-hidden">
           <p className="text-foreground/50 text-sm whitespace-nowrap shrink-0 leading-relaxed">{t.label.split('\n').map((l, i) => <span key={i}>{l}{i === 0 && <br />}</span>)}</p>
           <div className="flex-1 overflow-hidden">

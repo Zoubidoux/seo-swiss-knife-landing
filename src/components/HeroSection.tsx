@@ -113,8 +113,8 @@ export function HeroSection() {
         }} />
       </div>
 
-      {/* ── Hero content — dans le plasma, pas en dessous ── */}
-      <div className="relative flex flex-col items-center justify-start px-6 text-center gap-4 pt-16">
+      {/* ── Hero content — centré dans la section ── */}
+      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4">
 
         {/* Eyebrow */}
         <div
