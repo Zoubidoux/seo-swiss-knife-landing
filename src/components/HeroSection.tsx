@@ -145,9 +145,9 @@ export function HeroSection() {
       {/* ── Orbites ── */}
       <OrbitingHearts />
 
-      {/* ── Contenu — dans la zone plasma ── */}
-      <div className="relative flex flex-col items-center justify-start px-4 sm:px-6 text-center gap-3 sm:gap-4"
-        style={{ paddingTop: 'clamp(48px, 7vh, 80px)', zIndex: 2 }}>
+      {/* ── Contenu — centré dans la section ── */}
+      <div className="relative flex flex-col items-center justify-center flex-1 px-4 sm:px-6 text-center gap-4 sm:gap-5"
+        style={{ zIndex: 2 }}>
 
         {/* Eyebrow */}
         <div className="px-3 sm:px-4 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase"
@@ -156,12 +156,9 @@ export function HeroSection() {
         </div>
 
         {/* H1 */}
-        <h1 className="flex items-center justify-center gap-2 sm:gap-4 font-bold tracking-tight"
-          style={{ fontSize: 'clamp(32px, 7vw, 78px)', lineHeight: 1 }}>
-          <PixelHeart
-            size={typeof window !== 'undefined' && window.innerWidth < 640 ? 36 : 48}
-            style={{ filter: 'drop-shadow(0 0 24px rgba(139,92,246,0.9))' }}
-          />
+        <h1 className="flex items-center justify-center gap-3 sm:gap-4 font-bold tracking-tight"
+          style={{ fontSize: 'clamp(40px, 8vw, 84px)', lineHeight: 1 }}>
+          <PixelHeart size={52} style={{ filter: 'drop-shadow(0 0 28px rgba(139,92,246,0.9))' }} />
           <span className="bg-clip-text text-transparent"
             style={{ backgroundImage: 'linear-gradient(180deg, #f4f4f6 0%, #c4b5fd 100%)' }}>
             {t.headline}
@@ -169,25 +166,25 @@ export function HeroSection() {
         </h1>
 
         {/* Stat pills */}
-        <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2">
-          <span className="px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-black"
+        <div className="flex flex-wrap justify-center items-center gap-2">
+          <span className="px-3 py-1.5 rounded-full text-sm font-black"
             style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.22)', color: '#c4b5fd' }}>
             +20 {lang === 'fr' ? 'apps en 1' : 'apps in one'}
           </span>
-          <span className="text-white/15 text-xs">·</span>
-          <span className="px-2.5 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-black"
+          <span className="text-white/15">·</span>
+          <span className="px-3 py-1.5 rounded-full text-sm font-black"
             style={{ background: 'rgba(99,102,241,0.10)', border: '1px solid rgba(99,102,241,0.20)', color: '#a5b4fc' }}>
             +60 {lang === 'fr' ? 'fonctionnalités' : 'features'}
           </span>
-          <span className="text-white/15 text-xs">·</span>
+          <span className="text-white/15">·</span>
           <span className="text-xs font-semibold" style={{ color: 'rgba(196,181,253,0.7)' }}>
             {lang === 'fr' ? '✦ Dont beaucoup d\'inédites' : '✦ Many unique & customizable'}
           </span>
         </div>
 
         {/* Sub */}
-        <p className="text-center max-w-xs sm:max-w-md leading-6"
-          style={{ fontSize: 'clamp(0.8rem, 1.8vw, 0.92rem)', color: 'rgba(255,255,255,0.50)' }}>
+        <p className="text-center max-w-md leading-7"
+          style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.52)' }}>
           {t.sub}
         </p>
 
