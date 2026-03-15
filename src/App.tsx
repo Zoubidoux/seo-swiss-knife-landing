@@ -1,5 +1,6 @@
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { SchemaMarkup }       from '@/components/SchemaMarkup'
+import { FloatingHearts }     from '@/components/FloatingHearts'
 import { Navbar }             from '@/components/Navbar'
 import { HeroSection }        from '@/components/HeroSection'
 import { SocialProofSection } from '@/components/SocialProofSection'
@@ -23,6 +24,7 @@ function App() {
   return (
     <LanguageProvider>
       <SchemaMarkup />
+      <FloatingHearts />
       {/* Beta announcement banner */}
       <BetaBanner />
       {/* Sticky navbar with anchor links */}
