@@ -119,30 +119,45 @@ export function HeroSection() {
     <section className="relative overflow-hidden"
       style={{ height: '100dvh', minHeight: '580px', display: 'flex', flexDirection: 'column' }}>
 
-      {/* ── Plasma pleine section ── */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 85% 70% at 50% 42%, rgba(109,40,217,0.32) 0%, rgba(79,29,173,0.14) 45%, transparent 72%)' }}>
-        {/* Blob gauche — très large */}
+      {/* ── Plasma — blobs floutés, positifs, pleine section ── */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ overflow: 'hidden' }}>
+        {/* Blob haut-gauche */}
         <div style={{
-          position: 'absolute', top: '-15%', left: '-5%',
-          width: '75vw', height: '75vw', maxWidth: 800, maxHeight: 800,
-          background: 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, transparent 65%)',
-          borderRadius: '50%', animation: 'plasmaA 10s ease-in-out infinite',
+          position: 'absolute', top: '0%', left: '-10%',
+          width: '65%', height: '70%',
+          borderRadius: '50%',
+          background: 'rgba(109,40,217,0.55)',
+          filter: 'blur(90px)',
+          animation: 'plasmaA 10s ease-in-out infinite',
+          willChange: 'transform',
         }} />
-        {/* Blob droite — très large */}
+        {/* Blob haut-droite */}
         <div style={{
-          position: 'absolute', top: '-20%', right: '-8%',
-          width: '70vw', height: '70vw', maxWidth: 750, maxHeight: 750,
-          background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%)',
-          borderRadius: '50%', animation: 'plasmaB 13s ease-in-out infinite',
+          position: 'absolute', top: '-5%', right: '-8%',
+          width: '55%', height: '65%',
+          borderRadius: '50%',
+          background: 'rgba(79,70,229,0.45)',
+          filter: 'blur(80px)',
+          animation: 'plasmaB 13s ease-in-out infinite',
+          willChange: 'transform',
         }} />
-        {/* Blob bas-centre */}
+        {/* Blob bas-centre — couvre le bas */}
         <div style={{
-          position: 'absolute', bottom: '-10%', left: '50%',
-          transform: 'translateX(-50%)',
-          width: '80vw', height: '50vw', maxWidth: 900, maxHeight: 500,
-          background: 'radial-gradient(ellipse, rgba(109,40,217,0.15) 0%, transparent 68%)',
-          borderRadius: '50%', animation: 'plasmaC 8s ease-in-out infinite',
+          position: 'absolute', bottom: '5%', left: '20%',
+          width: '60%', height: '55%',
+          borderRadius: '50%',
+          background: 'rgba(91,33,182,0.40)',
+          filter: 'blur(100px)',
+          animation: 'plasmaC 8s ease-in-out infinite',
+          willChange: 'transform',
+        }} />
+        {/* Accent centre — intensifie le cœur */}
+        <div style={{
+          position: 'absolute', top: '25%', left: '30%',
+          width: '40%', height: '40%',
+          borderRadius: '50%',
+          background: 'rgba(139,92,246,0.30)',
+          filter: 'blur(60px)',
         }} />
       </div>
 
