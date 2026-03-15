@@ -81,45 +81,44 @@ export function HeroSection() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ height: '100dvh', minHeight: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      style={{ height: '100dvh', minHeight: '600px', display: 'flex', flexDirection: 'column' }}
     >
-      {/* ── Plasma centré autour du contenu ── */}
+      {/* ── Plasma — accroché en haut, cropped, lumière qui tombe sur le contenu ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Cœur principal — centré */}
+        {/* Cœur elliptique — déborde en haut */}
         <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -60%)',
+          position: 'absolute', top: '-18%', left: '50%', transform: 'translateX(-50%)',
           width: '900px', height: '600px',
-          background: 'radial-gradient(ellipse, rgba(124,58,237,0.30) 0%, transparent 65%)',
+          background: 'radial-gradient(ellipse, rgba(124,58,237,0.32) 0%, transparent 65%)',
         }} />
         {/* Blob gauche */}
         <div style={{
-          position: 'absolute', top: '20%', left: '10%',
-          width: '380px', height: '380px',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.17) 0%, transparent 70%)',
+          position: 'absolute', top: '-8%', left: '12%',
+          width: '420px', height: '420px',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat1 9s ease-in-out infinite',
         }} />
         {/* Blob droite */}
         <div style={{
-          position: 'absolute', top: '10%', right: '8%',
-          width: '300px', height: '300px',
+          position: 'absolute', top: '-12%', right: '8%',
+          width: '340px', height: '340px',
           background: 'radial-gradient(circle, rgba(57,211,255,0.13) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat2 11s ease-in-out infinite',
         }} />
         {/* Accent teal */}
         <div style={{
-          position: 'absolute', top: '40%', left: '58%',
+          position: 'absolute', top: '5%', left: '55%',
           width: '200px', height: '200px',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat3 7s ease-in-out infinite',
         }} />
       </div>
 
-      {/* ── Contenu hero ── */}
-      <div className="relative flex flex-col items-center px-6 text-center gap-4 w-full max-w-2xl">
+      {/* ── Contenu hero — centré verticalement ── */}
+      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4 w-full max-w-2xl mx-auto">
 
         {/* Eyebrow */}
         <div
@@ -141,7 +140,7 @@ export function HeroSection() {
           <PixelHeart size={50} style={{ filter: 'drop-shadow(0 0 28px rgba(167,139,250,0.85))' }} />
           <span
             className="bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(175deg, #f0f0f2 20%, #a78bfa 100%)' }}
+            style={{ backgroundImage: 'linear-gradient(180deg, #f0f0f2 0%, #a78bfa 100%)' }}
           >
             {t.headline}
           </span>
