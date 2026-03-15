@@ -7,9 +7,8 @@ export function BetaBanner() {
     <div
       className="w-full flex items-center justify-center gap-3 py-2 px-4 text-xs font-medium"
       style={{
-        background: 'linear-gradient(90deg, rgba(124,58,237,0.25) 0%, rgba(57,211,255,0.15) 50%, rgba(124,58,237,0.25) 100%)',
-        borderBottom: '1px solid rgba(167,139,250,0.2)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(0,0,0,0)',
+        borderBottom: '1px solid rgba(167,139,250,0.12)',
       }}
     >
       <span

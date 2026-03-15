@@ -11,7 +11,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll() // sync immediately on mount
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -20,9 +21,9 @@ export function Navbar() {
     <div
       className="w-full sticky top-0 z-50 transition-all duration-500"
       style={{
-        background: scrolled ? 'rgba(20,8,60,0.55)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(8px) saturate(1.1)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(8px) saturate(1.1)' : 'none',
+        background: scrolled ? 'rgba(15,5,45,0.40)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(10px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(10px)' : 'none',
       }}
     >
       <nav className="flex items-center justify-between py-4 px-8 max-w-7xl mx-auto">
