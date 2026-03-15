@@ -4,7 +4,21 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { PixelHeart } from '@/components/PixelHeart'
 
+// Orbiting hearts: [orbitRadius, size, speed(s), startAngle(deg), opacity, blur]
+const ORBITS = [
+  { r: 220, size: 22, speed: 18, start:  15, opacity: 0.55, blur: 0.5 },
+  { r: 170, size: 14, speed: 26, start: 120, opacity: 0.40, blur: 0   },
+  { r: 290, size: 16, speed: 32, start: 200, opacity: 0.35, blur: 1   },
+  { r: 130, size: 10, speed: 14, start: 270, opacity: 0.50, blur: 0   },
+  { r: 340, size: 12, speed: 40, start:  80, opacity: 0.28, blur: 1.5 },
+  { r: 200, size: 18, speed: 22, start: 310, opacity: 0.45, blur: 0   },
+]
+
 const PLASMA_STYLE = `
+@keyframes orbitHeart {
+  from { transform: rotate(var(--start)) translateX(var(--r)) rotate(calc(-1 * var(--start))); }
+  to   { transform: rotate(calc(var(--start) + 360deg)) translateX(var(--r)) rotate(calc(-1 * (var(--start) + 360deg))); }
+}
 @keyframes plasmaFloat1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33%       { transform: translate(-40px, 30px) scale(1.08); }
@@ -64,6 +78,45 @@ function ToolbarBadge() {
   )
 }
 
+function OrbitingHearts() {
+  return (
+    <div
+      className="absolute pointer-events-none"
+      aria-hidden="true"
+      style={{ top: '50%', left: '50%', width: 0, height: 0 }}
+    >
+      {ORBITS.map((o, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            top: 0, left: 0,
+            width: o.size,
+            height: o.size,
+            marginLeft: -o.size / 2,
+            marginTop: -o.size / 2,
+            opacity: o.opacity,
+            filter: o.blur ? `blur(${o.blur}px)` : undefined,
+            // CSS custom properties for the orbit animation
+            ['--r' as string]: `${o.r}px`,
+            ['--start' as string]: `${o.start}deg`,
+            animation: `orbitHeart ${o.speed}s linear infinite`,
+            animationDelay: `${-o.speed * (o.start / 360)}s`,
+          }}
+        >
+          <img
+            src="/icon128.png"
+            width={o.size}
+            height={o.size}
+            style={{ imageRendering: 'pixelated', display: 'block' }}
+            alt=""
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function HeroSection() {
   const { lang } = useLanguage()
   const t = translations[lang].hero
@@ -112,6 +165,9 @@ export function HeroSection() {
           animation: 'plasmaFloat3 7s ease-in-out infinite',
         }} />
       </div>
+
+      {/* ── Cœurs en orbite ── */}
+      <OrbitingHearts />
 
       {/* ── Hero content — centré dans le viewport ── */}
       <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4">
