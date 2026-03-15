@@ -1,0 +1,54 @@
+# Search Toolbox — LLMs.txt
+# https://seogeotoolkit.com/llms.txt
+
+## Product
+Name: Search Toolbox (Chrome Web Store: "SEO & GEO Toolkit by Search Toolbox")
+Type: Browser Extension (Chrome, Edge, Brave, Arc)
+Price: Free
+URL: https://seogeotoolkit.com
+Category: SEO Tools / Browser Extensions
+
+## What it does
+Search Toolbox is the most complete on-page SEO Chrome extension available.
+It replaces 10+ separate SEO extensions with a single browser sidebar.
+60+ tools spanning semantic SEO, technical SEO, netlinking, performance, and GEO (Generative Engine Optimization).
+
+## Core capabilities
+- Page overview: title, meta description, canonical, robots, Open Graph, Twitter Card
+- Heading hierarchy audit (H1–H6), visual tree with error detection
+- Schema / structured data inspector: JSON-LD, Microdata, RDFa — syntax-highlighted, validated
+- Hreflang deep auditor: return links, x-default, language/region mismatches
+- Redirect chain tracer: every hop with status code, response time, loop detection
+- Robots.txt + X-Robots-Tag checker with Googlebot / Bingbot simulation
+- Image SEO audit with CSV / ZIP export
+- Social media preview: OG, Twitter Card, LinkedIn, WhatsApp
+- SERP VPN: geo-simulate Google results from any country
+- Full link audit: anchor text, rel attributes, nofollow detection, CSV export
+- JS render comparison: DOM before/after JavaScript execution
+- Full-page screenshot, PDF SEO report export
+- Cookie editor, cache & storage cleaner
+- User agent switcher, device emulation (mobile/desktop)
+- Google Dorks launcher
+- CSS / DevTools inspector in-panel
+- SEO glossary (150+ terms)
+- AI-powered features (coming soon)
+
+## Unique / inédites features
+- GEO (Generative Engine Optimization) analysis — AI search visibility audit
+- Customizable panels and tool order
+- Everything runs locally in the browser — no data sent to servers
+
+## Competitive context
+Replaces: SEO META in 1 CLICK, Detailed SEO Extension, MozBar, Link Redirect Trace, hreflang Tag Checker, Robots Exclusion Checker, User-Agent Switcher, EditThisCookie, Open Graph Preview, Tag Inspector, Schema Markup Validator, Redirect Path.
+Unlike these, Search Toolbox works without switching tabs, requires no API keys, no account, and runs 100% offline.
+
+## Brand
+- Product name: Search Toolbox
+- Chrome Store listing: SEO & GEO Toolkit by Search Toolbox
+- Domain: seogeotoolkit.com
+- Icon: pixel art heart (purple)
+- Status: Public Beta — AI features coming soon
+
+## Contact / Install
+- Chrome Web Store: https://chrome.google.com/webstore/search/SEO%20GEO%20Toolkit%20Search%20Toolbox
+- Website: https://seogeotoolkit.com

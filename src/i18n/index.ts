@@ -9,11 +9,11 @@ const en = {
     langToggle: 'FR',
   },
   hero: {
-    eyebrow: 'Chrome Extension · 100% Free',
+    eyebrow: 'Chrome Extension · 100% Free · Public Beta',
     headline: 'Search Toolbox',
-    sub: '60+ tools in one sidebar. The only Chrome extension that combines semantic analysis, technical SEO, redirect tracing, schema validation, SERP simulation, cookie management, and PDF reporting — all in one panel.',
+    sub: 'Stop juggling 10 extensions. One sidebar instantly audits your schema, redirects, hreflang, images, robots, links and SERP visibility — no tab switching, no login, no API key.',
     cta: 'Add to Chrome — Free',
-    ctaSub: 'No account required',
+    ctaSub: 'No account required · Works on any URL',
   },
   proof: {
     label: 'Relied on by SEO professionals across the globe',
@@ -277,11 +277,11 @@ const fr: typeof en = {
     langToggle: 'EN',
   },
   hero: {
-    eyebrow: 'Extension Chrome · 100% Gratuit',
+    eyebrow: 'Extension Chrome · 100% Gratuit · Bêta Publique',
     headline: 'Search Toolbox',
-    sub: "60+ outils dans un seul panneau. La seule extension Chrome qui combine analyse sémantique, SEO technique, tracé de redirections, validation schema, simulation SERP, gestion des cookies et rapports PDF — tout en un.",
+    sub: "Arrêtez de jongler avec 10 extensions SEO. Un seul panneau pour auditer schema, redirections, hreflang, images, robots, liens et visibilité SERP — sans changer d'onglet, sans compte, sans clé API.",
     cta: 'Ajouter à Chrome — Gratuit',
-    ctaSub: 'Aucun compte requis',
+    ctaSub: 'Aucun compte requis · Fonctionne sur toutes les URLs',
   },
   proof: {
     label: "Utilisé par des professionnels SEO partout dans le monde",
