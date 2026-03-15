@@ -83,35 +83,34 @@ export function HeroSection() {
       className="relative overflow-hidden"
       style={{ height: '100dvh', minHeight: '600px', display: 'flex', flexDirection: 'column' }}
     >
-      {/* ── Plasma — accroché en haut, cropped, lumière qui tombe sur le contenu ── */}
+      {/* ── Plasma — centre en haut de section, glow tombe vers le contenu ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Cœur elliptique — déborde en haut */}
+        {/* Fond CSS gradient — couvre tout le haut */}
         <div style={{
-          position: 'absolute', top: '-18%', left: '50%', transform: 'translateX(-50%)',
-          width: '900px', height: '600px',
-          background: 'radial-gradient(ellipse, rgba(124,58,237,0.32) 0%, transparent 65%)',
+          position: 'absolute', inset: 0,
+          background: 'radial-gradient(ellipse 80% 55% at 50% 0%, rgba(124,58,237,0.28) 0%, transparent 70%)',
         }} />
-        {/* Blob gauche */}
+        {/* Blob gauche animé */}
         <div style={{
-          position: 'absolute', top: '-8%', left: '12%',
-          width: '420px', height: '420px',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.18) 0%, transparent 70%)',
+          position: 'absolute', top: '-60px', left: '15%',
+          width: '480px', height: '480px',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.20) 0%, transparent 65%)',
           borderRadius: '50%',
           animation: 'plasmaFloat1 9s ease-in-out infinite',
         }} />
-        {/* Blob droite */}
+        {/* Blob droite animé */}
         <div style={{
-          position: 'absolute', top: '-12%', right: '8%',
-          width: '340px', height: '340px',
-          background: 'radial-gradient(circle, rgba(57,211,255,0.13) 0%, transparent 70%)',
+          position: 'absolute', top: '-80px', right: '10%',
+          width: '380px', height: '380px',
+          background: 'radial-gradient(circle, rgba(57,211,255,0.15) 0%, transparent 65%)',
           borderRadius: '50%',
           animation: 'plasmaFloat2 11s ease-in-out infinite',
         }} />
         {/* Accent teal */}
         <div style={{
-          position: 'absolute', top: '5%', left: '55%',
-          width: '200px', height: '200px',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 70%)',
+          position: 'absolute', top: '30px', left: '52%',
+          width: '220px', height: '220px',
+          background: 'radial-gradient(circle, rgba(45,212,191,0.10) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat3 7s ease-in-out infinite',
         }} />
