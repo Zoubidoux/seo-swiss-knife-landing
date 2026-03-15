@@ -13,7 +13,7 @@ export function Navbar() {
       <nav className="flex items-center justify-between py-4 px-8 max-w-7xl mx-auto">
         {/* Left — Logo / Brand */}
         <a href="#" className="flex items-center gap-2.5 no-underline group">
-          <PixelHeart size={22} style={{ filter: 'drop-shadow(0 0 6px rgba(167,139,250,0.7))' }} />
+          <PixelHeart size={22} style={{ filter: 'drop-shadow(0 0 3px rgba(167,139,250,0.35))' }} />
           <span className="font-bold text-base tracking-tight" style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Search Toolbox
           </span>

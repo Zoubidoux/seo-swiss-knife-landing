@@ -14,15 +14,18 @@ const TINTS: Record<string, string> = {
 
 // Orbites — variété de couleurs, tailles généreuses
 const ORBITS = [
-  { r: 115, size: 14, speed: 13, start:  20, opacity: 0.55, tint: 'purple' },
-  { r: 170, size: 20, speed: 21, start: 110, opacity: 0.50, tint: 'yellow' },
-  { r: 240, size: 16, speed: 31, start: 195, opacity: 0.45, tint: 'green'  },
-  { r: 150, size: 12, speed: 16, start: 285, opacity: 0.52, tint: 'red'    },
-  { r: 290, size: 18, speed: 42, start:  65, opacity: 0.38, tint: 'purple' },
-  { r: 200, size: 24, speed: 25, start: 340, opacity: 0.48, tint: 'yellow' },
-  { r: 320, size: 13, speed: 50, start: 150, opacity: 0.30, tint: 'green'  },
-  { r: 180, size: 16, speed: 19, start: 240, opacity: 0.42, tint: 'red'    },
-  { r: 260, size: 10, speed: 37, start:  80, opacity: 0.35, tint: 'purple' },
+  { r: 115, size: 20, speed: 13, start:  20, opacity: 0.65, tint: 'purple' },
+  { r: 170, size: 28, speed: 21, start: 110, opacity: 0.60, tint: 'yellow' },
+  { r: 240, size: 22, speed: 31, start: 195, opacity: 0.55, tint: 'green'  },
+  { r: 150, size: 18, speed: 16, start: 285, opacity: 0.62, tint: 'red'    },
+  { r: 290, size: 24, speed: 42, start:  65, opacity: 0.48, tint: 'purple' },
+  { r: 200, size: 30, speed: 25, start: 340, opacity: 0.58, tint: 'yellow' },
+  { r: 320, size: 18, speed: 50, start: 150, opacity: 0.40, tint: 'green'  },
+  { r: 180, size: 22, speed: 19, start: 240, opacity: 0.52, tint: 'red'    },
+  { r: 260, size: 16, speed: 37, start:  80, opacity: 0.45, tint: 'purple' },
+  { r: 130, size: 18, speed: 17, start: 160, opacity: 0.58, tint: 'yellow' },
+  { r: 220, size: 20, speed: 28, start: 300, opacity: 0.42, tint: 'red'    },
+  { r: 350, size: 16, speed: 44, start:  30, opacity: 0.32, tint: 'green'  },
 ]
 
 const HERO_STYLE = `
@@ -119,44 +122,52 @@ export function HeroSection() {
     <section className="relative overflow-hidden"
       style={{ height: '100dvh', minHeight: '580px', display: 'flex', flexDirection: 'column' }}>
 
-      {/* ── Plasma — blobs floutés, positifs, pleine section ── */}
+      {/* ── Plasma — blobs floutés, pleine section ── */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ overflow: 'hidden' }}>
-        {/* Blob haut-gauche */}
+        {/* Blob haut-gauche — violet intense */}
         <div style={{
-          position: 'absolute', top: '0%', left: '-10%',
-          width: '65%', height: '70%',
+          position: 'absolute', top: '-5%', left: '-15%',
+          width: '75%', height: '80%',
           borderRadius: '50%',
-          background: 'rgba(109,40,217,0.55)',
-          filter: 'blur(90px)',
+          background: 'rgba(109,40,217,0.75)',
+          filter: 'blur(70px)',
           animation: 'plasmaA 10s ease-in-out infinite',
           willChange: 'transform',
         }} />
-        {/* Blob haut-droite */}
+        {/* Blob haut-droite — indigo */}
         <div style={{
-          position: 'absolute', top: '-5%', right: '-8%',
-          width: '55%', height: '65%',
+          position: 'absolute', top: '-10%', right: '-12%',
+          width: '65%', height: '75%',
           borderRadius: '50%',
-          background: 'rgba(79,70,229,0.45)',
-          filter: 'blur(80px)',
+          background: 'rgba(79,70,229,0.65)',
+          filter: 'blur(65px)',
           animation: 'plasmaB 13s ease-in-out infinite',
           willChange: 'transform',
         }} />
-        {/* Blob bas-centre — couvre le bas */}
+        {/* Blob bas-centre — violet profond */}
         <div style={{
-          position: 'absolute', bottom: '5%', left: '20%',
-          width: '60%', height: '55%',
+          position: 'absolute', bottom: '0%', left: '10%',
+          width: '80%', height: '65%',
           borderRadius: '50%',
-          background: 'rgba(91,33,182,0.40)',
-          filter: 'blur(100px)',
+          background: 'rgba(91,33,182,0.60)',
+          filter: 'blur(80px)',
           animation: 'plasmaC 8s ease-in-out infinite',
           willChange: 'transform',
         }} />
-        {/* Accent centre — intensifie le cœur */}
+        {/* Accent centre — lumière cœur */}
         <div style={{
-          position: 'absolute', top: '25%', left: '30%',
-          width: '40%', height: '40%',
+          position: 'absolute', top: '20%', left: '25%',
+          width: '50%', height: '55%',
           borderRadius: '50%',
-          background: 'rgba(139,92,246,0.30)',
+          background: 'rgba(139,92,246,0.50)',
+          filter: 'blur(55px)',
+        }} />
+        {/* Accent bleu — touche froide */}
+        <div style={{
+          position: 'absolute', top: '30%', right: '10%',
+          width: '35%', height: '40%',
+          borderRadius: '50%',
+          background: 'rgba(56,100,240,0.35)',
           filter: 'blur(60px)',
         }} />
       </div>
