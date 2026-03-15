@@ -163,15 +163,22 @@ export function HeroSection() {
           background: 'rgba(139,92,246,0.50)',
           filter: 'blur(55px)',
         }} />
-        {/* Accent bleu — touche froide */}
+        {/* Accent violet chaud — bas de section */}
         <div style={{
-          position: 'absolute', top: '30%', right: '10%',
-          width: '35%', height: '40%',
+          position: 'absolute', bottom: '-10%', left: '15%',
+          width: '70%', height: '50%',
           borderRadius: '50%',
-          background: 'rgba(56,100,240,0.35)',
-          filter: 'blur(60px)',
+          background: 'rgba(124,58,237,0.55)',
+          filter: 'blur(70px)',
         }} />
       </div>
+
+      {/* ── Fondu bas — raccord avec la section suivante ── */}
+      <div aria-hidden="true" style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: '120px', zIndex: 3, pointerEvents: 'none',
+        background: 'linear-gradient(to bottom, transparent 0%, rgba(88,28,235,0.45) 60%, rgba(60,20,180,0.6) 100%)',
+      }} />
 
       {/* ── Orbites ── */}
       <OrbitingHearts />

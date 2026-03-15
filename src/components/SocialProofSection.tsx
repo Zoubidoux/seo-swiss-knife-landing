@@ -50,8 +50,19 @@ export function SocialProofSection() {
       <video ref={videoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0 }}>
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
-      <div className="relative z-10 flex flex-col items-center pt-6 pb-8 px-4 gap-6">
+      {/* Top: fondu violet qui se raccorde au hero */}
+      <div className="absolute inset-x-0 top-0 pointer-events-none" style={{
+        height: '55%',
+        background: 'linear-gradient(to bottom, rgba(60,20,180,0.7) 0%, rgba(88,28,235,0.3) 40%, transparent 100%)',
+        zIndex: 1,
+      }} />
+      {/* Bottom: fondu vers fond sombre */}
+      <div className="absolute inset-x-0 bottom-0 pointer-events-none" style={{
+        height: '40%',
+        background: 'linear-gradient(to top, hsl(var(--background)) 0%, transparent 100%)',
+        zIndex: 1,
+      }} />
+      <div className="relative flex flex-col items-center pt-6 pb-8 px-4 gap-6" style={{ zIndex: 2 }}>
         <div className="max-w-5xl w-full flex items-center gap-10 overflow-hidden">
           <p className="text-foreground/50 text-sm whitespace-nowrap shrink-0 leading-relaxed">{t.label.split('\n').map((l, i) => <span key={i}>{l}{i === 0 && <br />}</span>)}</p>
           <div className="flex-1 overflow-hidden">
