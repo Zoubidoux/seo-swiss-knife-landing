@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -7,9 +8,23 @@ import { PixelHeart } from '@/components/PixelHeart'
 export function Navbar() {
   const { lang, setLang } = useLanguage()
   const t = translations[lang].nav
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <div className="w-full sticky top-0 z-50" style={{ background: 'rgba(4,2,18,0.85)', backdropFilter: 'blur(12px)' }}>
+    <div
+      className="w-full sticky top-0 z-50 transition-all duration-500"
+      style={{
+        background: scrolled ? 'rgba(20,8,60,0.55)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(8px) saturate(1.1)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(8px) saturate(1.1)' : 'none',
+      }}
+    >
       <nav className="flex items-center justify-between py-4 px-8 max-w-7xl mx-auto">
         {/* Left — Logo / Brand */}
         <a href="#" className="flex items-center gap-2.5 no-underline group">
@@ -37,7 +52,6 @@ export function Navbar() {
 
         {/* Right — Lang toggle + Install CTA */}
         <div className="flex items-center gap-3">
-          {/* FR / EN toggle */}
           <button
             onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
             className="text-sm font-semibold px-3 py-1.5 rounded-full transition-colors"
@@ -56,8 +70,14 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Gradient divider */}
-      <div className="w-full h-px bg-gradient-to-r from-transparent via-foreground/15 to-transparent" />
+      {/* Divider — only visible when scrolled */}
+      <div
+        className="w-full h-px transition-opacity duration-500"
+        style={{
+          background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.25), transparent)',
+          opacity: scrolled ? 1 : 0,
+        }}
+      />
     </div>
   )
 }
