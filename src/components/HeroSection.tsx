@@ -81,48 +81,44 @@ export function HeroSection() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      style={{ height: '100dvh', minHeight: '600px', display: 'flex', flexDirection: 'column' }}
     >
       {/* ── Plasma Background ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Main purple core */}
         <div style={{
-          position: 'absolute', top: '-10%', left: '50%', transform: 'translateX(-50%)',
-          width: '900px', height: '480px',
-          background: 'radial-gradient(ellipse, rgba(124,58,237,0.28) 0%, transparent 68%)',
+          position: 'absolute', top: '-15%', left: '50%', transform: 'translateX(-50%)',
+          width: '900px', height: '500px',
+          background: 'radial-gradient(ellipse, rgba(124,58,237,0.30) 0%, transparent 65%)',
         }} />
-        {/* Blob 1 — purple */}
         <div style={{
-          position: 'absolute', top: '2%', left: '20%',
-          width: '420px', height: '420px',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.16) 0%, transparent 70%)',
+          position: 'absolute', top: '0%', left: '18%',
+          width: '400px', height: '400px',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.17) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat1 9s ease-in-out infinite',
         }} />
-        {/* Blob 2 — cyan */}
         <div style={{
-          position: 'absolute', top: '-5%', right: '15%',
-          width: '340px', height: '340px',
+          position: 'absolute', top: '-8%', right: '12%',
+          width: '320px', height: '320px',
           background: 'radial-gradient(circle, rgba(57,211,255,0.13) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat2 11s ease-in-out infinite',
         }} />
-        {/* Blob 3 — teal accent */}
         <div style={{
-          position: 'absolute', top: '8%', left: '55%',
-          width: '220px', height: '220px',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 70%)',
+          position: 'absolute', top: '6%', left: '54%',
+          width: '200px', height: '200px',
+          background: 'radial-gradient(circle, rgba(45,212,191,0.1) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat3 7s ease-in-out infinite',
         }} />
       </div>
 
-      {/* ── Hero content (above fold) ── */}
-      <div className="relative flex flex-col items-center justify-center flex-1 px-6 pt-24 pb-8 text-center">
+      {/* ── Hero content — centré dans le viewport ── */}
+      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4">
 
-        {/* Eyebrow badge */}
+        {/* Eyebrow */}
         <div
-          className="mb-6 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase"
+          className="px-4 py-1 rounded-full text-[11px] font-semibold tracking-widest uppercase"
           style={{
             background: 'rgba(167,139,250,0.1)',
             border: '1px solid rgba(167,139,250,0.25)',
@@ -132,18 +128,12 @@ export function HeroSection() {
           {t.eyebrow}
         </div>
 
-        {/* H1 — name + icon */}
+        {/* H1 */}
         <h1
-          className="flex items-center justify-center gap-4 font-bold tracking-tight mb-5"
-          style={{
-            fontSize: 'clamp(44px, 9vw, 90px)',
-            lineHeight: 1,
-          }}
+          className="flex items-center justify-center gap-3 font-bold tracking-tight"
+          style={{ fontSize: 'clamp(40px, 8vw, 82px)', lineHeight: 1 }}
         >
-          <PixelHeart
-            size={clamp(44, 56)}
-            style={{ filter: 'drop-shadow(0 0 30px rgba(167,139,250,0.8))' }}
-          />
+          <PixelHeart size={50} style={{ filter: 'drop-shadow(0 0 28px rgba(167,139,250,0.85))' }} />
           <span
             className="bg-clip-text text-transparent"
             style={{ backgroundImage: 'linear-gradient(175deg, #f0f0f2 20%, #a78bfa 100%)' }}
@@ -153,16 +143,16 @@ export function HeroSection() {
         </h1>
 
         {/* Stat pills */}
-        <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
+        <div className="flex flex-wrap justify-center items-center gap-2">
           <span
-            className="px-4 py-1.5 rounded-full text-xl font-black"
+            className="px-3 py-1 rounded-full text-base font-black"
             style={{ background: 'rgba(167,139,250,0.12)', border: '1px solid rgba(167,139,250,0.25)', color: '#c4b5fd' }}
           >
             +20 {lang === 'fr' ? 'apps en 1' : 'apps in one'}
           </span>
           <span className="text-white/20">·</span>
           <span
-            className="px-4 py-1.5 rounded-full text-xl font-black"
+            className="px-3 py-1 rounded-full text-base font-black"
             style={{ background: 'rgba(57,211,255,0.09)', border: '1px solid rgba(57,211,255,0.2)', color: '#67e8f9' }}
           >
             +60 {lang === 'fr' ? 'fonctionnalités' : 'features'}
@@ -173,34 +163,29 @@ export function HeroSection() {
           </span>
         </div>
 
-        {/* Sub — problem/solution, keyword-rich */}
+        {/* Sub */}
         <p
-          className="text-center max-w-lg mb-4 leading-7"
-          style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)' }}
+          className="text-center max-w-md leading-6"
+          style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)' }}
         >
           {t.sub}
         </p>
 
-        {/* Toolbar demo */}
-        <div className="mb-8">
-          <ToolbarBadge />
-        </div>
+        {/* Toolbar badge */}
+        <ToolbarBadge />
 
         {/* CTA */}
-        <div className="flex flex-col items-center gap-2">
-          <Button variant="hero" className="px-9 py-4 text-base rounded-full">
+        <div className="flex flex-col items-center gap-1.5">
+          <Button variant="hero" className="px-9 py-3 text-base rounded-full">
             {t.cta}
           </Button>
-          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{t.ctaSub}</span>
+          <span className="text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{t.ctaSub}</span>
         </div>
       </div>
 
-      {/* ── Arrow at fold line ── */}
-      <div
-        className="relative flex justify-center pb-8"
-        style={{ color: 'rgba(255,255,255,0.18)' }}
-      >
-        <div className="animate-bounce text-2xl">↓</div>
+      {/* ── Flèche juste sous la ligne de flottaison ── */}
+      <div className="relative flex justify-center pb-5" style={{ color: 'rgba(255,255,255,0.18)' }}>
+        <div className="animate-bounce text-xl">↓</div>
       </div>
     </section>
   )
