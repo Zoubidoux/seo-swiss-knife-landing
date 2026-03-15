@@ -86,26 +86,26 @@ export function HeroSection() {
       {/* ── Plasma Background ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div style={{
-          position: 'absolute', top: '-15%', left: '50%', transform: 'translateX(-50%)',
-          width: '900px', height: '500px',
+          position: 'absolute', top: '0%', left: '50%', transform: 'translateX(-50%)',
+          width: '900px', height: '520px',
           background: 'radial-gradient(ellipse, rgba(124,58,237,0.30) 0%, transparent 65%)',
         }} />
         <div style={{
-          position: 'absolute', top: '0%', left: '18%',
+          position: 'absolute', top: '5%', left: '18%',
           width: '400px', height: '400px',
           background: 'radial-gradient(circle, rgba(167,139,250,0.17) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat1 9s ease-in-out infinite',
         }} />
         <div style={{
-          position: 'absolute', top: '-8%', right: '12%',
+          position: 'absolute', top: '2%', right: '12%',
           width: '320px', height: '320px',
           background: 'radial-gradient(circle, rgba(57,211,255,0.13) 0%, transparent 70%)',
           borderRadius: '50%',
           animation: 'plasmaFloat2 11s ease-in-out infinite',
         }} />
         <div style={{
-          position: 'absolute', top: '6%', left: '54%',
+          position: 'absolute', top: '12%', left: '54%',
           width: '200px', height: '200px',
           background: 'radial-gradient(circle, rgba(45,212,191,0.1) 0%, transparent 70%)',
           borderRadius: '50%',
@@ -113,8 +113,8 @@ export function HeroSection() {
         }} />
       </div>
 
-      {/* ── Hero content — centré dans le viewport ── */}
-      <div className="relative flex flex-col items-center justify-center flex-1 px-6 text-center gap-4">
+      {/* ── Hero content — dans le plasma, pas en dessous ── */}
+      <div className="relative flex flex-col items-center justify-start px-6 text-center gap-4 pt-16">
 
         {/* Eyebrow */}
         <div
