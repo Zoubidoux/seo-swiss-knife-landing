@@ -4,16 +4,25 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { PixelHeart } from '@/components/PixelHeart'
 
-// Orbites — uniquement violet/lavande pour rester dans la DA de marque
-// r=rayon, size, speed(s), start(deg), opacity
+// hue-rotate pour teinter le cœur violet en d'autres couleurs de marque
+const TINTS: Record<string, string> = {
+  purple: '',
+  red:    'hue-rotate(220deg) saturate(1.4)',
+  green:  'hue-rotate(145deg) saturate(1.3)',
+  yellow: 'hue-rotate(58deg)  saturate(1.5) brightness(1.1)',
+}
+
+// Orbites — variété de couleurs, tailles généreuses
 const ORBITS = [
-  { r: 110, size: 10, speed: 13, start:  20, opacity: 0.45 },
-  { r: 165, size: 15, speed: 21, start: 110, opacity: 0.35 },
-  { r: 230, size: 12, speed: 31, start: 195, opacity: 0.28 },
-  { r: 145, size:  8, speed: 16, start: 285, opacity: 0.40 },
-  { r: 285, size: 13, speed: 42, start:  65, opacity: 0.22 },
-  { r: 195, size: 18, speed: 25, start: 340, opacity: 0.32 },
-  { r: 315, size:  9, speed: 50, start: 150, opacity: 0.18 },
+  { r: 115, size: 14, speed: 13, start:  20, opacity: 0.55, tint: 'purple' },
+  { r: 170, size: 20, speed: 21, start: 110, opacity: 0.50, tint: 'yellow' },
+  { r: 240, size: 16, speed: 31, start: 195, opacity: 0.45, tint: 'green'  },
+  { r: 150, size: 12, speed: 16, start: 285, opacity: 0.52, tint: 'red'    },
+  { r: 290, size: 18, speed: 42, start:  65, opacity: 0.38, tint: 'purple' },
+  { r: 200, size: 24, speed: 25, start: 340, opacity: 0.48, tint: 'yellow' },
+  { r: 320, size: 13, speed: 50, start: 150, opacity: 0.30, tint: 'green'  },
+  { r: 180, size: 16, speed: 19, start: 240, opacity: 0.42, tint: 'red'    },
+  { r: 260, size: 10, speed: 37, start:  80, opacity: 0.35, tint: 'purple' },
 ]
 
 const HERO_STYLE = `
@@ -79,6 +88,7 @@ function OrbitingHearts() {
           width: o.size, height: o.size,
           marginLeft: -o.size / 2, marginTop: -o.size / 2,
           opacity: o.opacity,
+          filter: TINTS[o.tint] || undefined,
           ['--or' as string]: `${o.r}px`,
           ['--os' as string]: `${o.start}deg`,
           animation: `orbitHeart ${o.speed}s linear infinite`,
@@ -109,35 +119,29 @@ export function HeroSection() {
     <section className="relative overflow-hidden"
       style={{ height: '100dvh', minHeight: '580px', display: 'flex', flexDirection: 'column' }}>
 
-      {/* ── Plasma — couvre toute la section ── */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-        {/* Cœur central — large ellipse sur toute la hauteur */}
+      {/* ── Plasma pleine section ── */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 85% 70% at 50% 42%, rgba(109,40,217,0.32) 0%, rgba(79,29,173,0.14) 45%, transparent 72%)' }}>
+        {/* Blob gauche — très large */}
         <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '110vw', height: '100%',
-          background: 'radial-gradient(ellipse 70% 55% at 50% 35%, rgba(109,40,217,0.26) 0%, rgba(124,58,237,0.12) 50%, transparent 75%)',
-        }} />
-        {/* Blob violet gauche */}
-        <div style={{
-          position: 'absolute', top: '-5%', left: '8%',
-          width: 'clamp(300px, 45vw, 560px)', height: 'clamp(300px, 45vw, 560px)',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.20) 0%, transparent 68%)',
+          position: 'absolute', top: '-15%', left: '-5%',
+          width: '75vw', height: '75vw', maxWidth: 800, maxHeight: 800,
+          background: 'radial-gradient(circle, rgba(139,92,246,0.22) 0%, transparent 65%)',
           borderRadius: '50%', animation: 'plasmaA 10s ease-in-out infinite',
         }} />
-        {/* Blob violet droite */}
+        {/* Blob droite — très large */}
         <div style={{
-          position: 'absolute', top: '-10%', right: '5%',
-          width: 'clamp(250px, 38vw, 460px)', height: 'clamp(250px, 38vw, 460px)',
-          background: 'radial-gradient(circle, rgba(99,102,241,0.16) 0%, transparent 68%)',
+          position: 'absolute', top: '-20%', right: '-8%',
+          width: '70vw', height: '70vw', maxWidth: 750, maxHeight: 750,
+          background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 65%)',
           borderRadius: '50%', animation: 'plasmaB 13s ease-in-out infinite',
         }} />
-        {/* Accent bas — pour couvrir le bas de la section */}
+        {/* Blob bas-centre */}
         <div style={{
-          position: 'absolute', bottom: '5%', left: '50%',
+          position: 'absolute', bottom: '-10%', left: '50%',
           transform: 'translateX(-50%)',
-          width: 'clamp(300px, 50vw, 600px)', height: 'clamp(200px, 30vw, 380px)',
-          background: 'radial-gradient(ellipse, rgba(109,40,217,0.10) 0%, transparent 70%)',
+          width: '80vw', height: '50vw', maxWidth: 900, maxHeight: 500,
+          background: 'radial-gradient(ellipse, rgba(109,40,217,0.15) 0%, transparent 68%)',
           borderRadius: '50%', animation: 'plasmaC 8s ease-in-out infinite',
         }} />
       </div>

@@ -1,10 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 
-
 const ALL_FEATURES = [
-  // ─── Semantic ───────────────────────────────────────────────
   { cat: 'Semantic', icon: '◉',  title: 'Page Overview', desc: 'Title, meta description, canonical URL, robots, viewport, charset — scored and flagged in real-time.' },
   { cat: 'Semantic', icon: '📏', title: 'Title & Description Length', desc: 'Character count badges with good/warn/bad thresholds (SEO-optimal ranges).' },
   { cat: 'Semantic', icon: '🔗', title: 'Canonical URL Checker', desc: 'Detect self-referencing canonicals, cross-domain canonicals, and missing canonical tags.' },
@@ -20,7 +18,6 @@ const ALL_FEATURES = [
   { cat: 'Semantic', icon: '🔄', title: 'Hreflang Return Link Checker', desc: 'Verify that each alternate URL links back correctly (reciprocal hreflang).' },
   { cat: 'Semantic', icon: '🌍', title: 'Hreflang Language Validator', desc: 'Detect malformed language codes (en-gb vs en-GB, fr-fr vs fr-FR) and missing x-default.' },
   { cat: 'Semantic', icon: '⬸',  title: 'URL Variants Checker', desc: 'www/non-www, HTTP/HTTPS, trailing slash, and case variants — consolidated into canonical.' },
-  // ─── Technical ──────────────────────────────────────────────
   { cat: 'Technical', icon: '⊖', title: 'Robots.txt Viewer', desc: 'Fetch and display the robots.txt with rule highlighting and crawl directive analysis.' },
   { cat: 'Technical', icon: '📡', title: 'X-Robots-Tag Header', desc: 'Inspect the X-Robots-Tag HTTP response header — often overrides meta robots.' },
   { cat: 'Technical', icon: '🔒', title: 'HTTPS Detection', desc: 'Confirm HTTPS protocol, detect mixed content warnings, and HTTP→HTTPS redirect presence.' },
@@ -37,7 +34,6 @@ const ALL_FEATURES = [
   { cat: 'Technical', icon: '⟨⟩', title: 'JS Render Comparison', desc: 'Before/after JavaScript execution diff to spot crawler-invisible content.' },
   { cat: 'Technical', icon: '📸', title: 'Viewport Screenshot', desc: 'Capture a pixel-perfect screenshot of the visible viewport in one click.' },
   { cat: 'Technical', icon: '📜', title: 'Full Page Screenshot', desc: 'Scroll-capture the entire page as a single PNG image — including content below the fold.' },
-  // ─── Netlinking ─────────────────────────────────────────────
   { cat: 'Netlinking', icon: '🔗', title: 'Full Link Listing', desc: 'Every internal and external link: URL, anchor text, status code.' },
   { cat: 'Netlinking', icon: '⛔', title: 'Nofollow Link Detection', desc: 'Highlight all rel="nofollow" links at a glance.' },
   { cat: 'Netlinking', icon: '💰', title: 'Sponsored & UGC Tags', desc: 'Detect rel="sponsored" and rel="ugc" link attributes.' },
@@ -45,7 +41,6 @@ const ALL_FEATURES = [
   { cat: 'Netlinking', icon: '📥', title: 'Link CSV Export', desc: 'Export the full link list with all attributes as a CSV file.' },
   { cat: 'Netlinking', icon: '🖱',  title: 'Link Grabber', desc: 'Ctrl/Cmd+drag to collect links from the page into a clipboard list.' },
   { cat: 'Netlinking', icon: '▣',  title: 'Text Grabber', desc: 'Select any text on page to copy or Google-search it instantly.' },
-  // ─── Toolbox ────────────────────────────────────────────────
   { cat: 'Toolbox', icon: '🌐', title: 'SERP VPN Geo-Simulation', desc: 'Simulate Google searches from 50+ countries without routing real traffic through a VPN.' },
   { cat: 'Toolbox', icon: '📱', title: 'Device Simulation', desc: 'Preview SERP and page from any device: Googlebot Mobile, iPhone, Android.' },
   { cat: 'Toolbox', icon: '⌘',  title: 'Google Dork Operators', desc: 'Pre-built site:, inurl:, intitle:, cache:, related: operators for instant power-user searches.' },
@@ -61,7 +56,6 @@ const ALL_FEATURES = [
   { cat: 'Toolbox', icon: '📋', title: 'Weighted SEO Report', desc: 'Scored audit across 8 categories (Indexability, On-Page, Technical, Schema, Social, Speed, Links, Images).' },
   { cat: 'Toolbox', icon: '📄', title: 'PDF Report Export', desc: 'Export the full SEO audit as a professional PDF — client-ready in 10 seconds.' },
   { cat: 'Toolbox', icon: '🔗', title: 'Shareable Report URL', desc: 'Open the report in a standalone tab to share with clients or teammates.' },
-  // ─── Toolbar ────────────────────────────────────────────────
   { cat: 'Toolbar', icon: '🔴', title: 'JavaScript Toggle', desc: 'Disable JS with one click to see your page as crawlers see it during indexing.' },
   { cat: 'Toolbar', icon: '📱', title: 'Mobile Device Preview', desc: 'View any page in an accurate phone/tablet frame without a real device.' },
   { cat: 'Toolbar', icon: '🎨', title: 'Color Picker', desc: 'Pick any color from the page. Returns HEX, RGB, and HSL values instantly.' },
@@ -73,120 +67,178 @@ const ALL_FEATURES = [
   { cat: 'Toolbar', icon: '🔪', title: 'Context Menu Integration', desc: '30+ SEO actions available from the browser right-click menu — fully configurable.' },
 ]
 
-const CAT_COLORS: Record<string, string> = {
-  Semantic:   '#a78bfa',
-  Technique:  '#39d3ff',
-  Technical:  '#39d3ff',
-  Netlinking: '#2dd4bf',
-  Toolbox:    '#facc15',
-  Outils:     '#facc15',
-  Toolbar:    '#f97316',
-}
+const CATS = [
+  { key: 'All',        label: 'All',        labelFr: 'Tout',       color: '#a78bfa', bg: 'rgba(139,92,246,0.12)', border: 'rgba(139,92,246,0.25)' },
+  { key: 'Semantic',   label: 'Semantic',   labelFr: 'Sémantique', color: '#a78bfa', bg: 'rgba(139,92,246,0.08)', border: 'rgba(139,92,246,0.18)' },
+  { key: 'Technical',  label: 'Technical',  labelFr: 'Technique',  color: '#38bdf8', bg: 'rgba(56,189,248,0.08)', border: 'rgba(56,189,248,0.18)' },
+  { key: 'Netlinking', label: 'Netlinking', labelFr: 'Netlinking', color: '#34d399', bg: 'rgba(52,211,153,0.08)', border: 'rgba(52,211,153,0.18)' },
+  { key: 'Toolbox',    label: 'Toolbox',    labelFr: 'Outils',     color: '#fbbf24', bg: 'rgba(251,191,36,0.08)', border: 'rgba(251,191,36,0.18)'  },
+  { key: 'Toolbar',    label: 'Toolbar',    labelFr: 'Toolbar',    color: '#f97316', bg: 'rgba(249,115,22,0.08)', border: 'rgba(249,115,22,0.18)'  },
+]
 
 export function AllFeaturesSection() {
   const { lang } = useLanguage()
   const t = translations[lang].allFeatures
   const [search, setSearch] = useState('')
-  const [activeFilter, setActiveFilter] = useState<string>('All')
+  const [active, setActive] = useState('All')
+  const searchRef = useRef<HTMLDivElement>(null)
+  const [sticky, setSticky] = useState(false)
 
-  const categories = lang === 'fr'
-    ? [t.all, 'Sémantique', 'Technique', 'Netlinking', 'Outils', 'Toolbar']
-    : [t.all, 'Semantic', 'Technical', 'Netlinking', 'Toolbox', 'Toolbar']
+  useEffect(() => {
+    const el = searchRef.current
+    if (!el) return
+    const obs = new IntersectionObserver(([e]) => setSticky(!e.isIntersecting), { threshold: 1, rootMargin: '-80px 0px 0px 0px' })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
+  const activeCat = CATS.find(c => c.key === active) ?? CATS[0]
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase()
-    return ALL_FEATURES.filter((f) => {
-      const matchSearch = !q || f.title.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q) || f.cat.toLowerCase().includes(q)
-      const matchFilter = activeFilter === t.all || f.cat === activeFilter
-        || (activeFilter === 'Sémantique' && f.cat === 'Semantic')
-        || (activeFilter === 'Technique'  && f.cat === 'Technical')
-        || (activeFilter === 'Outils'     && f.cat === 'Toolbox')
-      return matchSearch && matchFilter
+    return ALL_FEATURES.filter(f => {
+      const matchCat = active === 'All' || f.cat === active
+      const matchQ = !q || f.title.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q)
+      return matchCat && matchQ
     })
-  }, [search, activeFilter, t.all])
+  }, [search, active])
+
+  // Group by category when showing All
+  const grouped = useMemo(() => {
+    if (active !== 'All' || search) return null
+    const map: Record<string, typeof ALL_FEATURES> = {}
+    ALL_FEATURES.forEach(f => { if (!map[f.cat]) map[f.cat] = []; map[f.cat].push(f) })
+    return map
+  }, [active, search])
 
   return (
-    <section className="bg-background py-28 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative bg-background py-20 sm:py-28 px-4 sm:px-6">
+      {/* Subtle bg glow */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(109,40,217,0.07) 0%, transparent 70%)' }} />
+
+      <div className="max-w-6xl mx-auto relative">
         {/* Header */}
-        <p className="text-center text-sm font-semibold tracking-widest uppercase text-muted-foreground mb-5">
-          {t.eyebrow}
-        </p>
-        <h2
-          className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-3 tracking-tight"
-          style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #a78bfa 100%)' }}
-        >
+        <p className="text-center text-xs font-bold tracking-widest uppercase mb-4"
+          style={{ color: '#a78bfa' }}>{t.eyebrow}</p>
+        <h2 className="text-center font-bold bg-clip-text text-transparent mb-3 tracking-tight"
+          style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', backgroundImage: 'linear-gradient(135deg, #f0f0f2 0%, #a78bfa 100%)' }}>
           {t.headline}
         </h2>
-        <p className="text-center text-muted-foreground text-lg mb-10 max-w-lg mx-auto">{t.sub}</p>
-
-        {/* Search */}
-        <div className="relative mb-6 max-w-xl mx-auto">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">🔍</span>
-          <input
-            type="text"
-            placeholder={t.placeholder}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-foreground placeholder-muted-foreground outline-none focus:ring-2"
-            style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-            }}
-          />
-        </div>
-
-        {/* Category filters */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {categories.map((cat) => {
-            const isActive = cat === activeFilter
-            const color = cat === t.all ? '#a78bfa' : CAT_COLORS[cat] ?? '#a78bfa'
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveFilter(cat)}
-                className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
-                style={{
-                  background: isActive ? `${color}20` : 'rgba(255,255,255,0.04)',
-                  color: isActive ? color : 'rgba(255,255,255,0.5)',
-                  border: `1px solid ${isActive ? `${color}50` : 'rgba(255,255,255,0.08)'}`,
-                }}
-              >
-                {cat}
-              </button>
-            )
-          })}
-        </div>
-
-        {/* Count */}
-        <p className="text-center text-muted-foreground text-xs mb-8 tracking-wide">
-          {filtered.length} {lang === 'fr' ? 'fonctionnalités' : 'features'}
+        <p className="text-center text-base mb-10 max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          {t.sub}
         </p>
 
-        {/* Feature grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {filtered.map((f) => {
-            const color = CAT_COLORS[f.cat] ?? '#a78bfa'
-            return (
-              <div
-                key={f.title}
-                className="liquid-glass rounded-xl p-4 flex gap-3 hover:bg-white/[0.03] transition-colors cursor-default"
-              >
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5"
-                  style={{ background: `${color}18`, color }}
-                >
-                  {f.icon}
-                </div>
-                <div>
-                  <h4 className="text-foreground font-semibold text-sm leading-tight">{f.title}</h4>
-                  <p className="text-muted-foreground text-xs mt-1 leading-relaxed">{f.desc}</p>
-                </div>
-              </div>
-            )
-          })}
+        {/* Search + filters — anchor for sticky detection */}
+        <div ref={searchRef} />
+        <div className={`sticky top-[72px] z-20 pb-4 transition-all ${sticky ? 'pt-3' : ''}`}
+          style={{ background: sticky ? 'rgba(8,4,24,0.92)' : 'transparent', backdropFilter: sticky ? 'blur(16px)' : 'none', borderBottom: sticky ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+
+          {/* Search */}
+          <div className="relative mb-4 max-w-lg mx-auto">
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>🔍</span>
+            <input type="text" placeholder={t.placeholder} value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none focus:ring-1"
+              style={{
+                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
+                color: '#f0f0f2', '--tw-ring-color': '#a78bfa',
+              } as React.CSSProperties} />
+          </div>
+
+          {/* Category tabs */}
+          <div className="flex flex-wrap justify-center gap-2">
+            {CATS.map(c => {
+              const isA = c.key === active
+              const label = lang === 'fr' ? c.labelFr : c.label
+              const count = c.key === 'All' ? ALL_FEATURES.length : ALL_FEATURES.filter(f => f.cat === c.key).length
+              return (
+                <button key={c.key} onClick={() => setActive(c.key)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+                  style={{
+                    background: isA ? c.bg : 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${isA ? c.border : 'rgba(255,255,255,0.07)'}`,
+                    color: isA ? c.color : 'rgba(255,255,255,0.40)',
+                    transform: isA ? 'scale(1.05)' : 'scale(1)',
+                  }}>
+                  {label}
+                  <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold"
+                    style={{ background: isA ? `${c.color}25` : 'rgba(255,255,255,0.06)', color: isA ? c.color : 'rgba(255,255,255,0.3)' }}>
+                    {count}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
+
+        {/* Result count */}
+        <p className="text-center text-xs mt-5 mb-8" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          {filtered.length} {lang === 'fr' ? 'fonctionnalités' : 'features'}
+          {search && <span> — "{search}"</span>}
+        </p>
+
+        {/* GROUPED view (All + no search) */}
+        {grouped ? (
+          <div className="space-y-12">
+            {CATS.slice(1).map(cat => {
+              const items = grouped[cat.key] ?? []
+              return (
+                <div key={cat.key}>
+                  {/* Category header */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cat.color}40, transparent)` }} />
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"
+                      style={{ background: cat.bg, border: `1px solid ${cat.border}`, color: cat.color }}>
+                      {lang === 'fr' ? cat.labelFr : cat.label}
+                      <span className="opacity-60">{items.length}</span>
+                    </div>
+                    <div className="h-px flex-1" style={{ background: `linear-gradient(270deg, ${cat.color}40, transparent)` }} />
+                  </div>
+                  {/* Grid */}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    {items.map(f => (
+                      <FeatureCard key={f.title} f={f} color={cat.color} bg={cat.bg} border={cat.border} />
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          /* FLAT view (filtered / search) */
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {filtered.map(f => {
+              const cat = CATS.find(c => c.key === f.cat) ?? CATS[1]
+              return <FeatureCard key={f.title} f={f} color={cat.color} bg={cat.bg} border={cat.border} />
+            })}
+          </div>
+        )}
       </div>
     </section>
+  )
+}
+
+function FeatureCard({ f, color, bg, border }: {
+  f: { icon: string; title: string; desc: string }
+  color: string; bg: string; border: string
+}) {
+  return (
+    <div className="group rounded-xl p-3.5 flex gap-3 transition-all cursor-default"
+      style={{
+        background: 'rgba(255,255,255,0.025)',
+        border: `1px solid rgba(255,255,255,0.06)`,
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = bg; (e.currentTarget as HTMLDivElement).style.borderColor = border }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.025)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.06)' }}>
+      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5 transition-all"
+        style={{ background: bg, color, border: `1px solid ${border}` }}>
+        {f.icon}
+      </div>
+      <div>
+        <h4 className="font-semibold text-sm leading-tight mb-1" style={{ color: '#f0f0f2' }}>{f.title}</h4>
+        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
+      </div>
+    </div>
   )
 }

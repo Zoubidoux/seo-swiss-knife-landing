@@ -1,44 +1,49 @@
-/**
- * FloatingHearts — cœurs pixel de marque qui dérivent lentement.
- * Monochrome violet uniquement, très subtils. DA cohérente, non arcade.
- */
-
 const FLOAT_STYLE = `
 @keyframes fhDrift1 {
-  0%   { transform: translateY(0px)   rotate(0deg);  opacity: var(--fh-op); }
-  50%  { transform: translateY(-45px) rotate(6deg);  opacity: calc(var(--fh-op) * 0.6); }
-  100% { transform: translateY(-90px) rotate(-2deg); opacity: 0; }
+  0%   { transform: translateY(0px) rotate(0deg);   opacity: var(--op); }
+  50%  { transform: translateY(-55px) rotate(7deg);  opacity: calc(var(--op) * 0.55); }
+  100% { transform: translateY(-110px) rotate(-3deg); opacity: 0; }
 }
 @keyframes fhDrift2 {
-  0%   { transform: translateY(0px)   rotate(0deg);  opacity: var(--fh-op); }
-  50%  { transform: translateY(-50px) rotate(-8deg); opacity: calc(var(--fh-op) * 0.5); }
-  100% { transform: translateY(-95px) rotate(4deg);  opacity: 0; }
+  0%   { transform: translateY(0px) rotate(0deg);   opacity: var(--op); }
+  50%  { transform: translateY(-60px) rotate(-9deg); opacity: calc(var(--op) * 0.5); }
+  100% { transform: translateY(-115px) rotate(5deg);  opacity: 0; }
 }
 @keyframes fhDrift3 {
-  0%   { transform: translateY(0px)   rotate(0deg);  opacity: var(--fh-op); }
-  40%  { transform: translateY(-35px) rotate(5deg);  opacity: calc(var(--fh-op) * 0.7); }
-  100% { transform: translateY(-80px) rotate(-5deg); opacity: 0; }
+  0%   { transform: translateY(0px) rotate(0deg);   opacity: var(--op); }
+  40%  { transform: translateY(-42px) rotate(5deg);  opacity: calc(var(--op) * 0.65); }
+  100% { transform: translateY(-100px) rotate(-6deg); opacity: 0; }
 }
 `
 
-// [left%, top%, size(px), duration(s), delay(s), anim, opacity]
-const HEARTS: [string, string, number, number, number, string, number][] = [
-  ['3%',  '15%',  8,  16, -2,  'fhDrift1', 0.14],
-  ['6%',  '42%',  6,  22, -8,  'fhDrift2', 0.11],
-  ['4%',  '68%',  9,  18, -5,  'fhDrift3', 0.13],
-  ['9%',  '83%',  7,  25, -12, 'fhDrift1', 0.10],
-  ['93%', '22%',  7,  20, -3,  'fhDrift2', 0.12],
-  ['96%', '50%', 10,  15, -9,  'fhDrift3', 0.14],
-  ['91%', '74%',  6,  23, -6,  'fhDrift1', 0.10],
-  ['95%', '90%',  8,  19, -14, 'fhDrift2', 0.11],
-  ['22%', '30%',  5,  21, -7,  'fhDrift3', 0.09],
-  ['75%', '38%',  7,  17, -4,  'fhDrift1', 0.10],
-  ['47%', '60%',  6,  26, -11, 'fhDrift2', 0.08],
-  ['62%', '78%',  8,  14, -2,  'fhDrift3', 0.12],
-  ['33%', '88%',  6,  20, -9,  'fhDrift1', 0.09],
-  ['82%', '92%',  9,  18, -5,  'fhDrift2', 0.11],
-  ['15%', '55%',  5,  24, -13, 'fhDrift3', 0.08],
-  ['58%', '18%',  7,  16, -7,  'fhDrift1', 0.10],
+// hue-rotate pour teinter le pixel heart violet
+const TINT: Record<string, string> = {
+  purple: '',
+  red:    'hue-rotate(220deg) saturate(1.4)',
+  green:  'hue-rotate(145deg) saturate(1.3)',
+  yellow: 'hue-rotate(58deg)  saturate(1.5) brightness(1.1)',
+}
+
+// [left%, top%, size(px), dur(s), delay(s), anim, opacity, color]
+const HEARTS: [string, string, number, number, number, string, number, string][] = [
+  ['3%',  '10%', 12, 16, -2,  'fhDrift1', 0.28, 'purple'],
+  ['7%',  '35%', 10, 22, -8,  'fhDrift2', 0.22, 'red'   ],
+  ['4%',  '62%', 14, 18, -5,  'fhDrift3', 0.26, 'green' ],
+  ['9%',  '82%', 11, 25, -12, 'fhDrift1', 0.20, 'yellow'],
+  ['14%', '48%',  9, 20, -7,  'fhDrift2', 0.18, 'purple'],
+  ['92%', '18%', 11, 20, -3,  'fhDrift2', 0.24, 'yellow'],
+  ['96%', '44%', 14, 15, -9,  'fhDrift3', 0.28, 'purple'],
+  ['90%', '70%', 10, 23, -6,  'fhDrift1', 0.20, 'red'   ],
+  ['94%', '88%', 12, 19, -14, 'fhDrift2', 0.22, 'green' ],
+  ['86%', '55%',  9, 17, -4,  'fhDrift3', 0.18, 'yellow'],
+  ['22%', '28%',  9, 21, -7,  'fhDrift3', 0.17, 'green' ],
+  ['75%', '36%', 11, 17, -4,  'fhDrift1', 0.19, 'red'   ],
+  ['46%', '58%', 10, 26, -11, 'fhDrift2', 0.15, 'yellow'],
+  ['63%', '76%', 12, 14, -2,  'fhDrift3', 0.22, 'purple'],
+  ['33%', '86%', 10, 20, -9,  'fhDrift1', 0.17, 'green' ],
+  ['81%', '91%', 13, 18, -5,  'fhDrift2', 0.20, 'red'   ],
+  ['55%', '14%', 11, 16, -7,  'fhDrift1', 0.19, 'yellow'],
+  ['38%', '70%',  8, 24, -13, 'fhDrift3', 0.15, 'purple'],
 ]
 
 export function FloatingHearts() {
@@ -49,12 +54,13 @@ export function FloatingHearts() {
         position: 'fixed', inset: 0,
         pointerEvents: 'none', zIndex: 0, overflow: 'hidden',
       }}>
-        {HEARTS.map(([left, top, size, dur, delay, anim, op], i) => (
+        {HEARTS.map(([left, top, size, dur, delay, anim, op, color], i) => (
           <div key={i} style={{
             position: 'absolute', left, top,
             width: size, height: size,
-            ['--fh-op' as string]: String(op),
+            ['--op' as string]: String(op),
             opacity: op,
+            filter: TINT[color] || undefined,
             animation: `${anim} ${dur}s ease-in-out infinite`,
             animationDelay: `${delay}s`,
           }}>
