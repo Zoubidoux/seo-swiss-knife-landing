@@ -309,7 +309,7 @@ function ChatInterface() {
               m.role === 'user' ? 'bg-purple-600 shadow-lg shadow-purple-900/20' : 'bg-white/5 border border-white/10'
             }`}>
               {m.role === 'user' ? <User className="w-5 h-5 text-white" /> : <Bot className="w-5 h-5 text-purple-400" />}
-              {m.role === 'bot' && <div className="absolute inset-0 bg-purple-400/5 animate-pulse" />}
+              {m.role === 'assistant' && <div className="absolute inset-0 bg-purple-400/5 animate-pulse" />}
             </div>
             <div className={`max-w-[85%] p-5 rounded-3xl text-sm leading-relaxed shadow-xl ${
               m.role === 'user' 
