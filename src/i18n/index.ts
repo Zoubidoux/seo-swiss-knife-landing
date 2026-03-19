@@ -6,6 +6,7 @@ const en = {
     howItWorks: 'How it works',
     faq: 'FAQ',
     install: 'Install Free',
+    agent: 'AI Agent',
     langToggle: 'FR',
   },
   hero: {
@@ -266,6 +267,87 @@ const en = {
     store: 'Chrome Web Store',
     rights: '© {year} Search Toolbox',
   },
+  aiAgent: {
+    homepage: {
+      eyebrow: 'Personal SEO Assistant',
+      headline: 'Meet your 24/7 AI SEO Agent',
+      subheadline: 'Embedded directly in your browser, Pixly reads your page, understands the context, and provides actionable recommendations. It\'s not just a chatbot — it\'s an expert that knows your site.',
+      features: [
+        { title: 'Context-Aware', desc: 'Analyzes the live DOM and source code of the current page.' },
+        { title: 'Actionable Fixes', desc: 'Gives step-by-step guidance to solve SEO issues.' },
+        { title: 'Tailored Modes', desc: 'Switch between Beginner, Intermediate, and Expert SEO modes.' },
+        { title: 'Real Knowledge', desc: 'Powered by up-to-date SEO resources, not generic models.' }
+      ],
+      primaryCta: 'Install Pixly Free',
+      secondaryCta: 'View Agent Details'
+    },
+    page: {
+      meta: {
+        title: 'Personal SEO AI Agent — Context-Aware Site Audits | Pixly',
+        description: 'Meet the only AI SEO agent that reads your live page. Get instant audits, technical fixes, and content advice in Beginner, Intermediate, or Expert modes. 10 free credits.'
+      },
+      hero: {
+        headline: 'The Only AI Agent That Actually Reads Your Page.',
+        subheadline: 'Pixly integrates a personalized SEO agent directly into your workflow. Get instant audits and answers where you need them most.',
+        cta: 'Get Started — 10 Free Credits'
+      },
+      problem: {
+        title: 'Generic AI is blind to your context',
+        body: 'Generic chatbots don\'t see your specific page structure, schema, or technical errors. Classic tools give you data, but no guidance. Pixly bridges the gap.'
+      },
+      differentiation: {
+        title: 'Why Pixly Agent?',
+        items: [
+          { title: 'Beyond Chat', desc: 'It combines real-time page analysis with conversational intelligence.' },
+          { title: 'Workflow Ready', desc: 'Present on every page, ready to help without context switching.' },
+          { title: 'Expert Guidance', desc: 'Doesn\'t just flag issues — it tells you exactly how to fix them.' }
+        ]
+      },
+      howItWorks: {
+        title: 'How it works in 4 steps',
+        steps: [
+          { title: 'Install & Open', desc: 'Add Pixly to Chrome and open the side panel on any site.' },
+          { title: 'Ask Anything', desc: 'Type a question or click "Audit Page" to start the analysis.' },
+          { title: 'Agent Scans', desc: 'The agent reads the HTML, DOM, and technical tags instantly.' },
+          { title: 'Get Results', desc: 'Receive actionable advice tailored to your SEO level.' }
+        ]
+      },
+      modes: {
+        title: '3 Modes for Every Level',
+        items: [
+          { title: 'Beginner', desc: 'Clear, jargon-free explanations to help you learn SEO basics.' },
+          { title: 'Intermediate', desc: 'Technical details and best practices for growing sites.' },
+          { title: 'Expert SEO', desc: 'Advanced strategies and deep technical audits for pros.' }
+        ]
+      },
+      benefits: {
+        title: 'Key Benefits',
+        items: [
+          { title: 'Save Hours', desc: 'No more manual research for every tiny SEO error.' },
+          { title: 'Stop Guessing', desc: 'Get recommendations based on your actual page data.' },
+          { title: 'Learn as You Go', desc: 'The agent explains the "why" behind every fix.' }
+        ]
+      },
+      useCases: {
+        title: 'Use Cases',
+        items: [
+          { title: 'Content Optimization', desc: 'Ask how to improve your headings or meta tags for a specific keyword.' },
+          { title: 'Technical Debugging', desc: 'Find why your schema is invalid or why a redirect is failing.' },
+          { title: 'Competitor Analysis', desc: 'Open a competitor\'s site and ask the agent to summarize their SEO strategy.' }
+        ]
+      },
+      finalCta: {
+        title: 'Ready to upgrade your SEO workflow?',
+        body: 'Join thousands of SEOs using Pixly to audit faster.',
+        cta: 'Install Extension — 10 Free Credits'
+      },
+      faq: [
+        { q: 'Is the AI Agent free?', a: 'Your first 10 credits are completely free. After that, you can upgrade to a premium plan for unlimited access.' },
+        { q: 'How does it differ from ChatGPT?', a: 'ChatGPT doesn\'t have access to your private local DOM or current page state. Our agent reads the live page directly in your browser.' },
+        { q: 'Is my data secure?', a: 'Yes. The agent only reads the page you explicitly ask it to analyze, and no session data is stored on our servers.' }
+      ]
+    }
+  },
 }
 
 const fr: typeof en = {
@@ -274,6 +356,7 @@ const fr: typeof en = {
     howItWorks: 'Fonctionnement',
     faq: 'FAQ',
     install: 'Installer Gratuitement',
+    agent: 'Agent IA',
     langToggle: 'EN',
   },
   hero: {
@@ -533,6 +616,87 @@ const fr: typeof en = {
     privacy: 'Confidentialité',
     store: 'Chrome Web Store',
     rights: '© {year} Search Toolbox',
+  },
+  aiAgent: {
+    homepage: {
+      eyebrow: 'Assistant SEO Personnel',
+      headline: 'Rencontrez votre Agent SEO IA 24/7',
+      subheadline: 'Intégré directement dans votre navigateur, Pixly lit votre page, comprend le contexte et fournit des recommandations exploitables. Ce n\'est pas qu\'un chatbot — c\'est un expert qui connaît votre site.',
+      features: [
+        { title: 'Sensible au Contexte', desc: 'Analyse le DOM live et le code source de la page actuelle.' },
+        { title: 'Correctifs exploitables', desc: 'Donne des conseils étape par étape pour résoudre les problèmes SEO.' },
+        { title: 'Modes sur mesure', desc: 'Basculez entre les modes SEO Débutant, Intermédiaire et Expert.' },
+        { title: 'Connaissances Réelles', desc: 'Propulsé par des ressources SEO à jour, pas seulement des modèles génériques.' }
+      ],
+      primaryCta: 'Installer Pixly Gratuitement',
+      secondaryCta: 'Détails de l\'Agent'
+    },
+    page: {
+      meta: {
+        title: 'Agent IA SEO Personnel — Audits de site sensibles au contexte | Pixly',
+        description: 'Découvrez le seul agent IA SEO qui lit votre page en direct. Obtenez des audits instantanés, des correctifs techniques et des conseils de contenu. 10 crédits gratuits.'
+      },
+      hero: {
+        headline: 'Le seul Agent IA qui lit vraiment votre page.',
+        subheadline: 'Pixly intègre un agent SEO personnalisé directement dans votre flux de travail. Plus besoin de copier-coller des URLs. Obtenez des audits et des réponses instantanés.',
+        cta: 'Commencer — 10 Crédits Gratuits'
+      },
+      problem: {
+        title: 'L\'IA générique est aveugle à votre contexte',
+        body: 'Les chatbots génériques ne voient pas la structure de votre page, vos schémas ou vos erreurs techniques. Les outils classiques vous donnent des données, mais pas de conseils. Pixly comble le fossé.'
+      },
+      differentiation: {
+        title: 'Pourquoi l\'Agent Pixly ?',
+        items: [
+          { title: 'Au-delà du Chat', desc: 'Il combine l\'analyse de page en temps réel avec l\'intelligence conversationnelle.' },
+          { title: 'Prêt pour votre flux', desc: 'Présent sur chaque page, prêt à aider sans changer de contexte.' },
+          { title: 'Conseils d\'Expert', desc: 'Ne se contente pas de signaler les problèmes — il vous dit exactement comment les corriger.' }
+        ]
+      },
+      howItWorks: {
+        title: 'Fonctionnement en 4 étapes',
+        steps: [
+          { title: 'Installer & Ouvrir', desc: 'Ajoutez Pixly à Chrome et ouvrez le panneau latéral sur n\'importe quel site.' },
+          { title: 'Posez vos questions', desc: 'Tapez une question ou cliquez sur "Auditer la page" pour démarrer l\'analyse.' },
+          { title: 'Scan de l\'Agent', desc: 'L\'agent lit instantanément le HTML, le DOM et les balises techniques.' },
+          { title: 'Résultats', desc: 'Recevez des conseils exploitables adaptés à votre niveau SEO.' }
+        ]
+      },
+      modes: {
+        title: '3 Modes pour chaque niveau',
+        items: [
+          { title: 'Débutant', desc: 'Explications claires et sans jargon pour vous aider à apprendre les bases.' },
+          { title: 'Intermédiaire', desc: 'Détails techniques et meilleures pratiques pour les sites en croissance.' },
+          { title: 'Expert SEO', desc: 'Stratégies avancées et audits techniques profonds pour les pros.' }
+        ]
+      },
+      benefits: {
+        title: 'Avantages Clés',
+        items: [
+          { title: 'Gagnez des heures', desc: 'Plus de recherches manuelles pour chaque petite erreur SEO.' },
+          { title: 'Arrêtez de deviner', desc: 'Obtenez des recommandations basées sur vos données réelles.' },
+          { title: 'Apprenez en faisant', desc: 'L\'agent explique le "pourquoi" derrière chaque correction.' }
+        ]
+      },
+      useCases: {
+        title: 'Cas d\'usage',
+        items: [
+          { title: 'Optimisation de contenu', desc: 'Demandez comment améliorer vos titres ou balises meta pour un mot-clé.' },
+          { title: 'Débogage technique', desc: 'Trouvez pourquoi votre schéma est invalide ou pourquoi une redirection échoue.' },
+          { title: 'Analyse concurrentielle', desc: 'Ouvrez le site d\'un concurrent et demandez à l\'agent de résumer sa stratégie.' }
+        ]
+      },
+      finalCta: {
+        title: 'Prêt à améliorer votre flux SEO ?',
+        body: 'Rejoignez des milliers de SEO qui utilisent Pixly pour auditer plus vite.',
+        cta: 'Installer l\'extension — 10 Crédits Gratuits'
+      },
+      faq: [
+        { q: 'L\'Agent IA est-il gratuit ?', a: 'Vos 10 premiers crédits sont entièrement gratuits. Ensuite, vous pouvez passer à un forfait premium.' },
+        { q: 'En quoi diffère-t-il de ChatGPT ?', a: 'ChatGPT n\'a pas accès à votre DOM local ou à l\'état actuel de votre page. Notre agent lit la page en direct.' },
+        { q: 'Mes données sont-elles sécurisées ?', a: 'Oui. L\'agent ne lit que la page que vous demandez d\'analyser, et aucune donnée n\'est stockée.' }
+      ]
+    }
   },
 }
 

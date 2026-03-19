@@ -92,7 +92,6 @@ export function AllFeaturesSection() {
     return () => obs.disconnect()
   }, [])
 
-  const activeCat = CATS.find(c => c.key === active) ?? CATS[0]
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase()
