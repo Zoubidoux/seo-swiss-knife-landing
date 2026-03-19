@@ -88,7 +88,7 @@ function OverviewPanel() {
       </div>
       {/* Fields */}
       {[
-        { label: 'Title', value: 'Search Toolbox — Chrome Extension', chars: '38', status: 'good' },
+        { label: 'Title', value: 'Pixly — SEO Chrome Extension', chars: '28', status: 'good' },
         { label: 'Description', value: 'The most complete on-page SEO toolkit...', chars: '62', status: 'good' },
         { label: 'Canonical', value: 'https://example.com/', status: 'good' },
         { label: 'Robots', value: 'index, follow', status: 'good' },
@@ -121,7 +121,7 @@ function OverviewPanel() {
 
 function HeadingsPanel() {
   const headings = [
-    { level: 'H1', text: 'Search Toolbox — The Complete Chrome Extension', color: '#9ec890' },
+    { level: 'H1', text: 'Pixly — The Complete SEO Extension', color: '#9ec890' },
     { level: 'H2', text: 'Features Overview', color: '#7ab8c8' },
     { level: 'H3', text: 'Page Meta Audit', color: '#c8a96e' },
     { level: 'H3', text: 'Schema Inspector', color: '#c8a96e' },
@@ -347,7 +347,7 @@ export function ExtensionMockup({ activeTab = 'overview' }: ExtensionMockupProps
           <div className="w-1.5 h-1.5 rounded-full" style={{ background: activeGroup?.color ?? '#39d3ff' }} />
         </div>
         <span className="text-[9px] font-black tracking-wider uppercase" style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          Search Toolbox
+          Pixly
         </span>
         <div className="ml-auto flex items-center gap-1">
           <span className="text-[7px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>Allowed</span>

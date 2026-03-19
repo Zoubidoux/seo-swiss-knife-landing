@@ -162,7 +162,7 @@ export function BenefitsSection() {
             <div className="flex items-center gap-3 mb-1">
               <PixelHeart size={32} style={{ filter: 'drop-shadow(0 0 10px rgba(167,139,250,0.5))' }} />
               <div>
-                <p className="text-foreground font-bold">Search Toolbox</p>
+                <p className="text-foreground font-bold">Pixly</p>
                 <p className="text-muted-foreground text-xs">{lang === 'fr' ? 'Un panel, tout le reste.' : 'One panel, everything else gone.'}</p>
               </div>
             </div>

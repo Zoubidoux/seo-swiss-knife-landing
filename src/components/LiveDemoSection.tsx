@@ -123,7 +123,7 @@ function ExtensionPanel({ site, step }: { site: SiteKey; step: number }) {
       <div className="flex items-center justify-between px-2.5 py-2 border-b border-white/[0.06]">
         <div className="flex items-center gap-1.5">
           <PixelHeart size={14} />
-          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Search Toolbox</span>
+          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Pixly</span>
         </div>
         <span className="text-[6px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background:'rgba(34,197,94,0.15)', color:'#22c55e' }}>Allowed</span>
       </div>

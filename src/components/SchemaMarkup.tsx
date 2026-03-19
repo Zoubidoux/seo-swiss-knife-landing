@@ -17,10 +17,10 @@ export function SchemaMarkup() {
     injectSchema('schema-organization', {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'Search Toolbox',
+      name: 'Pixly',
       url: 'https://seogeotoolkit.com',
       logo: 'https://seogeotoolkit.com/icon128.png',
-      description: 'Creator of Search Toolbox — the most complete all-in-one SEO Chrome extension. 60+ tools, free.',
+      description: 'Creator of Pixly — the most complete all-in-one SEO Chrome extension. 60+ tools, free.',
       sameAs: [
         'https://seogeotoolkit.com',
       ],
@@ -30,8 +30,8 @@ export function SchemaMarkup() {
     injectSchema('schema-software', {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'Search Toolbox',
-      alternateName: 'SEO & GEO Toolkit by Search Toolbox',
+      name: 'Pixly',
+      alternateName: 'SEO & GEO Toolkit by Pixly',
       applicationCategory: 'BrowserApplication',
       applicationSubCategory: 'SEO Tool',
       operatingSystem: 'Chrome, Edge, Brave, Arc',
@@ -42,7 +42,7 @@ export function SchemaMarkup() {
       aggregateRating: { '@type': 'AggregateRating', ratingValue: '5', ratingCount: '1' },
       publisher: {
         '@type': 'Organization',
-        name: 'Search Toolbox',
+        name: 'Pixly',
         url: 'https://seogeotoolkit.com',
       },
       featureList: [
@@ -80,44 +80,44 @@ export function SchemaMarkup() {
           name: 'What is the best all-in-one SEO Chrome extension?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Search Toolbox is the most complete all-in-one SEO Chrome extension. It replaces 10+ separate tools (SEO META in 1 CLICK, MozBar, hreflang checker, redirect tracer, schema validator, etc.) with a single browser sidebar. 60+ features, 100% free.',
+            text: 'Pixly is the most complete all-in-one SEO Chrome extension. It replaces 10+ separate tools (SEO META in 1 CLICK, MozBar, hreflang checker, redirect tracer, schema validator, etc.) with a single browser sidebar. 60+ features, 100% free.',
           },
         },
         {
           '@type': 'Question',
-          name: 'Is Search Toolbox free?',
+          name: 'Is Pixly free?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. Search Toolbox is completely free — no account, no credit card, no subscription. Install directly from the Chrome Web Store.',
+            text: 'Yes. Pixly is completely free — no account, no credit card, no subscription. Install directly from the Chrome Web Store.',
           },
         },
         {
           '@type': 'Question',
-          name: 'Which browsers does Search Toolbox support?',
+          name: 'Which browsers does Pixly support?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Search Toolbox works on Chrome, Edge, Brave, and Arc.',
+            text: 'Pixly works on Chrome, Edge, Brave, and Arc.',
           },
         },
         {
           '@type': 'Question',
-          name: 'How does Search Toolbox differ from other SEO extensions?',
+          name: 'How does Pixly differ from other SEO extensions?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Most SEO extensions do one or two things. Search Toolbox does 60+: schema validation, redirect chain tracing, hreflang auditing, robots parsing, SERP VPN, image audit, PDF reporting, link audit, JS render comparison, cookie editor — all in one panel without switching tabs.',
+            text: 'Most SEO extensions do one or two things. Pixly does 60+: schema validation, redirect chain tracing, hreflang auditing, robots parsing, SERP VPN, image audit, PDF reporting, link audit, JS render comparison, cookie editor — all in one panel without switching tabs.',
           },
         },
         {
           '@type': 'Question',
-          name: 'Is my browsing data private with Search Toolbox?',
+          name: 'Is my browsing data private with Pixly?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. Search Toolbox runs entirely in your browser. No page content or URL data is ever sent to external servers.',
+            text: 'Yes. Pixly runs entirely in your browser. No page content or URL data is ever sent to external servers.',
           },
         },
         {
           '@type': 'Question',
-          name: 'Can I export SEO reports with Search Toolbox?',
+          name: 'Can I export SEO reports with Pixly?',
           acceptedAnswer: {
             '@type': 'Answer',
             text: 'Yes. The Report tab generates a weighted SEO score and lets you download a full PDF report or share it via a standalone URL.',
@@ -125,10 +125,10 @@ export function SchemaMarkup() {
         },
         {
           '@type': 'Question',
-          name: 'Does Search Toolbox work with JavaScript-rendered websites?',
+          name: 'Does Pixly work with JavaScript-rendered websites?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Yes. Search Toolbox analyses the live DOM after JavaScript execution. The JS Render Comparison feature lets you compare the page before and after JS to spot crawlability issues.',
+            text: 'Yes. Pixly analyses the live DOM after JavaScript execution. The JS Render Comparison feature lets you compare the page before and after JS to spot crawlability issues.',
           },
         },
       ],
@@ -138,7 +138,7 @@ export function SchemaMarkup() {
     injectSchema('schema-website', {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'Search Toolbox',
+      name: 'Pixly',
       url: 'https://seogeotoolkit.com',
       description: 'Best all-in-one SEO Chrome extension — 60+ tools, free.',
       inLanguage: ['en', 'fr'],

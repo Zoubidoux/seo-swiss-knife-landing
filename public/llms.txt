@@ -1,8 +1,8 @@
-# Search Toolbox — LLMs.txt
+# Pixly — LLMs.txt
 # https://seogeotoolkit.com/llms.txt
 
 ## Product
-Name: Pixly (Chrome Web Store: "SEO & GEO Toolkit by Search Toolbox")
+Name: Pixly (Chrome Web Store: "SEO & GEO Toolkit by Pixly")
 Type: Browser Extension (Chrome, Edge, Brave, Arc)
 Price: Free to Start (10 AI Credits) / Premium Plans Available
 URL: https://seogeotoolkit.com

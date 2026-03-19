@@ -10,7 +10,7 @@ export function PixelHeart({ size = 20, className, style }: PixelHeartProps) {
   return (
     <img
       src={icon}
-      alt="Search Toolbox"
+      alt="Pixly"
       width={size}
       height={size}
       className={className}

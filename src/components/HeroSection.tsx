@@ -1,110 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { PixelHeart } from '@/components/PixelHeart'
+import { ExtensionMockup } from '@/components/ExtensionMockup'
+import { Sparkles, Shield, Zap, ArrowRight } from 'lucide-react'
 
-// hue-rotate pour teinter le cœur violet en d'autres couleurs de marque
-const TINTS: Record<string, string> = {
-  purple: '',
-  red:    'hue-rotate(220deg) saturate(1.4)',
-  green:  'hue-rotate(145deg) saturate(1.3)',
-  yellow: 'hue-rotate(58deg)  saturate(1.5) brightness(1.1)',
-}
-
-// Orbites — variété de couleurs, tailles généreuses
-const ORBITS = [
-  { r:  90, size: 22, speed: 11, start:  20, opacity: 0.70, tint: 'purple' },
-  { r: 140, size: 30, speed: 18, start: 110, opacity: 0.65, tint: 'yellow' },
-  { r: 190, size: 24, speed: 27, start: 195, opacity: 0.58, tint: 'green'  },
-  { r: 120, size: 20, speed: 14, start: 285, opacity: 0.66, tint: 'red'    },
-  { r: 230, size: 26, speed: 35, start:  65, opacity: 0.52, tint: 'purple' },
-  { r: 165, size: 32, speed: 22, start: 340, opacity: 0.62, tint: 'yellow' },
-  { r: 270, size: 20, speed: 42, start: 150, opacity: 0.44, tint: 'green'  },
-  { r: 145, size: 24, speed: 16, start: 240, opacity: 0.56, tint: 'red'    },
-  { r: 210, size: 18, speed: 31, start:  80, opacity: 0.48, tint: 'purple' },
-  { r: 105, size: 20, speed: 15, start: 160, opacity: 0.62, tint: 'yellow' },
-  { r: 175, size: 22, speed: 24, start: 300, opacity: 0.46, tint: 'red'    },
-  { r: 300, size: 18, speed: 46, start:  30, opacity: 0.35, tint: 'green'  },
-  { r: 250, size: 20, speed: 38, start: 220, opacity: 0.40, tint: 'purple' },
-]
-
+// Animations for the hero
 const HERO_STYLE = `
-@keyframes orbitHeart {
-  from { transform: rotate(var(--os)) translateX(var(--or)) rotate(calc(-1 * var(--os))); }
-  to   { transform: rotate(calc(var(--os) + 360deg)) translateX(var(--or)) rotate(calc(-360deg - var(--os))); }
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(1deg); }
 }
-@keyframes plasmaA {
-  0%,100% { transform: translate(0,0) scale(1); }
-  40%      { transform: translate(-50px, 35px) scale(1.1); }
-  70%      { transform: translate(40px, -25px) scale(0.93); }
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
 }
-@keyframes plasmaB {
-  0%,100% { transform: translate(0,0) scale(1); }
-  35%      { transform: translate(55px, 25px) scale(1.08); }
-  65%      { transform: translate(-30px, 45px) scale(0.95); }
-}
-@keyframes plasmaC {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50%      { transform: translate(-35px,-40px) scale(1.12); }
-}
-@keyframes badgeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
 }
 `
-
-const BADGE_STATES = [
-  { code: '200', glow: '#00c48c', bg: '#00c48c', label: '200 OK' },
-  { code: '301', glow: '#7eb8ff', bg: '#e0922a', label: '301 Redirect' },
-  { code: '404', glow: '#ff6b6b', bg: '#ff6b6b', label: '404 Not Found' },
-]
-
-function ToolbarBadge() {
-  const [idx, setIdx] = useState(0)
-  useEffect(() => {
-    const t = setInterval(() => setIdx(i => (i + 1) % BADGE_STATES.length), 2000)
-    return () => clearInterval(t)
-  }, [])
-  const s = BADGE_STATES[idx]
-  return (
-    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 rounded-full"
-      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-      <span className="hidden sm:inline text-white/30 text-[10px] tracking-wide">Chrome toolbar</span>
-      <div key={s.code} className="flex items-center gap-1.5 px-2 py-1 rounded-md"
-        style={{ background: `${s.glow}14`, border: `1px solid ${s.glow}28`, animation: 'badgeIn 0.35s ease' }}>
-        <PixelHeart size={14} style={{ filter: `drop-shadow(0 0 4px ${s.glow})` }} />
-        <span className="text-[9px] font-black min-w-[26px] text-center px-1 py-0.5 rounded"
-          style={{ background: s.bg, color: '#000' }}>{s.code}</span>
-      </div>
-      <span className="text-white/25 text-[10px]">{s.label}</span>
-    </div>
-  )
-}
-
-function OrbitingHearts() {
-  return (
-    <div aria-hidden="true" className="absolute pointer-events-none"
-      style={{ top: '50%', left: '50%', width: 0, height: 0, zIndex: 1 }}>
-      {ORBITS.map((o, i) => (
-        <div key={i} style={{
-          position: 'absolute', top: 0, left: 0,
-          width: o.size, height: o.size,
-          marginLeft: -o.size / 2, marginTop: -o.size / 2,
-          opacity: o.opacity,
-          filter: TINTS[o.tint] || undefined,
-          ['--or' as string]: `${o.r}px`,
-          ['--os' as string]: `${o.start}deg`,
-          animation: `orbitHeart ${o.speed}s linear infinite`,
-          animationDelay: `${-(o.speed * o.start / 360).toFixed(2)}s`,
-        }}>
-          <img src="/icon128.png" width={o.size} height={o.size}
-            style={{ imageRendering: 'pixelated', display: 'block' }} alt="" />
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export function HeroSection() {
   const { lang } = useLanguage()
@@ -120,127 +36,140 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden"
-      style={{ height: '65vh', minHeight: '500px', display: 'flex', flexDirection: 'column' }}>
-
-      {/* ── Plasma — blobs floutés, pleine section ── */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ overflow: 'hidden' }}>
-        {/* Blob haut-gauche — violet intense */}
-        <div style={{
-          position: 'absolute', top: '-5%', left: '-15%',
-          width: '75%', height: '80%',
-          borderRadius: '50%',
-          background: 'rgba(109,40,217,0.75)',
-          filter: 'blur(70px)',
-          animation: 'plasmaA 10s ease-in-out infinite',
-          willChange: 'transform',
-        }} />
-        {/* Blob haut-droite — indigo */}
-        <div style={{
-          position: 'absolute', top: '-10%', right: '-12%',
-          width: '65%', height: '75%',
-          borderRadius: '50%',
-          background: 'rgba(79,70,229,0.65)',
-          filter: 'blur(65px)',
-          animation: 'plasmaB 13s ease-in-out infinite',
-          willChange: 'transform',
-        }} />
-        {/* Blob bas-centre — violet profond */}
-        <div style={{
-          position: 'absolute', bottom: '0%', left: '10%',
-          width: '80%', height: '65%',
-          borderRadius: '50%',
-          background: 'rgba(91,33,182,0.60)',
-          filter: 'blur(80px)',
-          animation: 'plasmaC 8s ease-in-out infinite',
-          willChange: 'transform',
-        }} />
-        {/* Accent centre — lumière cœur */}
-        <div style={{
-          position: 'absolute', top: '20%', left: '25%',
-          width: '50%', height: '55%',
-          borderRadius: '50%',
-          background: 'rgba(139,92,246,0.50)',
-          filter: 'blur(55px)',
-        }} />
-        {/* Accent violet chaud — bas de section */}
-        <div style={{
-          position: 'absolute', bottom: '-10%', left: '15%',
-          width: '70%', height: '50%',
-          borderRadius: '50%',
-          background: 'rgba(124,58,237,0.55)',
-          filter: 'blur(70px)',
-        }} />
+    <section className="relative min-h-[90vh] flex items-center pt-24 pb-20 overflow-hidden bg-[#020617]">
+      {/* ── Background Elements ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute top-[-10%] left-[-10%] w-[60%] h-[70%] bg-purple-600/20 blur-[120px] rounded-full animate-pulse" 
+          style={{ animationDuration: '8s' }}
+        />
+        <div 
+          className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[70%] bg-blue-600/20 blur-[120px] rounded-full animate-pulse" 
+          style={{ animationDuration: '10s', animationDelay: '1s' }}
+        />
+        <div 
+          className="absolute top-[20%] right-[10%] w-[30%] h-[40%] bg-indigo-500/10 blur-[100px] rounded-full"
+        />
       </div>
 
-      {/* ── Fondu bas — raccord avec la section suivante ── */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        height: '120px', zIndex: 3, pointerEvents: 'none',
-        background: 'linear-gradient(to bottom, transparent 0%, rgba(88,28,235,0.45) 60%, rgba(60,20,180,0.6) 100%)',
-      }} />
+      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          
+          {/* Left Column: Content */}
+          <div className="flex flex-col items-start text-left">
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase mb-8 border border-purple-500/30 bg-purple-500/10 text-purple-400">
+              <Sparkles className="w-3.5 h-3.5" />
+              {t.eyebrow}
+            </div>
 
-      {/* ── Orbites ── */}
-      <OrbitingHearts />
+            {/* H1 */}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter leading-[0.9] text-white">
+              <span className="block mb-2">{lang === 'fr' ? 'Votre Centre de' : 'Your All-in-One'}</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">
+                {lang === 'fr' ? 'Contrôle SEO' : 'SEO Control Center'}
+              </span>
+            </h1>
 
-      {/* ── Contenu — centré dans la section ── */}
-      <div className="relative flex flex-col items-center justify-center flex-1 px-4 sm:px-6 text-center gap-4 sm:gap-5"
-        style={{ zIndex: 2 }}>
+            {/* Subheading */}
+            <p className="text-xl md:text-2xl text-white/50 mb-10 max-w-xl leading-relaxed font-medium">
+              {t.sub}
+            </p>
 
-        {/* Eyebrow */}
-        <div className="px-3 sm:px-4 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase"
-          style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.22)', color: '#a78bfa' }}>
-          {t.eyebrow}
-        </div>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-12 w-full sm:w-auto">
+              <Button size="lg" className="h-16 px-10 rounded-2xl bg-white text-black font-black text-sm uppercase tracking-widest hover:bg-white/90 shadow-[0_20px_40px_rgba(255,255,255,0.1)] group">
+                {t.cta}
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <div className="px-6 py-2">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 max-w-[140px]">
+                  {t.ctaSub}
+                </p>
+              </div>
+            </div>
 
-        {/* H1 */}
-        <h1 className="flex items-center justify-center gap-3 sm:gap-4 font-bold tracking-tight"
-          style={{ fontSize: 'clamp(40px, 8vw, 84px)', lineHeight: 1 }}>
-          <PixelHeart size={52} style={{ filter: 'drop-shadow(0 0 28px rgba(139,92,246,0.9))' }} />
-          <span className="bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(180deg, #f4f4f6 0%, #c4b5fd 100%)' }}>
-            {t.headline}
-          </span>
-        </h1>
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center gap-8 py-6 border-t border-white/5 w-full">
+              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
+                <Shield className="w-4 h-4 text-purple-500" /> {lang === 'fr' ? '100% PRIVÉ' : '100% PRIVATE'}
+              </div>
+              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/40">
+                <Zap className="w-4 h-4 text-cyan-500" /> {lang === 'fr' ? 'AUCUNE LATENCE' : 'NO LATENCY'}
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-6 h-6 rounded-full border-2 border-[#020617] bg-white/10 overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="user" />
+                    </div>
+                  ))}
+                </div>
+                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">
+                  {lang === 'fr' ? '500+ experts font confiance' : '500+ experts trust us'}
+                </span>
+              </div>
+            </div>
+          </div>
 
-        {/* Stat pills */}
-        <div className="flex flex-wrap justify-center items-center gap-2">
-          <span className="px-3 py-1.5 rounded-full text-sm font-black"
-            style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.22)', color: '#c4b5fd' }}>
-            +20 {lang === 'fr' ? 'apps en 1' : 'apps in one'}
-          </span>
-          <span className="text-white/15">·</span>
-          <span className="px-3 py-1.5 rounded-full text-sm font-black"
-            style={{ background: 'rgba(99,102,241,0.10)', border: '1px solid rgba(99,102,241,0.20)', color: '#a5b4fc' }}>
-            +60 {lang === 'fr' ? 'fonctionnalités' : 'features'}
-          </span>
-          <span className="text-white/15">·</span>
-          <span className="text-xs font-semibold" style={{ color: 'rgba(196,181,253,0.7)' }}>
-            {lang === 'fr' ? '✦ Dont beaucoup d\'inédites' : '✦ Many unique & customizable'}
-          </span>
-        </div>
+          {/* Right Column: Visual Mockup */}
+          <div className="relative flex justify-center lg:justify-end">
+            {/* Visual Decoration */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] z-0 pointer-events-none opacity-20">
+               <div className="absolute inset-0 bg-gradient-radial from-purple-500/40 via-transparent to-transparent blur-3xl animate-pulse" />
+            </div>
 
-        {/* Sub */}
-        <p className="text-center max-w-md leading-7"
-          style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.52)' }}>
-          {t.sub}
-        </p>
+            {/* Floating Mockup */}
+            <div className="relative z-10 scale-[0.85] sm:scale-100 lg:scale-[1.1] origin-center lg:origin-right transform" 
+                 style={{ animation: 'float 6s ease-in-out infinite' }}>
+              
+              {/* Actual Extension Mockup */}
+              <div className="relative">
+                 <ExtensionMockup activeTab="overview" />
+                 
+                 {/* Decorative orbiting element 1 */}
+                 <div className="absolute -top-10 -left-10 w-24 h-24 bg-white/[0.03] border border-white/10 rounded-3xl flex items-center justify-center backdrop-blur-sm z-20 shadow-2xl"
+                      style={{ animation: 'float 5s ease-in-out infinite reverse' }}>
+                   <div className="flex flex-col items-center">
+                     <span className="text-[10px] font-black text-purple-400 mb-1">SCORE</span>
+                     <span className="text-2xl font-black text-white">87</span>
+                   </div>
+                 </div>
 
-        {/* Toolbar badge */}
-        <ToolbarBadge />
+                 {/* Decorative orbiting element 2 */}
+                 <div className="absolute -bottom-6 -right-10 w-32 h-20 bg-white/[0.03] border border-white/10 rounded-2xl flex flex-col justify-center px-4 backdrop-blur-sm z-20 shadow-2xl"
+                      style={{ animation: 'float 7s ease-in-out infinite', animationDelay: '1s' }}>
+                   <div className="w-full h-1 bg-white/10 rounded-full mb-2 overflow-hidden">
+                     <div className="w-3/4 h-full bg-cyan-400" />
+                   </div>
+                   <div className="flex justify-between items-center text-[8px] font-bold uppercase tracking-wider text-white/40">
+                     <span>Crawl Stats</span>
+                     <span className="text-cyan-400">75%</span>
+                   </div>
+                 </div>
+              </div>
+            </div>
 
-        {/* CTA */}
-        <div className="flex flex-col items-center gap-1.5">
-          <Button variant="hero" className="px-7 sm:px-9 py-2.5 sm:py-3 text-sm sm:text-base rounded-full">
-            {t.cta}
-          </Button>
-          <span className="text-[10px] sm:text-[11px]" style={{ color: 'rgba(255,255,255,0.25)' }}>{t.ctaSub}</span>
+            {/* Orbiting Hearts / Brand Icons */}
+            <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden hidden lg:block">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="absolute top-1/2 left-1/2" style={{
+                  ['--os' as string]: `${i * 60}deg`,
+                  animation: `orbit ${15 + i*2}s linear infinite`,
+                } as React.CSSProperties}>
+                   <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm opacity-40">
+                     <PixelHeart size={14} />
+                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Arrow */}
-      <div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 animate-bounce"
-        style={{ color: 'rgba(139,92,246,0.35)', zIndex: 2, fontSize: '1.1rem' }}>↓</div>
+      {/* Social Proof Integration Bridge */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#020617] to-transparent z-20" />
     </section>
   )
 }
