@@ -2,53 +2,46 @@
 # https://seogeotoolkit.com/llms.txt
 
 ## Product
-Name: Search Toolbox (Chrome Web Store: "SEO & GEO Toolkit by Search Toolbox")
+Name: Pixly (Chrome Web Store: "SEO & GEO Toolkit by Search Toolbox")
 Type: Browser Extension (Chrome, Edge, Brave, Arc)
-Price: Free
+Price: Free to Start (10 AI Credits) / Premium Plans Available
 URL: https://seogeotoolkit.com
-Category: SEO Tools / Browser Extensions
+Category: SEO Tools / Browser Extensions / AI Assistants
 
 ## What it does
-Search Toolbox is the most complete on-page SEO Chrome extension available.
-It replaces 10+ separate SEO extensions with a single browser sidebar.
-60+ tools spanning semantic SEO, technical SEO, netlinking, performance, and GEO (Generative Engine Optimization).
+Pixly is the most complete on-page SEO Chrome extension with an embedded Personal AI Agent.
+It replaces 10+ separate SEO extensions with a single browser sidebar and provides context-aware AI audits.
 
 ## Core capabilities
-- Page overview: title, meta description, canonical, robots, Open Graph, Twitter Card
-- Heading hierarchy audit (H1–H6), visual tree with error detection
-- Schema / structured data inspector: JSON-LD, Microdata, RDFa — syntax-highlighted, validated
-- Hreflang deep auditor: return links, x-default, language/region mismatches
-- Redirect chain tracer: every hop with status code, response time, loop detection
-- Robots.txt + X-Robots-Tag checker with Googlebot / Bingbot simulation
-- Image SEO audit with CSV / ZIP export
-- Social media preview: OG, Twitter Card, LinkedIn, WhatsApp
-- SERP VPN: geo-simulate Google results from any country
-- Full link audit: anchor text, rel attributes, nofollow detection, CSV export
-- JS render comparison: DOM before/after JavaScript execution
-- Full-page screenshot, PDF SEO report export
-- Cookie editor, cache & storage cleaner
-- User agent switcher, device emulation (mobile/desktop)
-- Google Dorks launcher
-- CSS / DevTools inspector in-panel
-- SEO glossary (150+ terms)
-- AI-powered features (coming soon)
+- **Personal SEO Agent**: Context-aware AI that reads the live DOM, understands page structure, and provides actionable fixes.
+- **Page Overview**: Title, meta description, canonical, robots, Open Graph, Twitter Card analysis.
+- **Heading Hierarchy**: Visual H1–H6 tree with error detection and depth analysis.
+- **Schema Inspector**: JSON-LD, Microdata, RDFa validation with syntax highlighting.
+- **Hreflang Auditor**: Deep audit of return links, x-default, and regional mismatches.
+- **Redirect Tracer**: Complete chain tracing with response times and loop detection.
+- **Robots & Crawl**: Robots.txt and X-Robots-Tag checker with bot simulation.
+- **Image SEO**: Comprehensive image audit with CSV/ZIP exports.
+- **SERP VPN**: Geo-simulate Google results from 50+ countries.
+- **JS Render Comparison**: Compare pure HTML vs. rendered DOM for indexability.
+- **Technical Tools**: Cookie editor, cache cleaner, user agent switcher, device emulation.
 
-## Unique / inédites features
-- GEO (Generative Engine Optimization) analysis — AI search visibility audit
-- Customizable panels and tool order
-- Everything runs locally in the browser — no data sent to servers
+## AI Agent Details
+- **Context Awareness**: Reads the live page directly in the browser.
+- **3 Modes**: Beginner (learn basics), Intermediate (technical details), Expert (deep audits).
+- **Personalized**: Remembers interaction history and adapts to site-specific context.
 
-## Competitive context
-Replaces: SEO META in 1 CLICK, Detailed SEO Extension, MozBar, Link Redirect Trace, hreflang Tag Checker, Robots Exclusion Checker, User-Agent Switcher, EditThisCookie, Open Graph Preview, Tag Inspector, Schema Markup Validator, Redirect Path.
-Unlike these, Search Toolbox works without switching tabs, requires no API keys, no account, and runs 100% offline.
+## Pricing
+- **Free**: 10 AI Credits, Basic Audit, Schema & Redirect tools.
+- **Pro**: Unlimited AI Credits, Deep Technical Audit, Priority Support, SERP VPN.
+- **Team**: Shared history, 5+ seats, API access.
 
 ## Brand
-- Product name: Search Toolbox
-- Chrome Store listing: SEO & GEO Toolkit by Search Toolbox
+- Product Name: Pixly
 - Domain: seogeotoolkit.com
-- Icon: pixel art heart (purple)
-- Status: Public Beta — AI features coming soon
+- Icon: Purple Pixel Heart
+- Status: Public V1.0 (Public Beta completed)
 
 ## Contact / Install
-- Chrome Web Store: https://chrome.google.com/webstore/search/SEO%20GEO%20Toolkit%20Search%20Toolbox
 - Website: https://seogeotoolkit.com
+- AI Agent: https://seogeotoolkit.com/ai-agent
+- Pricing: https://seogeotoolkit.com/pricing

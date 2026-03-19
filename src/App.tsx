@@ -7,6 +7,7 @@ import { Footer }             from '@/components/Footer'
 import { BetaBanner }        from '@/components/BetaBanner'
 import { Home }              from '@/pages/Home'
 import { AiAgentPage }       from '@/pages/AiAgentPage'
+import { PricingPage }       from '@/pages/PricingPage'
 import { ScrollToTop }       from '@/components/ScrollToTop'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/ai-agent" element={<AiAgentPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
         </Routes>
 
         <Footer />

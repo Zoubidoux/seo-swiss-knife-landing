@@ -14,6 +14,7 @@ import { FAQSection }         from '@/components/FAQSection'
 import { CTASection }         from '@/components/CTASection'
 import { AiAgentHomeSection } from '@/components/AiAgentHomeSection'
 import { ComparisonSlider }  from '@/components/ComparisonSlider'
+import { PricingSection }     from '@/components/PricingSection'
 
 export function Home() {
   return (
@@ -37,6 +38,7 @@ export function Home() {
         <AllFeaturesSection />
       </section>
       <HowItWorks />
+      <PricingSection />
       <FAQSection />
       <CTASection />
     </>
