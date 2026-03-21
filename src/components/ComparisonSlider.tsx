@@ -64,8 +64,8 @@ export function ComparisonSlider() {
         </h2>
         <p className="text-center text-muted-foreground text-base mb-10 max-w-lg mx-auto">
           {lang === 'fr'
-            ? 'La plupart des SEOs ont 10+ extensions installées. Pixly remplace tout ça.'
-            : 'Most SEOs have 10+ extensions installed. Pixly replaces all of them.'}
+            ? 'La plupart des SEOs ont 10+ extensions installées. Search Toolbox remplace tout ça.'
+            : 'Most SEOs have 10+ extensions installed. Search Toolbox replaces all of them.'}
         </p>
 
         {/* Slider */}
@@ -168,7 +168,7 @@ export function ComparisonSlider() {
                 <div className="flex items-end gap-0.5 ml-2 h-6">
                   <div className="flex items-center gap-1.5 px-3 h-full rounded-t-md text-[9px] text-white/40" style={{ background: '#0d1a2e', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}>
                     <PixelHeart size={11} />
-                    ahrefs.com — Pixly analyzing…
+                    ahrefs.com — Search Toolbox analyzing…
                   </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export function ComparisonSlider() {
                     className="text-sm font-black tracking-wide"
                     style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                   >
-                    Pixly
+                    Search Toolbox
                   </span>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>

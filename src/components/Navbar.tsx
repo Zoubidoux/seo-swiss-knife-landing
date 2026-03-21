@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDown, Sparkles } from 'lucide-react'
+import { ChevronDown, Sparkles, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
@@ -11,6 +11,7 @@ export function Navbar() {
   const t = translations[lang].nav
   const [scrolled, setScrolled] = useState(false)
   const [featuresOpen, setFeaturesOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
   const isHome = location.pathname === '/'
@@ -33,6 +34,11 @@ export function Navbar() {
     }
   }, [])
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
+
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     if (isHome) {
       e.preventDefault()
@@ -40,6 +46,7 @@ export function Navbar() {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' })
         setFeaturesOpen(false)
+        setMobileMenuOpen(false)
       }
     }
   }
@@ -56,10 +63,10 @@ export function Navbar() {
     <div
       className="w-full fixed top-0 z-50 transition-all duration-500"
       style={{
-        background: scrolled ? 'rgba(4,13,26,0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent'
+        background: scrolled || mobileMenuOpen ? 'rgba(4,13,26,0.95)' : 'transparent',
+        backdropFilter: scrolled || mobileMenuOpen ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: scrolled || mobileMenuOpen ? 'blur(20px)' : 'none',
+        borderBottom: scrolled || mobileMenuOpen ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent'
       }}
     >
       <style>{`
@@ -79,18 +86,18 @@ export function Navbar() {
         }
       `}</style>
 
-      <nav className="flex items-center justify-between py-5 px-8 max-w-7xl mx-auto">
+      <nav className="flex items-center justify-between py-5 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Left — Brand */}
-        <Link to="/" className="flex items-center gap-2.5 no-underline group shrink-0">
+        <Link to="/" className="flex items-center gap-2.5 no-underline group shrink-0 relative z-50">
           <PixelHeart size={24} style={{ filter: 'drop-shadow(0 0 8px rgba(167,139,250,0.5))' }} />
           <span className="font-bold text-lg tracking-tighter" style={{ background: 'linear-gradient(90deg, #fff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Pixly
+            Search Toolbox
           </span>
         </Link>
 
-        {/* Center — Navigation */}
+        {/* Center — Navigation (Desktop) */}
         <div className="hidden lg:flex items-center gap-8">
-          <Link to="/" className={`text-[10px] uppercase tracking-[0.15em] font-black transition-all no-underline ${location.pathname === '/' ? 'text-purple-400' : 'text-white/50 hover:text-white'}`}>
+          <Link to="/" className={`text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
             {t.home}
           </Link>
 
@@ -98,7 +105,7 @@ export function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => setFeaturesOpen(!featuresOpen)}
-              className={`flex items-center gap-1.5 text-[10px] uppercase tracking-[0.15em] font-black transition-all no-underline ${featuresOpen ? 'text-purple-400' : 'text-white/50 hover:text-white'}`}
+              className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${featuresOpen ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}
             >
               {t.features} <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${featuresOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -132,41 +139,82 @@ export function Navbar() {
             )}
           </div>
 
-          <Link to="/ai-agent" className={`group relative flex items-center gap-2 px-4 py-2 rounded-full transition-all no-underline bg-purple-500/10 border border-purple-500/20 ai-glow overflow-hidden ${location.pathname === '/ai-agent' ? 'ring-1 ring-purple-500/50' : ''}`}>
-             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-             <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
-             <span className="text-[10px] uppercase tracking-[0.2em] font-black animate-shine">
-               {t.agent}
-             </span>
+          <Link to="/ai-agent" className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/ai-agent' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
+             <Sparkles className="w-3.5 h-3.5" />
+             <span>{lang === 'fr' ? 'Expert AI' : 'AI Expert'}</span>
           </Link>
 
-          <a href="/#how-it-works" onClick={(e) => scrollToSection(e, 'how-it-works')} className="text-[10px] uppercase tracking-[0.15em] font-black text-white/50 hover:text-white transition-all no-underline">
-            {t.howItWorks}
-          </a>
-
-          <a href="/#faq" onClick={(e) => scrollToSection(e, 'faq')} className="text-[10px] uppercase tracking-[0.15em] font-black text-white/50 hover:text-white transition-all no-underline">
-            {t.faq}
-          </a>
-
-          <Link to="/pricing" className={`text-[10px] uppercase tracking-[0.15em] font-black transition-all no-underline ${location.pathname === '/pricing' ? 'text-purple-400' : 'text-white/50 hover:text-white'}`}>
+          <Link to="/pricing" className={`text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/pricing' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
             {t.pricing}
           </Link>
+
+          <a href="/#faq" onClick={(e) => scrollToSection(e, 'faq')} className="text-[11px] uppercase tracking-[0.15em] font-bold text-white/70 hover:text-white transition-all no-underline">
+            {t.faq}
+          </a>
         </div>
 
-        {/* Right — Lang & CTA */}
+        {/* Right — Lang & CTA (Desktop & Tablet) */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-            className="w-10 h-10 flex items-center justify-center text-[10px] font-black rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-white/40 hover:text-white"
+            className="text-[11px] font-bold text-white/40 hover:text-white transition-all uppercase tracking-widest hidden sm:block"
           >
             {t.langToggle}
           </button>
 
-          <Button variant="hero" size="sm" className="rounded-xl px-6 h-10 font-black text-[10px] tracking-widest uppercase hidden sm:flex">
+          <Button variant="hero" size="sm" className="rounded-full px-8 h-10 font-black text-[10px] tracking-widest uppercase hidden md:flex bg-purple-600 hover:bg-purple-500 text-white">
             {t.install}
           </Button>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="lg:hidden p-2 text-white/70 hover:text-white transition-colors relative z-50"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-[#040D1A] border-b border-white/10 animate-in slide-in-from-top duration-300">
+          <div className="flex flex-col p-6 gap-6">
+            <Link to="/" className="text-sm font-bold uppercase tracking-widest text-white/90">{t.home}</Link>
+            
+            <div className="flex flex-col gap-4 pl-4 border-l border-white/5">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20">{t.features}</span>
+              {featureItems.map(item => (
+                item.isLink ? (
+                  <Link key={item.id} to={item.to || '/'} className="text-sm font-bold text-white/60">{item.label}</Link>
+                ) : (
+                  <a key={item.id} href={`/#${item.id}`} onClick={(e) => scrollToSection(e, item.id || '')} className="text-sm font-bold text-white/60">{item.label}</a>
+                )
+              ))}
+            </div>
+
+            <Link to="/ai-agent" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white/90">
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              {lang === 'fr' ? 'Expert AI' : 'AI Expert'}
+            </Link>
+
+            <Link to="/pricing" className="text-sm font-bold uppercase tracking-widest text-white/90">{t.pricing}</Link>
+            <a href="/#faq" onClick={(e) => scrollToSection(e, 'faq')} className="text-sm font-bold uppercase tracking-widest text-white/90">{t.faq}</a>
+            
+            <div className="flex items-center justify-between pt-6 border-t border-white/5">
+               <button
+                 onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
+                 className="text-xs font-black uppercase tracking-[0.2em] text-white/40"
+               >
+                 {lang === 'en' ? 'Français' : 'English'}
+               </button>
+               <Button variant="hero" size="sm" className="rounded-full px-8 h-10 font-black text-[10px] tracking-widest uppercase bg-purple-600 text-white">
+                 {t.install}
+               </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
