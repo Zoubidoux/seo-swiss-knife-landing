@@ -1,127 +1,86 @@
-import { useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
+import { Button } from '@/components/ui/button'
 import { PixelHeart } from '@/components/PixelHeart'
-
-// Animations for the hero
-const HERO_STYLE = `
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  50% { transform: translateY(-20px) rotate(1deg); }
-}
-@keyframes pulse-soft {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
-}
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
-}
-`
+import { Sparkles } from 'lucide-react'
 
 export function HeroSection() {
   const { lang } = useLanguage()
   const t = translations[lang].hero
 
-  useEffect(() => {
-    if (!document.getElementById('hero-style')) {
-      const el = document.createElement('style')
-      el.id = 'hero-style'
-      el.textContent = HERO_STYLE
-      document.head.appendChild(el)
-    }
-  }, [])
-
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden bg-[#0a061e]">
-      {/* ── Background Elements ── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[80%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full opacity-40 animate-pulse" />
-        <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-[60%] h-[40%] bg-blue-600/10 blur-[100px] rounded-full opacity-30" />
+    <section className="relative min-h-[92vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
+      {/* ── Background Glow ── */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none" 
+        style={{ 
+          background: 'radial-gradient(circle at 50% 45%, rgba(139, 92, 246, 0.18) 0%, transparent 75%)' 
+        }} 
+      />
+      
+      {/* ── Content ── */}
+      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center gap-12">
         
-        {/* Floating Hearts */}
-        <div className="absolute inset-0 z-0">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse"
-              style={{
-                top: `${20 + Math.random() * 60}%`,
-                left: `${10 + Math.random() * 80}%`,
-                opacity: 0.1,
-                transform: `scale(${0.5 + Math.random()})`,
-                animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
-              }}
-            >
-              <PixelHeart size={24} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
-        {/* Eyebrow Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-8 border border-white/10 bg-white/5 text-white/50 backdrop-blur-sm">
-          CHROME EXTENSION · 100% FREE · PUBLIC BETA
-        </div>
-
-        {/* H1 Headline */}
-        <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black mb-8 tracking-tighter leading-[0.8] text-white">
-          {t.headline}
+        {/* Title */}
+        <h1 className="flex items-center justify-center gap-5 text-5xl md:text-7xl lg:text-[6.5rem] font-bold text-[#f5f5f4] tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-12 duration-1000">
+          <PixelHeart size={54} className="drop-shadow-[0_0_30px_rgba(139,92,246,0.6)]" />
+          <span>Search Toolbox</span>
         </h1>
 
-        {/* Feature Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          <div className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-purple-400 shadow-[0_0_8px_#a78bfa]" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">+20 apps in one</span>
+        {/* Feature Badges - Liquid Glass Style */}
+        <div className="flex flex-wrap items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
+          <div className="liquid-glass px-5 py-2 rounded-full text-[11px] font-medium uppercase tracking-[0.25em] text-white/60">
+            +20 apps in one
           </div>
-          <div className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">+60 features</span>
+          <div className="liquid-glass px-5 py-2 rounded-full text-[11px] font-medium uppercase tracking-[0.25em] text-white/60">
+            +60 features
           </div>
-          <div className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-400 shadow-[0_0_8px_#818cf8]" />
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/70">Many unique & customizable</span>
+          <div className="liquid-glass px-5 py-2 rounded-full text-[11px] font-medium uppercase tracking-[0.25em] text-white/40 flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5 text-primary/60" />
+            Many unique & customizable
           </div>
         </div>
 
         {/* Description */}
-        <p className="text-lg md:text-xl text-white/40 mb-12 max-w-2xl leading-relaxed font-medium">
-          {t.sub}
+        <p className="max-w-2xl text-lg md:text-xl text-muted-foreground font-medium leading-relaxed px-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-400">
+          {lang === 'fr' 
+            ? "Arrêtez de jongler avec 10 extensions. Une seule sidebar pour vos audits schema, redirections, images, robots et visibilité SERP — sans compte, sans login."
+            : "Stop juggling 10 extensions. One sidebar instantly audits your schema, redirects, hreflang, images, robots, links and SERP visibility — no tab switching, no login, no API key."}
         </p>
 
-        {/* Micro Mockup (from screenshot) */}
-        <div className="mb-10 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 inline-flex items-center gap-4 backdrop-blur-sm">
-           <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-             <div className="w-3 h-3 bg-red-400/80 rounded-sm flex items-center justify-center text-[7px] font-bold text-white">404</div>
-             <span className="text-[9px] text-white/40 font-mono">Chrome toolbar</span>
-           </div>
-           <div className="w-[1px] h-4 bg-white/10" />
-           <div className="flex items-center gap-2">
-             <div className="w-3 h-3 bg-indigo-500 rounded-sm" />
-             <span className="text-[9px] text-white/40 font-bold uppercase tracking-widest">404 Not Found</span>
+        {/* Chrome Toolbar Mockup */}
+        <div className="animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-600">
+           <div className="inline-flex items-center gap-4 px-8 py-4 rounded-3xl bg-white/[0.02] border border-white/[0.05] backdrop-blur-2xl shadow-2xl">
+              <span className="text-[10px] font-bold text-white/10 uppercase tracking-[0.35em]">Chrome toolbar</span>
+              <div className="h-5 w-px bg-white/5" />
+              <div className="relative group cursor-help">
+                <PixelHeart size={22} className="opacity-70 transition-all group-hover:opacity-100 group-hover:scale-110" style={{ filter: 'drop-shadow(0 0 10px rgba(139, 92, 246, 0.5))' }} />
+                <span className="absolute -top-1.5 -right-2 px-1.5 py-0.5 rounded-full bg-orange-500 text-white text-[8px] font-black shadow-lg">404</span>
+              </div>
+              <div className="px-3 py-1 rounded bg-orange-500/10 border border-orange-500/20 text-orange-500 text-[9px] font-black uppercase tracking-[0.35em]">
+                404 Not Found
+              </div>
            </div>
         </div>
 
-        {/* Main CTA */}
-        <div className="flex flex-col items-center gap-4">
+        {/* CTA */}
+        <div className="flex flex-col items-center gap-6 mt-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-800">
           <Button 
             size="lg" 
-            className="h-16 px-12 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black text-lg uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_20px_40px_rgba(167,139,250,0.25)]"
+            className="rounded-full px-12 h-16 bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-[0.25em] shadow-[0_20px_40px_rgba(139,92,246,0.35)] transition-all hover:scale-[1.03] active:scale-[0.98]"
           >
             {t.cta}
           </Button>
-          <p className="text-[11px] font-medium text-white/30 tracking-wide">
-            {t.ctaSub}
-          </p>
+          <span className="text-[10px] font-bold text-white/10 uppercase tracking-[0.35em] flex items-center gap-3">
+             <div className="w-1 h-1 rounded-full bg-white/10" />
+             {lang === 'fr' ? "Aucun compte requis · Fonctionne partout" : "No account required · Works on any URL"}
+             <div className="w-1 h-1 rounded-full bg-white/10" />
+          </span>
         </div>
       </div>
 
-      {/* Social Proof Bridge */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a061e] to-transparent pointer-events-none" />
+      {/* ── Bottom Fade ── */}
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
     </section>
   )
 }

@@ -1,14 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { SchemaMarkup }       from '@/components/SchemaMarkup'
-import { FloatingHearts }     from '@/components/FloatingHearts'
+import { PixelHeartsBackground } from '@/components/PixelHeartsBackground'
 import { Navbar }             from '@/components/Navbar'
 import { Footer }             from '@/components/Footer'
-import { BetaBanner }        from '@/components/BetaBanner'
-import { Home }              from '@/pages/Home'
-import { AiAgentPage }       from '@/pages/AiAgentPage'
-import { PricingPage }       from '@/pages/PricingPage'
-import { ScrollToTop }       from '@/components/ScrollToTop'
+import { Home }               from '@/pages/Home'
+import { AiAgentPage }        from '@/pages/AiAgentPage'
+import { PricingPage }        from '@/pages/PricingPage'
+import { ScrollToTop }        from '@/components/ScrollToTop'
 
 function App() {
   return (
@@ -16,8 +15,7 @@ function App() {
       <LanguageProvider>
         <ScrollToTop />
         <SchemaMarkup />
-        <FloatingHearts />
-        <BetaBanner />
+        <PixelHeartsBackground />
         <Navbar />
 
         <Routes>

@@ -22,9 +22,9 @@ const en = {
     label: "Empowering SEO experts at the world's leading agencies",
   },
   problem: {
-    eyebrow: "The Workflow Gap",
-    headline: "Technical SEO shouldn't feel like manual data entry",
-    sub: "You waste 40% of your audit time switching between tabs and copy-pasting into sheets. It's time to reclaim your focus.",
+    eyebrow: "The Problem",
+    headline: "Every SEO audit feels like assembling IKEA furniture without the manual",
+    sub: "You know what needs checking. But your tools are scattered, your workflow is broken, and the clock is ticking.",
     pains: [
       {
         icon: "⏱",
@@ -239,9 +239,15 @@ const en = {
     eyebrow: "Common Questions",
     headline: "Everything You Need to Know",
     items: [
-      { q: "Is Pixly really free?", a: "Yes. All our 60+ technical tools, redirect tracers, and schema inspectors are 100% free with no account required." },
-      { q: "What are AI credits?", a: "Credits are used for interactions with the AI SEO Agent. Each analysis or follow-up question consumes 1 credit." },
-      { q: "Can I cancel my Pro subscription?", a: "Of course. You can cancel at any time with one click from your dashboard — no hidden fees." }
+      { q: "Is Search Toolbox free?", a: "Yes. Over 60 SEO analysis tools, audits, and PDF reports are completely free with no account required. The only paid feature is the AI SEO Expert." },
+      { q: "How is the AI different from ChatGPT?", a: "Generic AI tools make educated guesses about your page. The AI Expert reads the real data (schema, meta tags, redirect chains, etc.) to give specific, actionable recommendations." },
+      { q: "Which browsers are supported?", a: "It works on all Chromium-based browsers, including Chrome, Edge, Brave, and Arc." },
+      { q: "Does it work on any website?", a: "Yes, including localhost, staging environments, and password-protected pages. It analyzes the live DOM, supporting JavaScript content." },
+      { q: "How is it different from DevTools?", a: "Search Toolbox is purpose-built for SEO workflows, featuring structured data validation, redirect chain tracing, and instant PDF reports." },
+      { q: "Is my data private?", a: "Yes. Search Toolbox runs entirely in your browser. No page content or URL data is sent to external servers; your audits are fully local." },
+      { q: "Can I export or share reports?", a: "Yes. You can download reports as PDFs or open them in a standalone, shareable URL." },
+      { q: "Can I hide tabs I don't use?", a: "Yes, the Settings panel allows you to hide any tab, set a default landing tab, and customize the context menu." },
+      { q: "Does the SERP VPN route my real traffic?", a: "No. It spoofs browser headers and geolocation signals to simulate regional results without routing your network traffic." }
     ]
   },
   spotlight: [
@@ -320,9 +326,9 @@ const fr: typeof en = {
     label: "Propulsé par les meilleurs experts SEO en agence",
   },
   problem: {
-    eyebrow: "Le Workflow Cassé",
-    headline: "Le SEO technique ne devrait pas être de la saisie manuelle",
-    sub: "Vous perdez 40% de votre temps d'audit entre les onglets et les tableurs. Il est temps de vous concentrer sur la stratégie.",
+    eyebrow: "Le Problème",
+    headline: "Chaque audit SEO ressemble à l'assemblage d'un meuble IKEA sans la notice",
+    sub: "Vous savez ce qu'il faut vérifier. Mais vos outils sont éparpillés, votre flux est cassé, et l'horloge tourne.",
     pains: [
       {
         icon: "⏱",
@@ -537,9 +543,15 @@ const fr: typeof en = {
     eyebrow: "Questions Fréquentes",
     headline: "Tout ce que vous devez savoir",
     items: [
-      { q: "Pixly est-il vraiment gratuit ?", a: "Oui. Nos 60+ outils techniques, traceurs et inspecteurs sont 100% gratuits sans compte." },
-      { q: "C'est quoi les crédits IA ?", a: "Ils servent à interagir avec l'Agent SEO. Chaque analyse ou question consomme 1 crédit." },
-      { q: "Puis-je annuler mon abonnement Pro ?", a: "Bien sûr. Annulez en un clic depuis votre dashboard — sans frais cachés." }
+      { q: "Est-ce que Search Toolbox est gratuit ?", a: "Oui. Plus de 60 outils, audits et rapports PDF sont gratuits sans compte. Seul l'Expert IA SEO est une fonctionnalité payante." },
+      { q: "Quelle différence avec ChatGPT ?", a: "ChatGPT devine. L'Expert IA lit les données réelles de votre page (schema, meta tags, redirections) pour donner des conseils précis." },
+      { q: "Quels navigateurs sont supportés ?", a: "Tous les navigateurs basés sur Chromium : Chrome, Edge, Brave, Arc." },
+      { q: "Cela fonctionne-t-il sur n'importe quel site ?", a: "Oui, y compris localhost, staging et pages protégées. L'extension analyse le DOM en direct." },
+      { q: "Quelle différence avec les DevTools ?", a: "Search Toolbox est conçu pour le SEO : validation de données structurées, tracé de redirections et rapports PDF instantanés." },
+      { q: "Mes données sont-elles privées ?", a: "Oui. L'extension tourne localement dans votre navigateur. Aucune donnée de page n'est envoyée vers des serveurs externes." },
+      { q: "Puis-je exporter mes rapports ?", a: "Oui. Téléchargez vos audits en PDF ou via une URL de partage dédiée." },
+      { q: "Puis-je masquer les onglets inutiles ?", a: "Oui, le panneau Paramètres permet de personnaliser l'interface et le menu contextuel." },
+      { q: "Le VPN SERP route-t-il mon trafic ?", a: "Non. Il simule les signaux de géolocalisation pour les résultats Google sans utiliser de serveur VPN externe." }
     ]
   },
   spotlight: [
