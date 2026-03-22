@@ -2,16 +2,6 @@ import { useState } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 
-const groupColors: Record<string, string> = {
-  Semantic:   'rgba(167,139,250,0.15)',
-  Sémantique: 'rgba(167,139,250,0.15)',
-  Technical:  'rgba(57,211,255,0.15)',
-  Technique:  'rgba(57,211,255,0.15)',
-  Netlinking: 'rgba(45,212,191,0.15)',
-  Toolbox:    'rgba(250,204,21,0.15)',
-  Outils:     'rgba(250,204,21,0.15)',
-}
-
 export function FeaturesSection() {
   const { lang } = useLanguage()
   const t = translations[lang].features
@@ -22,30 +12,27 @@ export function FeaturesSection() {
   const doubled = [...t.items, ...t.items]
 
   return (
-    <section id="features" className="bg-background py-24 overflow-hidden">
+    <section id="features" className="bg-white py-32 overflow-hidden grain-bg">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="text-center text-sm font-semibold tracking-widest uppercase text-muted-foreground mb-5">{t.eyebrow}</p>
-        <h2
-          className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-4 tracking-tight"
-          style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #a78bfa 100%)' }}
-        >
+        <p className="text-center text-[10px] font-black tracking-[0.3em] uppercase text-black/40 mb-8">
+           Features
+        </p>
+        <h2 className="text-center text-4xl md:text-7xl font-black text-black mb-6 tracking-tighter leading-[0.95]">
           {t.headline}
         </h2>
-        <p className="text-center text-lg text-muted-foreground max-w-lg mx-auto mb-14">{t.sub}</p>
+        <p className="text-center text-xl text-black/50 max-w-lg mx-auto mb-20 font-medium text-balance">{t.sub}</p>
       </div>
 
-      {/* Carousel track — full bleed */}
       <div
         className="relative"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => { setPaused(false); setSelected(null) }}
       >
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(90deg, hsl(var(--background)) 0%, transparent 100%)' }} />
-        <div className="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(270deg, hsl(var(--background)) 0%, transparent 100%)' }} />
+        <div className="absolute left-0 top-0 bottom-0 w-40 z-10 pointer-events-none bg-gradient-to-r from-white to-transparent" />
+        <div className="absolute right-0 top-0 bottom-0 w-40 z-10 pointer-events-none bg-gradient-to-l from-white to-transparent" />
 
         <div
-          className="flex gap-4 w-max"
+          className="flex gap-6 w-max"
           style={{
             paddingLeft: 24,
             paddingRight: 24,
@@ -59,40 +46,27 @@ export function FeaturesSection() {
               <div
                 key={`${f.title}-${idx}`}
                 onClick={() => setSelected(isSelected ? null : idx)}
-                className="flex-shrink-0 liquid-glass rounded-2xl cursor-pointer transition-all duration-300"
+                className="flex-shrink-0 editorial-card rounded-2xl cursor-pointer transition-all duration-300 bg-white"
                 style={{
-                  width: isSelected ? 300 : 240,
-                  padding: isSelected ? 20 : 16,
-                  border: isSelected ? `1px solid ${f.color}40` : '1px solid rgba(255,255,255,0.07)',
-                  boxShadow: isSelected ? `0 0 32px ${f.color}20` : 'none',
+                  width: isSelected ? 320 : 260,
+                  padding: 24,
                 }}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center text-base font-bold flex-shrink-0"
-                    style={{ background: groupColors[f.label] ?? 'rgba(255,255,255,0.07)', color: f.color }}
-                  >
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-10 h-10 rounded-xl bg-black/5 flex items-center justify-center text-lg grayscale">
                     {f.icon}
                   </div>
                   <div>
-                    <h4 className="text-foreground font-semibold text-sm leading-tight">{f.title}</h4>
-                    <p className="text-xs mt-0.5 font-medium" style={{ color: f.color }}>{f.label}</p>
+                    <h4 className="text-black font-bold text-sm leading-tight tracking-tight uppercase">{f.title}</h4>
+                    <p className="text-[10px] mt-1 font-black uppercase tracking-widest text-black/30">{f.label}</p>
                   </div>
                 </div>
                 <p
-                  className="text-muted-foreground text-xs leading-relaxed overflow-hidden transition-all duration-300"
+                  className="text-black/50 text-xs font-medium leading-relaxed overflow-hidden transition-all duration-300"
                   style={{ maxHeight: isSelected ? 120 : 44, WebkitLineClamp: isSelected ? undefined : 2, display: '-webkit-box', WebkitBoxOrient: 'vertical' }}
                 >
                   {f.desc}
                 </p>
-                {isSelected && (
-                  <div className="mt-3 flex items-center gap-1.5">
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: `${f.color}18`, color: f.color }}>
-                      {f.label}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">— click to collapse</span>
-                  </div>
-                )}
               </div>
             )
           })}

@@ -102,67 +102,51 @@ export function AllFeaturesSection() {
     })
   }, [search, active])
 
-  // Group by category when showing All
-  const grouped = useMemo(() => {
-    if (active !== 'All' || search) return null
-    const map: Record<string, typeof ALL_FEATURES> = {}
-    ALL_FEATURES.forEach(f => { if (!map[f.cat]) map[f.cat] = []; map[f.cat].push(f) })
-    return map
-  }, [active, search])
 
   return (
-    <section className="relative bg-background py-20 sm:py-28 px-4 sm:px-6">
-      {/* Subtle bg glow */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(109,40,217,0.07) 0%, transparent 70%)' }} />
-
+    <section className="relative bg-[#FAFAFA] py-32 px-6 overflow-hidden grain-bg border-y border-black/5">
       <div className="max-w-6xl mx-auto relative">
         {/* Header */}
-        <p className="text-center text-xs font-bold tracking-widest uppercase mb-4"
-          style={{ color: '#a78bfa' }}>{t.eyebrow}</p>
-        <h2 className="text-center font-bold bg-clip-text text-transparent mb-3 tracking-tight"
-          style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', backgroundImage: 'linear-gradient(135deg, #f0f0f2 0%, #a78bfa 100%)' }}>
+        <p className="text-center text-[10px] font-black tracking-[0.3em] uppercase mb-8 text-black/40">
+          {t.eyebrow}
+        </p>
+        <h2 className="text-center text-4xl md:text-7xl font-black text-black mb-12 tracking-tighter leading-[0.95] text-balance">
           {t.headline}
         </h2>
-        <p className="text-center text-base mb-10 max-w-lg mx-auto" style={{ color: 'rgba(255,255,255,0.45)' }}>
+        <p className="text-center text-black/50 text-xl font-medium mb-16 max-w-xl mx-auto text-balance">
           {t.sub}
         </p>
 
         {/* Search + filters — anchor for sticky detection */}
         <div ref={searchRef} />
-        <div className={`sticky top-[72px] z-20 pb-4 transition-all ${sticky ? 'pt-3' : ''}`}
-          style={{ background: sticky ? 'rgba(8,4,24,0.92)' : 'transparent', backdropFilter: sticky ? 'blur(16px)' : 'none', borderBottom: sticky ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+        <div className={`sticky top-[72px] z-20 pb-8 transition-all duration-300 ${sticky ? 'pt-6 bg-white/80 backdrop-blur-xl border-bottom border-black/5 -mx-6 px-6' : ''}`}>
 
           {/* Search */}
-          <div className="relative mb-4 max-w-lg mx-auto">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>🔍</span>
+          <div className="relative mb-8 max-w-lg mx-auto">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30">🔍</span>
             <input type="text" placeholder={t.placeholder} value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none focus:ring-1"
-              style={{
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
-                color: '#f0f0f2', '--tw-ring-color': '#a78bfa',
-              } as React.CSSProperties} />
+              className="w-full pl-12 pr-6 py-4 rounded-2xl text-sm font-bold bg-white border border-black/5 outline-none focus:ring-2 focus:ring-black/5 transition-all shadow-sm"
+              style={{ color: '#000' }} />
           </div>
 
           {/* Category tabs */}
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-3">
             {CATS.map(c => {
               const isA = c.key === active
               const label = lang === 'fr' ? c.labelFr : c.label
               const count = c.key === 'All' ? ALL_FEATURES.length : ALL_FEATURES.filter(f => f.cat === c.key).length
               return (
                 <button key={c.key} onClick={() => setActive(c.key)}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+                  className="flex items-center gap-3 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-sm"
                   style={{
-                    background: isA ? c.bg : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${isA ? c.border : 'rgba(255,255,255,0.07)'}`,
-                    color: isA ? c.color : 'rgba(255,255,255,0.40)',
-                    transform: isA ? 'scale(1.05)' : 'scale(1)',
+                    background: isA ? 'black' : 'white',
+                    border: `1px solid ${isA ? 'black' : 'rgba(0,0,0,0.05)'}`,
+                    color: isA ? 'white' : 'rgba(0,0,0,0.4)',
+                    transform: isA ? 'translateY(-1px)' : 'none',
                   }}>
                   {label}
-                  <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold"
-                    style={{ background: isA ? `${c.color}25` : 'rgba(255,255,255,0.06)', color: isA ? c.color : 'rgba(255,255,255,0.3)' }}>
+                  <span className={`px-2 py-0.5 rounded-full text-[9px] ${isA ? 'bg-white/20 text-white' : 'bg-black/5 text-black/30'}`}>
                     {count}
                   </span>
                 </button>
@@ -172,71 +156,76 @@ export function AllFeaturesSection() {
         </div>
 
         {/* Result count */}
-        <p className="text-center text-xs mt-5 mb-8" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <p className="text-center text-[10px] font-black uppercase tracking-widest mt-12 mb-12 text-black/20">
           {filtered.length} {lang === 'fr' ? 'fonctionnalités' : 'features'}
-          {search && <span> — "{search}"</span>}
+          {search && <span className="text-primary ml-2 uppercase">— "{search}"</span>}
         </p>
 
-        {/* GROUPED view (All + no search) */}
-        {grouped ? (
-          <div className="space-y-12">
-            {CATS.slice(1).map(cat => {
-              const items = grouped[cat.key] ?? []
-              return (
-                <div key={cat.key}>
-                  {/* Category header */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${cat.color}40, transparent)` }} />
-                    <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"
-                      style={{ background: cat.bg, border: `1px solid ${cat.border}`, color: cat.color }}>
-                      {lang === 'fr' ? cat.labelFr : cat.label}
-                      <span className="opacity-60">{items.length}</span>
-                    </div>
-                    <div className="h-px flex-1" style={{ background: `linear-gradient(270deg, ${cat.color}40, transparent)` }} />
-                  </div>
-                  {/* Grid */}
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                    {items.map(f => (
-                      <FeatureCard key={f.title} f={f} color={cat.color} bg={cat.bg} border={cat.border} />
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
+        {/* Carousel View */}
+        <div className="relative mt-20 group/carousel px-4">
+          {/* Edge Fades */}
+          <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-[#FAFAFA] to-transparent z-[5] pointer-events-none hidden md:block" />
+          <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-[#FAFAFA] to-transparent z-[5] pointer-events-none hidden md:block" />
+
+          {/* Navigation Controls */}
+          <div className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 z-10">
+            <button 
+              onClick={() => {
+                const el = document.getElementById('features-track')
+                if (el) el.scrollBy({ left: -window.innerWidth * 0.8, behavior: 'smooth' })
+              }}
+              className="w-14 h-14 rounded-2xl border-2 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-y-px active:shadow-none"
+            >
+              <span className="text-xl font-black">←</span>
+            </button>
           </div>
-        ) : (
-          /* FLAT view (filtered / search) */
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-            {filtered.map(f => {
-              const cat = CATS.find(c => c.key === f.cat) ?? CATS[1]
-              return <FeatureCard key={f.title} f={f} color={cat.color} bg={cat.bg} border={cat.border} />
-            })}
+          <div className="absolute top-1/2 -right-4 md:-right-12 -translate-y-1/2 z-10">
+            <button 
+              onClick={() => {
+                const el = document.getElementById('features-track')
+                if (el) el.scrollBy({ left: window.innerWidth * 0.8, behavior: 'smooth' })
+              }}
+              className="w-14 h-14 rounded-2xl border-2 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-all shadow-[6px_6px_0_0_rgba(0,0,0,1)] active:translate-y-px active:shadow-none"
+            >
+              <span className="text-xl font-black">→</span>
+            </button>
           </div>
-        )}
+
+          <div 
+            id="features-track"
+            className="flex gap-6 overflow-x-auto pb-16 scrollbar-hide snap-x snap-mandatory perspective-1000"
+          >
+             {filtered.map(f => (
+               <div key={f.title} className="snap-center shrink-0 w-[85%] md:w-[45%] lg:w-[31%] transition-all duration-500 hover:scale-[1.02]">
+                 <FeatureCard f={f} />
+               </div>
+             ))}
+          </div>
+
+          {/* High-Fidelity Progress Indicator */}
+          <div className="mt-4 flex justify-center gap-3">
+             {CATS.map((c, idx) => (
+                <div 
+                  key={idx} 
+                  className={`h-1.5 transition-all duration-500 rounded-full ${c.key === active ? 'w-12 bg-black' : 'w-4 bg-black/10'}`} 
+                />
+             ))}
+          </div>
+        </div>
       </div>
     </section>
   )
 }
 
-function FeatureCard({ f, color, bg, border }: {
-  f: { icon: string; title: string; desc: string }
-  color: string; bg: string; border: string
-}) {
+function FeatureCard({ f }: { f: { icon: string; title: string; desc: string } }) {
   return (
-    <div className="group rounded-xl p-3.5 flex gap-3 transition-all cursor-default"
-      style={{
-        background: 'rgba(255,255,255,0.025)',
-        border: `1px solid rgba(255,255,255,0.06)`,
-      }}
-      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = bg; (e.currentTarget as HTMLDivElement).style.borderColor = border }}
-      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.025)'; (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.06)' }}>
-      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 mt-0.5 transition-all"
-        style={{ background: bg, color, border: `1px solid ${border}` }}>
+    <div className="editorial-card p-6 flex items-start gap-4 bg-white hover:bg-black group transition-all cursor-default duration-300">
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0 bg-black/5 text-black/60 group-hover:bg-white/10 group-hover:text-white transition-colors">
         {f.icon}
       </div>
       <div>
-        <h4 className="font-semibold text-sm leading-tight mb-1" style={{ color: '#f0f0f2' }}>{f.title}</h4>
-        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>{f.desc}</p>
+        <h4 className="font-black text-xs uppercase tracking-widest mb-1 text-black group-hover:text-white transition-colors">{f.title}</h4>
+        <p className="text-[11px] font-medium leading-relaxed text-black/40 group-hover:text-white/40 transition-colors uppercase tracking-tight">{f.desc}</p>
       </div>
     </div>
   )

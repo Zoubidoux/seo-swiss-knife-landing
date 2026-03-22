@@ -1,187 +1,160 @@
 import { useLanguage } from '@/contexts/LanguageContext'
-import { PixelHeart } from '@/components/PixelHeart'
-
-const FEATURE_GROUPS = [
-  {
-    color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.08)',
-    icon: '◉',
-    label: 'Semantic',
-    count: 15,
-    items: ['Full Page Overview', 'Title & Meta Scoring', 'Canonical Checker', 'Robots Meta Parser', 'H1–H6 Hierarchy', 'Open Graph Preview', 'Twitter Card Preview', 'WhatsApp Preview', 'JSON-LD Extractor', 'Microdata & RDFa', 'Schema Validator', 'Hreflang Parser', 'Return Link Checker', 'Language Validator', 'URL Variants'],
-  },
-  {
-    color: '#39d3ff',
-    bg: 'rgba(57,211,255,0.08)',
-    icon: '⊖',
-    label: 'Technical',
-    count: 14,
-    items: ['Robots.txt Viewer', 'X-Robots-Tag Header', 'HTTPS Detection', 'Redirect Chain Tracer', 'Redirect Timing', 'Image Alt Audit', 'Image Dimensions', 'Image Format (WebP/AVIF)', 'Image Size Checker', 'Image ZIP Export', 'Image CSV Export', 'CSS Inspector', 'Source Code Viewer', 'JS Render Diff'],
-  },
-  {
-    color: '#2dd4bf',
-    bg: 'rgba(45,212,191,0.08)',
-    icon: '⇄',
-    label: 'Netlinking',
-    count: 7,
-    items: ['Full Link Listing', 'Nofollow Detection', 'Sponsored & UGC Tags', 'External Link Audit', 'Link CSV Export', 'Link Grabber', 'Text Grabber'],
-  },
-  {
-    color: '#facc15',
-    bg: 'rgba(250,204,21,0.08)',
-    icon: '🌐',
-    label: 'Toolbox',
-    count: 16,
-    items: ['SERP VPN Geo-Sim', 'Device Simulation', 'Google Dork Operators', 'Duplicate Content', 'PageSpeed Link', 'Rich Results Tester', 'Ahrefs / Semrush / Moz', 'Cookie Manager', 'Cookie Export/Import', 'Cache & Storage Cleaner', 'User Agent Switcher', 'SEO Glossary 150+', 'Weighted SEO Report', 'PDF Export', 'Shareable Report URL', 'Viewport Screenshot'],
-  },
-  {
-    color: '#f97316',
-    bg: 'rgba(249,115,22,0.08)',
-    icon: '⌨',
-    label: 'Toolbar & UX',
-    count: 9,
-    items: ['JavaScript Toggle', 'Mobile Preview', 'Color Picker', 'Transparent Overlay', 'Dark / Light Theme', 'Keyboard Shortcuts', 'Configurable Sidebar', 'Chrome Side Panel', 'Context Menu (30+ actions)'],
-  },
-]
-
-const STATS = [
-  { value: '60+', label: 'Built-in tools', color: '#a78bfa' },
-  { value: '30+', label: 'Context menu actions', color: '#39d3ff' },
-  { value: '150+', label: 'SEO terms in glossary', color: '#2dd4bf' },
-  { value: '100%', label: 'Free — no account', color: '#facc15' },
-]
+import { translations } from '@/i18n/index'
+import { Mascot } from '@/components/Mascot'
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Check } from 'lucide-react'
 
 export function BenefitsSection() {
   const { lang } = useLanguage()
+  const t = translations[lang].benefits
+
+  const expertiseColors = [
+    'offset-beginner',
+    'offset-intermediate',
+    'offset-expert'
+  ]
 
   return (
-    <section className="relative bg-background py-24 px-6 overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent)' }} />
+    <section className="relative bg-white py-32 px-6 overflow-hidden grid-bg">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] grain-bg" />
+      
+      <div className="max-w-6xl mx-auto flex flex-col gap-32 relative z-10">
 
-      <div className="max-w-6xl mx-auto flex flex-col gap-20">
+        {/* ── Header ── */}
+        <div className="relative">
+           <div className="absolute -top-12 left-1/2 -translate-x-1/2">
+              <Mascot type="beginner" size={80} />
+           </div>
+           <p className="text-center text-[10px] font-black tracking-[0.3em] uppercase text-black/40 mb-8 pt-8">
+             {t.eyebrow}
+           </p>
+           <h2 className="text-center text-4xl md:text-7xl font-black text-black mb-8 leading-[0.95] tracking-tighter text-balance">
+             {t.headline}
+           </h2>
+           <p className="text-center text-black/60 text-xl font-medium mb-20 max-w-2xl mx-auto text-balance">
+             {t.sub}
+           </p>
+        </div>
 
-        {/* ── Block 1: Everything you need ── */}
-        <div>
-          <p className="text-center text-sm font-semibold tracking-widest uppercase text-muted-foreground mb-5">
-            {lang === 'fr' ? 'Couverture complète' : 'Complete Coverage'}
-          </p>
-          <h2
-            className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-4 tracking-tight"
-            style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #a78bfa 100%)' }}
-          >
-            {lang === 'fr'
-              ? 'Tout ce dont un SEO a besoin. Sans exception.'
-              : 'Every tool a technical SEO needs. Without exception.'}
-          </h2>
-          <p className="text-center text-muted-foreground text-lg mb-14 max-w-2xl mx-auto">
-            {lang === 'fr'
-              ? '60+ outils couvrant chaque dimension du SEO — sémantique, technique, netlinking, toolbox — dans un seul panneau Chrome.'
-              : '60+ tools covering every SEO dimension — semantic, technical, netlinking, toolbox — inside a single Chrome panel.'}
-          </p>
-
-          {/* Feature group grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {FEATURE_GROUPS.map((g) => (
-              <div key={g.label} className="liquid-glass rounded-2xl p-5 flex flex-col gap-3" style={{ border: `1px solid ${g.color}18` }}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style={{ background: g.bg, color: g.color }}>{g.icon}</div>
-                    <span className="font-bold text-foreground text-sm">{g.label}</span>
-                  </div>
-                  <span className="text-xs font-black px-2 py-0.5 rounded-full" style={{ background: g.bg, color: g.color }}>{g.count} tools</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {g.items.map((item) => (
-                    <span key={item} className="text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                      {item}
-                    </span>
-                  ))}
+        {/* ── Feature Bento Grid ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {t.groups.map((g, i) => (
+            <div key={g.label} className={`editorial-card rounded-2xl p-8 flex flex-col gap-8 bg-white transition-all ${expertiseColors[i % 3]} hover:translate-x-[-2px] hover:translate-y-[-2px]`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center text-xl">{g.icon}</div>
+                  <span className="font-black text-black text-lg tracking-tighter uppercase">{g.label}</span>
                 </div>
               </div>
-            ))}
-
-            {/* Keyboard shortcuts card */}
-            <div className="liquid-glass rounded-2xl p-5 flex flex-col gap-3" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)' }}>⌨</div>
-                <span className="font-bold text-foreground text-sm">Keyboard Shortcuts</span>
-              </div>
-              <p className="text-muted-foreground text-xs leading-relaxed">
-                {lang === 'fr'
-                  ? 'Chaque onglet accessible par un raccourci clavier configurable. Naviguez entre Overview, Schema, Redirects sans jamais toucher la souris.'
-                  : 'Every tab accessible with a configurable keyboard shortcut. Navigate Overview → Schema → Redirects without touching the mouse.'}
-              </p>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {[['Alt+1','Overview'],['Alt+2','Headings'],['Alt+3','Schema'],['Alt+4','Redirects'],['Alt+R','Report']].map(([k, v]) => (
-                  <div key={k} className="flex items-center gap-1">
-                    <kbd className="text-[9px] px-1.5 py-0.5 rounded font-mono" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.12)' }}>{k}</kbd>
-                    <span className="text-[9px] text-white/30">{v}</span>
-                  </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {g.items.map((item) => (
+                  <span key={item} className="text-[10px] px-3 py-1.5 rounded-lg font-black uppercase tracking-widest text-black/40 bg-bone border border-black/5">
+                    {item}
+                  </span>
                 ))}
               </div>
+
+              <div className="mt-auto pt-6 border-t border-black/5 flex items-center justify-between">
+                 <span className="text-[10px] font-black uppercase tracking-widest text-black/20">{g.count} Pro Tools</span>
+                 <ArrowRight className="w-4 h-4 text-black/20" />
+              </div>
+            </div>
+          ))}
+
+          {/* Keyboard Shortcuts - Wide Card */}
+          <div className="md:col-span-2 editorial-card rounded-2xl p-8 flex flex-col md:flex-row gap-10 bg-white offset-expert">
+            <div className="flex-1 flex flex-col gap-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center text-xl">⌨</div>
+                <span className="font-black text-black text-lg tracking-tighter uppercase">{t.shortcuts.title}</span>
+              </div>
+              <p className="text-black/60 text-base font-medium leading-relaxed">
+                {t.shortcuts.body}
+              </p>
+            </div>
+            <div className="flex-1 grid grid-cols-2 gap-4">
+               {t.shortcuts.items.map((s) => (
+                 <div key={s.key} className="flex flex-col gap-1.5 p-3 rounded-xl border border-black/5 bg-bone/30">
+                   <kbd className="w-fit text-[10px] px-2 py-1 rounded-md font-black bg-black text-white border-2 border-black inline-block">{s.key}</kbd>
+                   <span className="text-[9px] text-black/40 font-black uppercase tracking-widest leading-none">{s.label}</span>
+                 </div>
+               ))}
             </div>
           </div>
-        </div>
 
-        {/* ── Block 2: Stats ── */}
-        <div className="liquid-glass rounded-2xl py-10 px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col items-center gap-2 text-center">
-                <span className="text-5xl font-black bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, ${s.color}, #fff)` }}>{s.value}</span>
-                <span className="text-sm text-muted-foreground font-medium">{s.label}</span>
-              </div>
-            ))}
+          {/* Mascot Success Card */}
+          <div className="editorial-card rounded-2xl p-8 flex flex-col items-center justify-center text-center bg-intermediate text-white border-none shadow-none">
+             <Mascot type="intermediate" state="open" size={100} />
+             <p className="font-black uppercase tracking-widest text-[10px] mt-4 opacity-60">Ready to start?</p>
+             <p className="text-xl font-black leading-tight mt-2">The ultimate SEO toolbox awaits.</p>
           </div>
         </div>
 
-        {/* ── Block 3: Problem → Solution (compact) ── */}
-        <div className="grid md:grid-cols-2 gap-10 items-start">
-          <div>
-            <p className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: '#f97316' }}>
-              {lang === 'fr' ? 'Le vrai problème' : 'The Problem'}
+        {/* ── Stats Snapshot ── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          {t.stats.map((s, i) => (
+            <div key={s.label} className="editorial-card rounded-2xl p-8 bg-white flex flex-col items-center justify-center gap-2 text-center">
+              <span className={`text-5xl font-black tracking-tighter leading-none ${i === 0 ? 'text-beginner' : i === 1 ? 'text-intermediate' : 'text-black'}`}>
+                 {s.value}
+              </span>
+              <span className="text-[10px] text-black/40 font-black uppercase tracking-[0.2em]">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Problem & Solution: The Precision Split ── */}
+        <div className="grid lg:grid-cols-12 gap-12 items-stretch">
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            <p className="text-[10px] font-black tracking-[0.3em] uppercase text-beginner mb-8">
+              {t.problem.eyebrow}
             </p>
-            <h2 className="text-2xl md:text-3xl font-semibold text-foreground leading-snug tracking-tight mb-5">
-              {lang === 'fr' ? '6 onglets ouverts pour un seul audit.' : '6 tabs open for a single audit.'}
+            <h2 className="text-3xl md:text-5xl font-black text-black tracking-tighter leading-[0.95] mb-12">
+              {t.problem.headline}
             </h2>
-            <div className="flex flex-col gap-3">
-              {[
-                { icon: '🗂', text: lang === 'fr' ? 'Schema validator ici, robots checker là, redirect tracer ailleurs — le context-switching tue votre productivité.' : 'Schema validator here, robots checker there, redirect tracer somewhere else — context-switching kills your flow.' },
-                { icon: '🔍', text: lang === 'fr' ? 'Hreflang cassé, canonical manquant, données structurées malformées — des erreurs invisibles jusqu\'à ce qu\'elles coûtent des rankings.' : 'Broken hreflang, missing canonical, malformed structured data — invisible until they cost you rankings.' },
-                { icon: '📊', text: lang === 'fr' ? 'Chaque outil est un onglet séparé, un compte séparé, une interface différente. Fini.' : 'Every tool is a separate tab, separate account, different UI. No more.' },
-              ].map((p) => (
-                <div key={p.text} className="flex gap-3">
-                  <span className="text-xl flex-shrink-0 mt-0.5">{p.icon}</span>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{p.text}</p>
+            <div className="space-y-6">
+              {t.problem.items.map((p) => (
+                <div key={p.text} className="flex gap-5 p-4 rounded-xl hover:bg-black/[0.02] transition-colors border border-transparent hover:border-black/5">
+                  <span className="text-2xl flex-shrink-0">{p.icon}</span>
+                  <p className="text-black/60 text-base font-medium leading-relaxed">{p.text}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="liquid-glass rounded-2xl p-7 flex flex-col gap-4">
-            <div className="flex items-center gap-3 mb-1">
-              <PixelHeart size={32} style={{ filter: 'drop-shadow(0 0 10px rgba(167,139,250,0.5))' }} />
-              <div>
-                <p className="text-foreground font-bold">Search Toolbox</p>
-                <p className="text-muted-foreground text-xs">{lang === 'fr' ? 'Un panel, tout le reste.' : 'One panel, everything else gone.'}</p>
+          <div className="lg:col-span-7 editorial-card rounded-3xl p-10 bg-white relative overflow-hidden offset-intermediate">
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
+                   <div className="w-6 h-6 border-2 border-white rounded-sm rotate-45" />
+                </div>
+                <div>
+                  <p className="text-black font-black text-2xl tracking-tighter uppercase leading-none">SEARCHTOOLBOX</p>
+                  <p className="text-black/40 text-[10px] font-black uppercase tracking-widest mt-1.5">{t.solution.sub}</p>
+                </div>
               </div>
+              <div className="grid sm:grid-cols-2 gap-y-6 gap-x-12 mb-12">
+                {t.solution.items.map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-intermediate text-white flex-shrink-0">
+                       <Check className="w-3 h-3" strokeWidth={4} />
+                    </div>
+                    <span className="text-sm text-black font-bold opacity-80">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <Button 
+                size="lg"
+                className="w-full h-16 rounded-xl bg-black text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-black/90 hover:shadow-xl transition-all mt-auto"
+              >
+                {t.solution.cta}
+              </Button>
             </div>
-            {[
-              lang === 'fr' ? '60+ outils dans un seul sidebar Chrome' : '60+ tools in a single Chrome sidebar',
-              lang === 'fr' ? 'Toutes les catégories SEO couvertes' : 'Every SEO category covered',
-              lang === 'fr' ? '30+ raccourcis via le menu contextuel' : '30+ shortcuts via right-click context menu',
-              lang === 'fr' ? 'Raccourcis clavier configurables' : 'Fully configurable keyboard shortcuts',
-              lang === 'fr' ? 'Zéro compte, zéro clé API' : 'Zero account, zero API key',
-              lang === 'fr' ? 'Fonctionne sur chaque page visitée' : 'Works on every page you visit',
-            ].map((item) => (
-              <div key={item} className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black flex-shrink-0" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>✓</span>
-                <span className="text-sm text-foreground/80">{item}</span>
-              </div>
-            ))}
-            <button className="mt-2 w-full py-3 rounded-xl text-sm font-bold uppercase tracking-wider transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.25), rgba(57,211,255,0.2))', color: '#e8e8e9', border: '1px solid rgba(167,139,250,0.3)' }}>
-              {lang === 'fr' ? 'Installer gratuitement →' : 'Install for Free →'}
-            </button>
+            
+            {/* Background Decoration */}
+            <div className="absolute -bottom-10 -right-10 opacity-10">
+               <Mascot type="expert" size={240} />
+            </div>
           </div>
         </div>
 

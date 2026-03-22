@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDown, Sparkles, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
-import { PixelHeart } from '@/components/PixelHeart'
+import { Mascot } from '@/components/Mascot'
 import { Link, useLocation } from 'react-router-dom'
 
 export function Navbar() {
@@ -34,7 +34,6 @@ export function Navbar() {
     }
   }, [])
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false)
   }, [location.pathname])
@@ -52,163 +51,185 @@ export function Navbar() {
   }
 
   const featureItems = [
-    { id: 'features', label: lang === 'fr' ? 'Audit Sémantique' : 'Semantic Audit', badge: 'semantic audit' },
-    { id: 'technical', label: lang === 'fr' ? 'Audit Technique' : 'Technical Audit', badge: 'technical audit' },
-    { id: 'context-menu', label: lang === 'fr' ? 'Menu Contextuel' : 'Context Menu', badge: 'right click quick access' },
-    { id: 'all-features', label: lang === 'fr' ? 'Tous les Outils' : 'All Tools', badge: 'list of features' },
-    { id: 'ai-agent', isLink: true, to: '/ai-agent', label: lang === 'fr' ? 'Agent IA SEO' : 'AI SEO Agent', badge: 'ai seo agent' },
+    { id: 'features', label: translations[lang].features.items[0].title, badge: translations[lang].features.items[0].label },
+    { id: 'technical', label: translations[lang].features.items[1].title, badge: translations[lang].features.items[1].label },
+    { id: 'context-menu', label: translations[lang].contextMenu.headline, badge: translations[lang].contextMenu.eyebrow },
+    { id: 'all-features', label: translations[lang].allFeatures.headline, badge: translations[lang].allFeatures.eyebrow },
+    { id: 'ai-agent', isLink: true, to: '/ai-agent', label: t.aiExpert, badge: t.aiAssistantBadge },
   ]
 
   return (
     <div
-      className="w-full fixed top-0 z-50 transition-all duration-500"
+      className="w-full fixed top-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled || mobileMenuOpen ? 'rgba(4,13,26,0.95)' : 'transparent',
-        backdropFilter: scrolled || mobileMenuOpen ? 'blur(20px)' : 'none',
-        WebkitBackdropFilter: scrolled || mobileMenuOpen ? 'blur(20px)' : 'none',
-        borderBottom: scrolled || mobileMenuOpen ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent'
+        background: scrolled || mobileMenuOpen ? 'rgba(255,255,255,0.98)' : 'transparent',
+        backdropFilter: scrolled || mobileMenuOpen ? 'blur(10px)' : 'none',
+        borderBottom: scrolled || mobileMenuOpen ? '2px solid #000000' : '2px solid transparent'
       }}
     >
-      <style>{`
-        @keyframes shine {
-          0% { background-position: -100% 0; }
-          100% { background-position: 200% 0; }
-        }
-        .animate-shine {
-          background: linear-gradient(90deg, #a78bfa 0%, #fff 50%, #a78bfa 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shine 3s linear infinite;
-        }
-        .ai-glow {
-          box-shadow: 0 0 15px rgba(167,139,250,0.3);
-        }
-      `}</style>
-
-      <nav className="flex items-center justify-between py-5 px-6 md:px-8 max-w-7xl mx-auto">
+      <nav className="flex items-center justify-between py-6 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Left — Brand */}
-        <Link to="/" className="flex items-center gap-2.5 no-underline group shrink-0 relative z-50">
-          <PixelHeart size={24} style={{ filter: 'drop-shadow(0 0 8px rgba(167,139,250,0.5))' }} />
-          <span className="font-bold text-lg tracking-tighter" style={{ background: 'linear-gradient(90deg, #fff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Search Toolbox
+        <Link to="/" className="flex items-center gap-3 no-underline group shrink-0 relative z-50">
+          <Mascot type="beginner" size={28} className="group-hover:scale-110 transition-transform" />
+          <span className="font-black text-xl tracking-[-0.05em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
+            <span>SEARCHT</span>
+            <div className="relative flex items-center justify-center w-[1.1em] h-[1em] overflow-visible mx-[-0.01em]">
+              {/* Pink Mascot as Background - Aligned to hide natural eyes */}
+              <div className="absolute inset-0 flex items-center justify-center -z-10 transition-transform duration-500">
+                 <img 
+                   src="/assets/mascots/beginner-closed.png" 
+                   alt="" 
+                   className="w-[1.6em] h-[1.6em] object-contain translate-y-[12%] opacity-70"
+                 />
+              </div>
+              
+              {/* CSS Eyes */}
+              <div className="relative flex items-center gap-[0.05em] translate-y-[-2%]">
+                <div className="w-[0.44em] h-[0.44em] rounded-full bg-white border-[0.08em] border-black flex items-center justify-center shadow-sm">
+                   <div className="w-[45%] h-[45%] bg-black rounded-full" />
+                </div>
+                <div className="w-[0.44em] h-[0.44em] rounded-full bg-white border-[0.08em] border-black flex items-center justify-center shadow-sm">
+                   <div className="w-[45%] h-[45%] bg-black rounded-full" />
+                </div>
+              </div>
+            </div>
+            <span>LBOX</span>
           </span>
         </Link>
 
         {/* Center — Navigation (Desktop) */}
-        <div className="hidden lg:flex items-center gap-8">
-          <Link to="/" className={`text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
+        <div className="hidden lg:flex items-center gap-10">
+          <Link to="/" className={`text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${location.pathname === '/' ? 'text-black underline underline-offset-8 decoration-2' : 'text-black/40 hover:text-black'}`}>
             {t.home}
           </Link>
 
-          {/* Features Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => setFeaturesOpen(!featuresOpen)}
-              className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${featuresOpen ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}
+              className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${featuresOpen ? 'text-black' : 'text-black/40 hover:text-black'}`}
             >
               {t.features} <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${featuresOpen ? 'rotate-180' : ''}`} />
             </button>
             
             {featuresOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 p-2 rounded-[24px] bg-[#08111F] border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] animate-in fade-in slide-in-from-top-2">
-                 <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#08111F] rotate-45 border-t border-l border-white/5" />
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-6 w-64 p-3 rounded-xl bg-white border-2 border-black shadow-[8px_8px_0_0_rgba(0,0,0,0.1)] animate-in fade-in slide-in-from-top-2">
                  {featureItems.map((item) => (
-                   item.isLink ? (
-                      <Link 
-                        key={item.label}
-                        to={item.to || '/'}
-                        className="group flex flex-col px-4 py-3 rounded-xl hover:bg-white/5 transition-all no-underline"
-                      >
-                         <div className="text-[11px] font-bold text-white/90 group-hover:text-purple-400">{item.label}</div>
-                         <div className="text-[9px] font-medium text-white/20 uppercase tracking-tighter">{item.badge}</div>
-                      </Link>
-                   ) : (
-                      <a 
-                        key={item.id}
-                        href={`/#${item.id}`}
-                        onClick={(e) => scrollToSection(e, item.id || '')}
-                        className="group flex flex-col px-4 py-3 rounded-xl hover:bg-white/5 transition-all no-underline"
-                      >
-                        <div className="text-[11px] font-bold text-white/90 group-hover:text-purple-400">{item.label}</div>
-                        <div className="text-[9px] font-medium text-white/20 uppercase tracking-tighter">{item.badge}</div>
-                      </a>
-                   )
+                    <Link 
+                      key={item.label}
+                      to={item.isLink ? item.to || '/' : `/#${item.id}`}
+                      onClick={(e) => !item.isLink && scrollToSection(e, item.id || '')}
+                      className="group flex flex-col px-4 py-3 rounded-lg hover:bg-black/5 transition-all no-underline"
+                    >
+                       <div className="text-[11px] font-black text-black uppercase tracking-widest">{item.label}</div>
+                       <div className="text-[9px] font-medium text-black/30 uppercase tracking-[0.1em]">{item.badge}</div>
+                    </Link>
                  ))}
               </div>
             )}
           </div>
 
-          <Link to="/ai-agent" className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/ai-agent' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
-             <Sparkles className="w-3.5 h-3.5" />
-             <span>{lang === 'fr' ? 'Expert AI' : 'AI Expert'}</span>
+          <Link to="/ai-agent" className={`flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${location.pathname === '/ai-agent' ? 'text-expert' : 'text-black/40 hover:text-black'}`}>
+             <span>{t.aiExpert}</span>
           </Link>
 
-          <Link to="/pricing" className={`text-[11px] uppercase tracking-[0.15em] font-bold transition-all no-underline ${location.pathname === '/pricing' ? 'text-purple-400' : 'text-white/70 hover:text-white'}`}>
+          <Link to="/pricing" className={`text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${location.pathname === '/pricing' ? 'text-black underline underline-offset-8 decoration-2' : 'text-black/40 hover:text-black'}`}>
             {t.pricing}
           </Link>
-
-          <a href="/#faq" onClick={(e) => scrollToSection(e, 'faq')} className="text-[11px] uppercase tracking-[0.15em] font-bold text-white/70 hover:text-white transition-all no-underline">
-            {t.faq}
-          </a>
         </div>
 
-        {/* Right — Lang & CTA (Desktop & Tablet) */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-            className="text-[11px] font-bold text-white/40 hover:text-white transition-all uppercase tracking-widest hidden sm:block"
-          >
-            {t.langToggle}
-          </button>
+        {/* Right — Lang & CTA */}
+        <div className="flex items-center gap-6">
+          <div className="relative group hidden sm:block">
+            <button className="flex items-center gap-2 text-[11px] font-black text-black/40 hover:text-black transition-all uppercase tracking-[0.2em] py-2">
+              <span className="text-base leading-none">
+                {lang === 'en' ? '🇺🇸' : lang === 'fr' ? '🇫🇷' : lang === 'de' ? '🇩🇪' : lang === 'it' ? '🇮🇹' : '🇪🇸'}
+              </span>
+              <span>{lang}</span>
+              <ChevronDown className="w-3 h-3 translate-y-[1px]" />
+            </button>
+            
+            <div className="absolute top-full right-0 mt-2 w-36 p-2 rounded-xl bg-white border-2 border-black shadow-[4px_4px_0_0_rgba(0,0,0,0.05)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              {[
+                { code: 'en', label: 'English', flag: '🇺🇸' },
+                { code: 'fr', label: 'Français', flag: '🇫🇷' },
+                { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+                { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+                { code: 'es', label: 'Español', flag: '🇪🇸' }
+              ].map((l) => (
+                <button
+                  key={l.code}
+                  onClick={() => setLang(l.code as any)}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-colors ${
+                    lang === l.code ? 'bg-black text-white' : 'text-black/40 hover:bg-black/5 hover:text-black'
+                  }`}
+                >
+                  <span className="text-sm">{l.flag}</span>
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <Button variant="hero" size="sm" className="rounded-full px-8 h-10 font-black text-[10px] tracking-widest uppercase hidden md:flex bg-purple-600 hover:bg-purple-500 text-white">
+          <Button size="sm" className="rounded-lg px-8 h-12 font-black text-[10px] tracking-widest uppercase hidden md:flex bg-black text-white border-none hover-offset-expert transition-all">
             {t.install}
           </Button>
 
-          {/* Mobile Menu Toggle */}
           <button 
-            className="lg:hidden p-2 text-white/70 hover:text-white transition-colors relative z-50"
+            className="lg:hidden p-2 text-black transition-colors relative z-50"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-[#040D1A] border-b border-white/10 animate-in slide-in-from-top duration-300">
-          <div className="flex flex-col p-6 gap-6">
-            <Link to="/" className="text-sm font-bold uppercase tracking-widest text-white/90">{t.home}</Link>
+        <div className="lg:hidden absolute top-full left-0 w-full bg-black border-b-2 border-black animate-in slide-in-from-top duration-300">
+          <div className="flex flex-col p-8 gap-8">
+            <Link to="/" className="text-xl font-black uppercase tracking-tighter text-white">{t.home}</Link>
             
-            <div className="flex flex-col gap-4 pl-4 border-l border-white/5">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-black text-white/20">{t.features}</span>
+            <div className="flex flex-col gap-6 pl-6 border-l-2 border-white/10">
+              <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30">{t.features}</span>
               {featureItems.map(item => (
                 item.isLink ? (
-                  <Link key={item.id} to={item.to || '/'} className="text-sm font-bold text-white/60">{item.label}</Link>
+                  <Link key={item.id} to={item.to || '/'} className="text-lg font-bold text-white/70">{item.label}</Link>
                 ) : (
-                  <a key={item.id} href={`/#${item.id}`} onClick={(e) => scrollToSection(e, item.id || '')} className="text-sm font-bold text-white/60">{item.label}</a>
+                  <a key={item.id} href={`/#${item.id}`} onClick={(e) => scrollToSection(e, item.id || '')} className="text-lg font-bold text-white/70">{item.label}</a>
                 )
               ))}
             </div>
 
-            <Link to="/ai-agent" className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white/90">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              {lang === 'fr' ? 'Expert AI' : 'AI Expert'}
+            <Link to="/ai-agent" className="flex items-center gap-3 text-xl font-black uppercase tracking-tighter text-expert">
+               <Mascot type="expert" size={24} />
+               {t.aiExpert}
             </Link>
 
-            <Link to="/pricing" className="text-sm font-bold uppercase tracking-widest text-white/90">{t.pricing}</Link>
-            <a href="/#faq" onClick={(e) => scrollToSection(e, 'faq')} className="text-sm font-bold uppercase tracking-widest text-white/90">{t.faq}</a>
+            <Link to="/pricing" className="text-xl font-black uppercase tracking-tighter text-white">{t.pricing}</Link>
             
-            <div className="flex items-center justify-between pt-6 border-t border-white/5">
-               <button
-                 onClick={() => setLang(lang === 'en' ? 'fr' : 'en')}
-                 className="text-xs font-black uppercase tracking-[0.2em] text-white/40"
-               >
-                 {lang === 'en' ? 'Français' : 'English'}
-               </button>
-               <Button variant="hero" size="sm" className="rounded-full px-8 h-10 font-black text-[10px] tracking-widest uppercase bg-purple-600 text-white">
+            <div className="flex flex-col gap-6 pt-8 border-t-2 border-white/10">
+               <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30">Language</span>
+               <div className="grid grid-cols-2 gap-3">
+                 {[
+                   { code: 'en', flag: '🇺🇸' },
+                   { code: 'fr', flag: '🇫🇷' },
+                   { code: 'de', flag: '🇩🇪' },
+                   { code: 'it', flag: '🇮🇹' },
+                   { code: 'es', flag: '🇪🇸' }
+                 ].map((l) => (
+                   <button
+                     key={l.code}
+                     onClick={() => setLang(l.code as any)}
+                     className={`flex items-center justify-center gap-3 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all ${
+                       lang === l.code ? 'bg-white text-black' : 'text-white/40 border-2 border-white/10'
+                     }`}
+                   >
+                     <span>{l.flag}</span>
+                     {l.code}
+                   </button>
+                 ))}
+               </div>
+               <Button size="lg" className="w-full mt-6 rounded-xl h-16 font-black text-xs uppercase tracking-widest bg-white text-black border-none hover:bg-white/90">
                  {t.install}
                </Button>
             </div>

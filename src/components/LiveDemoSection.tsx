@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { translations } from '@/i18n/index'
 import { PixelHeart } from '@/components/PixelHeart'
+
 
 type SiteKey = 'dior' | 'apple' | 'shopify' | 'lemonde'
 
@@ -21,8 +23,8 @@ const SITE_DATA: Record<SiteKey, {
   activeTab: string
 }> = {
   dior: {
-    score: 82, scoreColor: '#22c55e',
-    pageBg: '#080808', pageAccent: '#c8966040',
+    score: 82, scoreColor: '#16A34A',
+    pageBg: '#FFFFFF', pageAccent: 'rgba(0,0,0,0.02)',
     navItems: ['Collections','Beauty','Watches','Men'], brand: 'DIOR',
     heroTitle: 'The Art of Living by Dior', heroCopy: 'Spring — Summer 2026',
     fields: [
@@ -38,8 +40,8 @@ const SITE_DATA: Record<SiteKey, {
     activeTab: 'Overview',
   },
   apple: {
-    score: 96, scoreColor: '#22c55e',
-    pageBg: '#000000', pageAccent: 'rgba(255,255,255,0.05)',
+    score: 96, scoreColor: '#16A34A',
+    pageBg: '#FAFAFA', pageAccent: 'rgba(0,0,0,0.03)',
     navItems: ['Store','Mac','iPad','iPhone','Watch'], brand: 'apple',
     heroTitle: 'iPhone 17 Pro', heroCopy: 'Hello, Apple Intelligence.',
     fields: [
@@ -55,8 +57,8 @@ const SITE_DATA: Record<SiteKey, {
     activeTab: 'Overview',
   },
   shopify: {
-    score: 88, scoreColor: '#22c55e',
-    pageBg: '#0a0c10', pageAccent: 'rgba(150,200,100,0.06)',
+    score: 88, scoreColor: '#16A34A',
+    pageBg: '#FFFFFF', pageAccent: 'rgba(0,0,0,0.02)',
     navItems: ['Products','Pricing','Blog','Partners'], brand: 'Shopify',
     heroTitle: 'The commerce platform for entrepreneurs', heroCopy: 'Build your business from anywhere.',
     fields: [
@@ -72,8 +74,8 @@ const SITE_DATA: Record<SiteKey, {
     activeTab: 'Overview',
   },
   lemonde: {
-    score: 71, scoreColor: '#facc15',
-    pageBg: '#0e0e0e', pageAccent: 'rgba(200,50,50,0.05)',
+    score: 71, scoreColor: '#D97706',
+    pageBg: '#FAFAFA', pageAccent: 'rgba(0,0,0,0.03)',
     navItems: ['International','Politique','Société','Économie'], brand: 'Le Monde',
     heroTitle: "L'actualité en direct", heroCopy: 'Retrouvez toute l\'info en continu.',
     fields: [
@@ -99,87 +101,91 @@ const SITE_SCREENSHOTS: Record<SiteKey, string> = {
 
 function SiteMock({ site }: { site: SiteKey }) {
   return (
-    <div className="flex-1 overflow-hidden select-none relative" style={{ minWidth: 0 }}>
+    <div className="flex-1 overflow-hidden select-none relative bg-white" style={{ minWidth: 0 }}>
       <img
         src={SITE_SCREENSHOTS[site]}
         alt={site}
-        className="w-full h-full object-cover object-top"
+        className="w-full h-full object-cover object-top opacity-90"
         style={{ display: 'block' }}
       />
-      {/* subtle overlay so extension panel blends */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(90deg, transparent 60%, rgba(4,13,26,0.5) 100%)' }} />
+      {/* subtle overlay to help extension panel pop */}
+      <div className="absolute inset-y-0 right-0 w-12 pointer-events-none bg-gradient-to-r from-transparent to-white/10" />
     </div>
   )
 }
 
 function ExtensionPanel({ site, step }: { site: SiteKey; step: number }) {
   const d = SITE_DATA[site]
-  const statusColor = (s: FieldStatus) => s === 'good' ? '#22c55e' : s === 'warn' ? '#facc15' : '#ef4444'
+  const statusColor = (s: FieldStatus) => s === 'good' ? '#16A34A' : s === 'warn' ? '#D97706' : '#DC2626'
 
   return (
-    <div className="flex-shrink-0 flex flex-col" style={{ width: 210, background: '#040D1A', borderLeft: '1px solid rgba(255,255,255,0.07)' }}>
-      <div className="h-[3px]" style={{ background: 'linear-gradient(90deg, #a78bfa, #39d3ff, #2dd4bf, #facc15)' }} />
+    <div className="flex-shrink-0 flex flex-col bg-white border-l border-black/5" style={{ width: 260 }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-2.5 py-2 border-b border-white/[0.06]">
-        <div className="flex items-center gap-1.5">
-          <PixelHeart size={14} />
-          <span className="text-[7.5px] font-black tracking-wider" style={{ background: 'linear-gradient(90deg,#39d3ff,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>Search Toolbox</span>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-black/5 bg-[#F9F9FB]">
+        <div className="flex items-center gap-2">
+          <PixelHeart size={16} />
+          <span className="text-[10px] font-black tracking-widest uppercase text-black/40">SEARCHTOOLBOX</span>
         </div>
-        <span className="text-[6px] px-1.5 py-0.5 rounded-full font-semibold" style={{ background:'rgba(34,197,94,0.15)', color:'#22c55e' }}>Allowed</span>
+        <span className="text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest bg-green-100 text-green-700">Allowed</span>
       </div>
 
       {/* Mini tab bar */}
-      <div className="flex border-b border-white/[0.06]" style={{ background: 'rgba(255,255,255,0.02)' }}>
+      <div className="flex border-b border-black/5 bg-white">
         {['Overview','Schema','Images'].map((tab, i) => (
-          <div key={tab} className="flex-1 py-1 text-center text-[6px] uppercase tracking-wide font-bold cursor-pointer" style={{ color: i === 0 ? '#a78bfa' : 'rgba(255,255,255,0.2)', borderBottom: i === 0 ? '1px solid #a78bfa' : '1px solid transparent' }}>
+          <div key={tab} className="flex-1 py-2 text-center text-[8px] uppercase tracking-[0.2em] font-black cursor-pointer transition-colors"
+               style={{
+                 color: i === 0 ? 'black' : 'rgba(0,0,0,0.2)',
+                 borderBottom: i === 0 ? '2px solid black' : '2px solid transparent'
+               }}>
             {tab}
           </div>
         ))}
       </div>
 
       {/* Score */}
-      <div className="flex items-center gap-2.5 px-2.5 py-2 border-b border-white/[0.04]">
+      <div className="flex items-center gap-4 px-4 py-6 border-b border-black/5">
         <div>
-          <span className="font-black text-2xl" style={{ color: d.scoreColor }}>{step > 0 ? d.score : '…'}</span>
-          <p className="text-[6px] text-white/30 uppercase tracking-wide">SEO Score</p>
+          <span className="font-black text-4xl tracking-tighter" style={{ color: d.scoreColor }}>{step > 0 ? d.score : '…'}</span>
+          <p className="text-[8px] text-black/30 font-black uppercase tracking-widest mt-1">SEO Score</p>
         </div>
         <div className="flex-1">
-          <div className="h-1 bg-white/10 rounded-full overflow-hidden mb-1">
-            <div className="h-full rounded-full transition-all duration-700" style={{ width: step > 0 ? `${d.score}%` : '5%', background: `linear-gradient(90deg, ${d.scoreColor}, #a78bfa)` }} />
+          <div className="h-2 bg-black/5 rounded-full overflow-hidden mb-2">
+            <div className="h-full rounded-full transition-all duration-700"
+                 style={{ width: step > 0 ? `${d.score}%` : '5%', background: d.scoreColor }} />
           </div>
-          <div className="flex gap-2">
-            <span className="text-[7px]" style={{ color: '#22c55e' }}>✓ {d.goods.length}</span>
-            <span className="text-[7px]" style={{ color: '#facc15' }}>⚠ {d.issues.length}</span>
+          <div className="flex gap-3">
+            <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#16A34A' }}>✓ {d.goods.length} OK</span>
+            <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#D97706' }}>⚠ {d.issues.length} ISSUE</span>
           </div>
         </div>
       </div>
 
       {/* Fields */}
-      <div className="flex-1 overflow-y-auto px-2 py-1.5" style={{ scrollbarWidth: 'none' }}>
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3" style={{ scrollbarWidth: 'none' }}>
         {d.fields.slice(0, step).map((f) => (
-          <div key={f.label} className="flex items-start gap-1.5 py-1 border-b border-white/[0.04]">
-            <span className="w-1.5 h-1.5 rounded-full mt-1 flex-shrink-0" style={{ background: statusColor(f.status) }} />
+          <div key={f.label} className="flex items-start gap-3 py-2 border-b border-black/5 last:border-0">
+            <span className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: statusColor(f.status) }} />
             <div className="min-w-0">
-              <span className="text-[6px] text-white/30 uppercase tracking-wide font-semibold">{f.label}</span>
-              <p className="text-[7.5px] text-white/60 truncate leading-tight">{f.value}</p>
+              <span className="text-[8px] text-black/30 uppercase tracking-widest font-black leading-none">{f.label}</span>
+              <p className="text-[10px] font-bold text-black/70 truncate mt-1 leading-tight">{f.value}</p>
             </div>
           </div>
         ))}
         {step < d.fields.length && (
-          <div className="flex items-center gap-1.5 py-2">
-            <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#39d3ff' }} />
-            <span className="text-[7px]" style={{ color: '#39d3ff' }}>Scanning…</span>
+          <div className="flex items-center gap-2 py-2">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] font-black uppercase tracking-widest text-primary">Scanning…</span>
           </div>
         )}
       </div>
 
       {/* Issues summary */}
       {step >= d.fields.length && (
-        <div className="px-2.5 py-2 border-t border-white/[0.06]">
+        <div className="px-4 py-4 border-t border-black/5 bg-[#FFFBEB]">
           {d.issues.map(issue => (
-            <div key={issue} className="flex items-start gap-1.5 mb-1">
-              <span className="text-[8px] mt-0.5 flex-shrink-0" style={{ color: '#facc15' }}>⚠</span>
-              <span className="text-[7px] text-white/50 leading-tight">{issue}</span>
+            <div key={issue} className="flex items-start gap-2 mb-2 last:mb-0">
+              <span className="text-[10px] mt-0.5 flex-shrink-0 text-amber-600">⚠</span>
+              <span className="text-[9px] text-amber-800 font-bold leading-tight">{issue}</span>
             </div>
           ))}
         </div>
@@ -190,6 +196,7 @@ function ExtensionPanel({ site, step }: { site: SiteKey; step: number }) {
 
 export function LiveDemoSection() {
   const { lang } = useLanguage()
+  const t = translations[lang].liveDemo
   const [active, setActive] = useState<SiteKey>('dior')
   const [step, setStep] = useState(0)
   const [scanning, setScanning] = useState(false)
@@ -225,15 +232,13 @@ export function LiveDemoSection() {
 
       <div className="relative max-w-6xl mx-auto">
         <p className="text-center text-sm font-semibold tracking-widest uppercase mb-5" style={{ color: '#39d3ff' }}>
-          {lang === 'fr' ? 'Demo Interactif' : 'Live Demo'}
+          {t.eyebrow}
         </p>
         <h2 className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-4 tracking-tight" style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #39d3ff 100%)' }}>
-          {lang === 'fr' ? 'Testez sur n\'importe quel site' : 'See it running on real sites'}
+          {t.headline}
         </h2>
         <p className="text-center text-muted-foreground text-lg mb-12 max-w-xl mx-auto">
-          {lang === 'fr'
-            ? 'Sélectionnez un site et regardez l\'extension analyser la page en conditions réelles.'
-            : 'Pick a site and watch the extension analyse the page in real conditions.'}
+          {t.sub}
         </p>
 
         {/* Site selector */}
@@ -309,12 +314,10 @@ export function LiveDemoSection() {
         {/* CTA */}
         <div className="mt-8 flex flex-col items-center gap-3">
           <p className="text-muted-foreground text-sm text-center max-w-md">
-            {lang === 'fr'
-              ? '🔒 Pour analyser votre propre site en conditions réelles, installez l\'extension Chrome gratuite.'
-              : '🔒 To analyse your own site for real, install the free Chrome extension.'}
+            {t.lockNote}
           </p>
           <button className="px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, rgba(167,139,250,0.25), rgba(57,211,255,0.2))', color: '#e8e8e9', border: '1px solid rgba(167,139,250,0.3)' }}>
-            {lang === 'fr' ? 'Installer gratuitement — Chrome' : 'Install Free — Chrome Web Store →'}
+            {t.cta}
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { translations } from '@/i18n/index'
 import { PixelHeart } from '@/components/PixelHeart'
 
 // Realistic SEO extensions people typically install
@@ -32,6 +33,7 @@ function ExtIcon({ abbr, color, bg, name }: { abbr: string; color: string; bg: s
 
 export function ComparisonSlider() {
   const { lang } = useLanguage()
+  const t = translations[lang].comparison
   const [sliderX, setSliderX] = useState(50)
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef(false)
@@ -54,18 +56,16 @@ export function ComparisonSlider() {
       <div className="max-w-5xl mx-auto">
 
         <p className="text-center text-sm font-semibold tracking-widest uppercase text-muted-foreground mb-4">
-          {lang === 'fr' ? 'Avant · Après' : 'Before · After'}
+          {t.eyebrow}
         </p>
         <h2
           className="text-center text-4xl md:text-5xl font-semibold bg-clip-text text-transparent mb-3 tracking-tight"
           style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #39d3ff 100%)' }}
         >
-          {lang === 'fr' ? '12 extensions ou 1 seule ?' : '12 extensions or just 1?'}
+          {t.headline}
         </h2>
         <p className="text-center text-muted-foreground text-base mb-10 max-w-lg mx-auto">
-          {lang === 'fr'
-            ? 'La plupart des SEOs ont 10+ extensions installées. Search Toolbox remplace tout ça.'
-            : 'Most SEOs have 10+ extensions installed. Search Toolbox replaces all of them.'}
+          {t.sub}
         </p>
 
         {/* Slider */}
@@ -117,10 +117,10 @@ export function ComparisonSlider() {
             <div className="flex-1 p-5 flex flex-col gap-3">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-bold text-white/50 uppercase tracking-wider">
-                  {lang === 'fr' ? 'Votre situation actuelle' : 'Your current setup'}
+                  {t.currentSetup}
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>
-                  {lang === 'fr' ? '12 extensions actives' : '12 extensions active'}
+                  {t.activeExtensions.replace('{count}', SEO_EXTENSIONS.length.toString())}
                 </span>
               </div>
 
@@ -139,11 +139,7 @@ export function ComparisonSlider() {
 
               {/* Pain footer */}
               <div className="mt-2 rounded-xl p-3 flex flex-col gap-1.5" style={{ background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.15)' }}>
-                {[
-                  { icon: '⏱', text: lang === 'fr' ? '~2h par audit · jongler entre 12 onglets' : '~2h per audit · juggling 12 tabs' },
-                  { icon: '💸', text: lang === 'fr' ? 'Certaines extensions sont payantes' : 'Several extensions cost money' },
-                  { icon: '🐌', text: lang === 'fr' ? 'Chrome ralenti par toutes ces extensions' : 'Chrome slowed down by all these' },
-                ].map(({ icon, text }) => (
+                {t.painPoints.map(({ icon, text }) => (
                   <div key={text} className="flex items-center gap-2 text-[10px]" style={{ color: 'rgba(255,255,255,0.45)' }}>
                     <span>{icon}</span><span>{text}</span>
                   </div>
@@ -155,88 +151,78 @@ export function ComparisonSlider() {
           {/* ─── AFTER (right, clipped) ─── */}
           <div
             className="absolute inset-0 flex flex-col"
-            style={{ background: '#040D1A', clipPath: `inset(0 0 0 ${sliderX}%)` }}
+            style={{ background: '#FFFFFF', clipPath: `inset(0 0 0 ${sliderX}%)` }}
           >
             {/* After browser chrome */}
-            <div className="flex-shrink-0" style={{ background: '#080f1c', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="flex items-center gap-2 px-4 pt-2.5 pb-0">
+            <div className="flex-shrink-0" style={{ background: '#FAFAFA', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+              <div className="flex items-center gap-2 px-4 pt-3 pb-0">
                 <div className="flex gap-1.5 flex-shrink-0">
-                  <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                  <div className="w-3 h-3 rounded-full bg-[#28c840]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
                 </div>
-                <div className="flex items-end gap-0.5 ml-2 h-6">
-                  <div className="flex items-center gap-1.5 px-3 h-full rounded-t-md text-[9px] text-white/40" style={{ background: '#0d1a2e', border: '1px solid rgba(255,255,255,0.08)', borderBottom: 'none' }}>
-                    <PixelHeart size={11} />
-                    ahrefs.com — Search Toolbox analyzing…
+                <div className="flex items-end gap-0.5 ml-2 h-7">
+                  <div className="flex items-center gap-1.5 px-4 h-full rounded-t-lg text-[10px] text-black/60 font-black bg-white border border-black/5 border-bottom-0">
+                    <PixelHeart size={14} className="text-primary" />
+                    ahrefs.com — SEARCHTOOLBOX
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 px-3 py-2">
-                <div className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9px] text-white/35" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                  🔒 https://ahrefs.com/backlink-checker
+              <div className="flex items-center gap-2 px-4 py-2.5">
+                <div className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] text-black/40 font-bold bg-white border border-black/5">
+                  https://ahrefs.com/backlink-checker
                 </div>
                 {/* Just ONE icon in toolbar */}
-                <div className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg flex-shrink-0" style={{ background: 'rgba(167,139,250,0.15)', border: '1px solid rgba(167,139,250,0.35)' }}>
-                  <PixelHeart size={16} style={{ filter: 'drop-shadow(0 0 6px rgba(167,139,250,0.8))' }} />
-                  <span className="text-[9px] font-black px-1.5 rounded-full" style={{ background: '#22c55e', color: '#000' }}>✓</span>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg flex-shrink-0 bg-primary/5 border border-primary/20">
+                  <PixelHeart size={16} className="text-primary" />
+                  <span className="text-[10px] font-black text-primary">✓</span>
                 </div>
               </div>
             </div>
 
-            {/* Color stripe */}
-            <div className="h-[2px] w-full flex-shrink-0" style={{ background: 'linear-gradient(90deg, #a78bfa, #39d3ff, #2dd4bf, #facc15)' }} />
-
             {/* After body */}
-            <div className="flex-1 p-5 flex flex-col gap-3">
-              <div className="flex items-center justify-between mb-1">
-                <div className="flex items-center gap-2">
-                  <PixelHeart size={18} style={{ filter: 'drop-shadow(0 0 8px rgba(167,139,250,0.6))' }} />
-                  <span
-                    className="text-sm font-black tracking-wide"
-                    style={{ background: 'linear-gradient(90deg, #39d3ff, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-                  >
-                    Search Toolbox
+            <div className="flex-1 p-8 flex flex-col gap-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <PixelHeart size={20} className="text-primary" />
+                  <span className="text-xl font-black tracking-tighter text-black uppercase">
+                    SEARCHTOOLBOX
                   </span>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(34,197,94,0.15)', color: '#22c55e' }}>
-                  {lang === 'fr' ? '1 seule extension' : '1 extension only'}
+                <span className="text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-widest bg-primary/5 text-primary border border-primary/10">
+                  {t.oneExtensionOnly}
                 </span>
               </div>
 
-              {/* What it replaces */}
-              <div className="grid grid-cols-2 gap-2">
+              {/* What it replaces (Labels from benefits.groups[0].items or similar could be used, but keeping static for UI mock) */}
+              <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: '◉', label: lang === 'fr' ? 'Overview + Score SEO' : 'Overview + SEO Score', color: '#a78bfa' },
-                  { icon: '{}', label: lang === 'fr' ? 'Schema + Microdata' : 'Schema + Microdata', color: '#a78bfa' },
-                  { icon: '⇕', label: lang === 'fr' ? 'Tracé de redirections' : 'Redirect tracer', color: '#39d3ff' },
-                  { icon: '◇', label: lang === 'fr' ? 'Audit images' : 'Image audit', color: '#39d3ff' },
-                  { icon: '🌐', label: lang === 'fr' ? 'SERP VPN 50+ pays' : 'SERP VPN 50+ countries', color: '#facc15' },
-                  { icon: '🍪', label: lang === 'fr' ? 'Éditeur cookies' : 'Cookie editor', color: '#facc15' },
-                  { icon: '📸', label: lang === 'fr' ? 'Screenshot full page' : 'Full page screenshot', color: '#2dd4bf' },
-                  { icon: '📋', label: lang === 'fr' ? 'Rapport PDF client' : 'Client PDF report', color: '#2dd4bf' },
-                  { icon: '¶',  label: lang === 'fr' ? 'Hiérarchie headings' : 'Heading hierarchy', color: '#a78bfa' },
-                  { icon: '☸', label: 'Hreflang audit', color: '#39d3ff' },
-                  { icon: '🎨', label: lang === 'fr' ? 'Color picker' : 'Color picker', color: '#ec4899' },
-                  { icon: '≡',  label: lang === 'fr' ? 'Glossaire SEO 150+' : 'SEO Glossary 150+', color: '#facc15' },
-                ].map(({ icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-2 px-2.5 py-2 rounded-lg" style={{ background: `${color}10`, border: `1px solid ${color}25` }}>
-                    <span className="text-sm flex-shrink-0" style={{ color }}>{icon}</span>
-                    <span className="text-[10px] font-medium text-white/60 leading-tight">{label}</span>
-                    <span className="ml-auto text-[9px] font-bold" style={{ color: '#22c55e' }}>✓</span>
+                  { icon: '◉', label: lang === 'fr' ? 'Vue d\'ensemble' : lang === 'it' ? 'Panoramica' : lang === 'de' ? 'Übersicht' : 'Overview' },
+                  { icon: '{}', label: 'Schema + JSON-LD' },
+                  { icon: '⇕', label: lang === 'fr' ? 'Redirections' : lang === 'it' ? 'Redirect' : lang === 'de' ? 'Weiterleitungen' : 'Redirects' },
+                  { icon: '◇', label: 'Image Audit' },
+                  { icon: '🌐', label: 'SERP VPN 50+ countries' },
+                  { icon: '🍪', label: 'Cookie Editor' },
+                  { icon: '📸', label: 'Full Page Screenshot' },
+                  { icon: '📋', label: 'Client PDF report' },
+                  { icon: '¶',  label: 'Heading Hierarchy' },
+                  { icon: '☸', label: 'Hreflang Audit' },
+                  { icon: '🎨', label: 'Color Picker' },
+                  { icon: '≡',  label: 'SEO Glossary' },
+                ].map(({ icon, label }) => (
+                  <div key={label} className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-black/5 border border-black/5">
+                    <span className="text-base text-black/30 font-bold">{icon}</span>
+                    <span className="text-[10px] font-black text-black/60 uppercase tracking-widest leading-tight truncate">{label}</span>
+                    <span className="ml-auto text-[11px] font-black text-primary">✓</span>
                   </div>
                 ))}
               </div>
 
               {/* Gains footer */}
-              <div className="mt-2 rounded-xl p-3 flex flex-col gap-1.5" style={{ background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.15)' }}>
-                {[
-                  { icon: '⚡', text: lang === 'fr' ? '~5 min par audit · tout dans un seul panel' : '~5 min per audit · everything in one panel' },
-                  { icon: '🆓', text: lang === 'fr' ? '100% gratuit, sans compte requis' : '100% free, no account needed' },
-                  { icon: '🚀', text: lang === 'fr' ? 'Chrome plus rapide, moins d\'extensions' : 'Faster Chrome, fewer extensions' },
-                ].map(({ icon, text }) => (
-                  <div key={text} className="flex items-center gap-2 text-[10px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                    <span>{icon}</span><span>{text}</span>
+              <div className="mt-4 rounded-2xl p-4 flex flex-col gap-2.5 bg-primary/[0.03] border border-primary/10">
+                {t.gains.map(({ icon, text }) => (
+                  <div key={text} className="flex items-center gap-3 text-[11px] font-bold text-black/40">
+                    <span className="text-lg grayscale">{icon}</span><span className="uppercase tracking-widest">{text}</span>
                   </div>
                 ))}
               </div>
@@ -248,37 +234,27 @@ export function ComparisonSlider() {
             className="absolute top-0 bottom-0 z-20 pointer-events-none flex items-center justify-center"
             style={{ left: `${sliderX}%`, transform: 'translateX(-50%)' }}
           >
-            <div className="absolute inset-y-0 w-[2px]" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(2px)' }} />
+            <div className="absolute inset-y-0 w-px bg-black/10" />
             <div
-              className="relative z-10 flex items-center gap-1.5 px-3 py-2 rounded-full text-[11px] font-black"
-              style={{
-                background: 'rgba(8,10,24,0.95)',
-                border: '1.5px solid rgba(255,255,255,0.25)',
-                backdropFilter: 'blur(16px)',
-                color: 'rgba(255,255,255,0.9)',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.7)',
-                whiteSpace: 'nowrap',
-              }}
+              className="relative z-10 flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] font-black border border-black/5 uppercase tracking-[0.2em] shadow-xl bg-white text-black/50"
             >
-              ◀ {lang === 'fr' ? 'Glissez' : 'Drag'} ▶
+              ◀ {t.drag} ▶
             </div>
           </div>
 
           {/* Corner labels */}
-          <div className="absolute top-4 left-4 z-10 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded pointer-events-none"
-            style={{ background: 'rgba(239,68,68,0.2)', color: '#ef4444', opacity: sliderX > 15 ? 1 : 0, transition: 'opacity 0.2s' }}>
-            {lang === 'fr' ? 'Avant' : 'Before'}
+          <div className="absolute top-6 left-6 z-10 text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-lg pointer-events-none border border-black/5 bg-white/80 backdrop-blur-sm text-black/30"
+            style={{ opacity: sliderX > 15 ? 1 : 0, transition: 'opacity 0.2s' }}>
+            {t.before}
           </div>
-          <div className="absolute top-4 right-4 z-10 text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded pointer-events-none"
-            style={{ background: 'rgba(34,197,94,0.2)', color: '#22c55e', opacity: sliderX < 85 ? 1 : 0, transition: 'opacity 0.2s' }}>
-            {lang === 'fr' ? 'Après' : 'After'}
+          <div className="absolute top-6 right-6 z-10 text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-lg pointer-events-none border border-primary/20 bg-primary/5 text-primary"
+            style={{ opacity: sliderX < 85 ? 1 : 0, transition: 'opacity 0.2s' }}>
+            {t.after}
           </div>
         </div>
 
-        <p className="text-center mt-8 text-base font-bold" style={{ color: '#c4b5fd' }}>
-          {lang === 'fr'
-            ? '✦ La dernière extension SEO que vous installerez jamais ✦'
-            : '✦ The last SEO extension you\'ll ever install ✦'}
+        <p className="text-center mt-12 text-[10px] font-black uppercase tracking-[0.3em] text-black/20 text-balance">
+          {t.footerNote}
         </p>
       </div>
     </section>

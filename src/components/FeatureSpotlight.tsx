@@ -10,39 +10,34 @@ export function FeatureSpotlight() {
   const spotlights = translations[lang].spotlight
 
   return (
-    <section className="bg-background py-10 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-14">
+    <section className="bg-white py-24 px-6 overflow-hidden grain-bg">
+      <div className="max-w-6xl mx-auto flex flex-col gap-32">
         {spotlights.map((s, i) => {
           const accent = i % 2 === 0 ? '#a78bfa' : '#39d3ff'
           return (
-            <div key={s.eyebrow} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10`}>
+            <div key={s.eyebrow} className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-16 md:gap-24`}>
               {/* Text side */}
-              <div className="flex-1 flex flex-col gap-3 max-w-sm">
-                <p className="text-xs font-bold tracking-widest uppercase" style={{ color: accent }}>
+              <div className="flex-1 flex flex-col gap-6 text-center md:text-left animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                <p className="text-[10px] font-black tracking-[0.3em] uppercase" style={{ color: accent }}>
                   {s.eyebrow}
                 </p>
-                <h2 className="text-2xl md:text-3xl font-semibold text-foreground leading-snug tracking-tight">{s.title}</h2>
-                <p className="text-muted-foreground text-sm leading-relaxed">{s.body}</p>
-                <ul className="flex flex-col gap-1.5 mt-1">
-                  {s.bullets.map((b) => (
-                    <li key={b} className="flex items-center gap-2 text-sm text-foreground/75">
-                      <span
-                        className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0 text-[8px] font-bold"
-                        style={{ background: `${accent}20`, color: accent }}
-                      >✓</span>
-                      {b}
+                <h2 className="text-4xl md:text-6xl font-black text-black leading-[0.95] tracking-tighter text-balance">{s.title}</h2>
+                <p className="text-black/50 text-xl leading-relaxed font-medium text-balance">{s.body}</p>
+                
+                <ul className="flex flex-col gap-4 mt-4">
+                  {s.bullets.map(b => (
+                    <li key={b} className="flex items-center gap-3 justify-center md:justify-start">
+                      <div className="w-2 h-2 rounded-sm rotate-45" style={{ background: accent }} />
+                      <span className="text-sm font-bold text-black/70">{b}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Mockup side */}
-              <div className="flex-1 flex justify-center">
-                <div className="relative" style={{ transform: 'scale(0.78)', transformOrigin: 'center' }}>
-                  <div
-                    className="absolute inset-0 rounded-3xl blur-3xl opacity-20 pointer-events-none"
-                    style={{ background: `radial-gradient(circle, ${i % 2 === 0 ? '#7c3aed' : '#0891b2'} 0%, transparent 70%)`, transform: 'scale(1.2)' }}
-                  />
+              <div className="flex-1 flex justify-center w-full max-w-2xl animate-in fade-in zoom-in-95 duration-1000">
+                <div className="editorial-card rounded-3xl p-6 shadow-2xl relative group">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
                   <ExtensionMockup activeTab={TABS[i]} />
                 </div>
               </div>

@@ -15,10 +15,20 @@ import { CTASection }         from '@/components/CTASection'
 import { AiAgentHomeSection } from '@/components/AiAgentHomeSection'
 import { ComparisonSlider }  from '@/components/ComparisonSlider'
 import { PricingSection }     from '@/components/PricingSection'
+import { useLanguage }     from '@/contexts/LanguageContext'
+import { translations }    from '@/i18n/index'
+import { SEO }             from '@/components/SEO'
 
 export function Home() {
+  const { lang } = useLanguage()
+  const t = translations[lang].home
+
   return (
     <>
+      <SEO 
+        title={t.meta.title}
+        description={t.meta.description}
+      />
       <HeroSection />
       <SocialProofSection />
       <ProblemSection />

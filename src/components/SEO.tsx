@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface SEOProps {
   title: string
@@ -6,12 +8,16 @@ interface SEOProps {
   faq?: { q: string, a: string }[]
 }
 
-export function SEO({ title, description, faq }: SEOProps) {
-  useEffect(() => {
-    // Update Title
-    document.title = title
+const DOMAIN = 'https://seo-swiss-knife-landing-1.vercel.app'
 
-    // Update Meta Description
+export function SEO({ title, description, faq }: SEOProps) {
+  const { lang: currentLang } = useLanguage()
+  const location = useLocation()
+
+  useEffect(() => {
+    // 1. Update Title & Meta Description
+    document.title = title
+    
     let metaDescription = document.querySelector('meta[name="description"]')
     if (!metaDescription) {
       metaDescription = document.createElement('meta')
@@ -20,11 +26,42 @@ export function SEO({ title, description, faq }: SEOProps) {
     }
     metaDescription.setAttribute('content', description)
 
-    // Update Hreflang Tags (if needed based on current URL)
-    // For now, we keep the ones in index.html as they point to the root
-    // But ideally we should update them here to point to the current page's lang variants
+    // 2. Manage Canonical URL
+    // We append the current lang if it's not English (default)
+    const baseUrl = `${DOMAIN}${location.pathname}`
+    const canonicalUrl = currentLang === 'en' ? baseUrl : `${baseUrl}?lang=${currentLang}`
+    
+    let canonical = document.querySelector('link[rel="canonical"]')
+    if (!canonical) {
+      canonical = document.createElement('link')
+      canonical.setAttribute('rel', 'canonical')
+      document.head.appendChild(canonical)
+    }
+    canonical.setAttribute('href', canonicalUrl)
 
-    // Inject FAQ Schema if provided
+    // 3. Manage Hreflang Tags
+    const langs = ['en', 'fr', 'de', 'it', 'es']
+    
+    // Remove existing hreflang to avoid duplicates
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove())
+
+    langs.forEach(l => {
+      const link = document.createElement('link')
+      link.rel = 'alternate'
+      link.hreflang = l
+      // Construct URL: Default (en) is the base, others use query param
+      link.href = l === 'en' ? baseUrl : `${baseUrl}?lang=${l}`
+      document.head.appendChild(link)
+    })
+
+    // Add x-default (pointing to English)
+    const xDefault = document.createElement('link')
+    xDefault.rel = 'alternate'
+    xDefault.hreflang = 'x-default'
+    xDefault.href = baseUrl
+    document.head.appendChild(xDefault)
+
+    // 4. Inject FAQ Schema if provided
     if (faq) {
       const schemaId = 'faq-schema'
       let script = document.getElementById(schemaId) as HTMLScriptElement
@@ -47,16 +84,40 @@ export function SEO({ title, description, faq }: SEOProps) {
           }
         }))
       }
-
       script.textContent = JSON.stringify(schemaData)
     }
 
+    // 5. Update OG & Twitter Tags
+    const updateMeta = (name: string, content: string, isProperty = false) => {
+      const attr = isProperty ? 'property' : 'name'
+      let el = document.querySelector(`meta[${attr}="${name}"]`)
+      if (!el) {
+        el = document.createElement('meta')
+        el.setAttribute(attr, name)
+        document.head.appendChild(el)
+      }
+      el.setAttribute('content', content)
+    }
+
+    const locales: Record<string, string> = {
+      en: 'en_US', fr: 'fr_FR', de: 'de_DE', it: 'it_IT', es: 'es_ES'
+    }
+
+    updateMeta('og:title', title, true)
+    updateMeta('og:description', description, true)
+    updateMeta('og:url', canonicalUrl, true)
+    updateMeta('og:locale', locales[currentLang] || 'en_US', true)
+    
+    updateMeta('twitter:title', title)
+    updateMeta('twitter:description', description)
+    updateMeta('twitter:url', canonicalUrl)
+
     return () => {
-      // Cleanup FAQ Schema on unmount if we want to avoid leakage
+      // Cleanup schemas if needed on unmount
       const script = document.getElementById('faq-schema')
       if (script) script.remove()
     }
-  }, [title, description, faq])
+  }, [title, description, faq, location.pathname, currentLang])
 
   return null
 }

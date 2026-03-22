@@ -1,34 +1,52 @@
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
+import { Mascot } from '@/components/Mascot'
 
 export function CTASection() {
-  const { lang } = useLanguage()
+  const { lang} = useLanguage()
   const t = translations[lang].cta
 
   return (
-    <section id="install" className="relative bg-background py-32 px-6 overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 100%, rgba(124,58,237,0.2) 0%, transparent 70%)' }} />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
-      <div className="relative max-w-3xl mx-auto text-center flex flex-col items-center gap-8">
-        <div className="flex items-center gap-1 text-yellow-400 text-xl tracking-widest">★★★★★</div>
-        <p className="text-foreground/70 text-base italic max-w-md">{t.quote}</p>
-        <div className="flex gap-10 mt-4">
-          {t.stats.map((s) => (
-            <div key={s.label} className="flex flex-col items-center gap-1">
-              <span className="text-3xl font-black bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #e8e8e9 0%, #a78bfa 100%)' }}>{s.value}</span>
-              <span className="text-xs text-muted-foreground uppercase tracking-widest font-medium">{s.label}</span>
+    <section id="install" className="relative bg-white py-32 px-6 overflow-hidden grid-bg border-t-2 border-black">
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] grain-bg" />
+      
+      {/* Background technical markers */}
+      <div className="absolute top-12 left-12 technical-marker after:content-['+'] after:opacity-20" />
+      <div className="absolute bottom-12 right-12 technical-marker after:content-['+'] after:opacity-20" />
+
+      <div className="relative max-w-4xl mx-auto text-center flex flex-col items-center gap-12">
+        <div className="flex flex-wrap items-center justify-center gap-16">
+          {t.stats.map((s, i) => (
+            <div key={s.label} className="flex flex-col items-center gap-2 group transition-all">
+              <span className={`text-4xl md:text-6xl font-black tracking-tighter transition-colors ${i === 2 ? 'text-expert' : 'text-black opacity-40 group-hover:opacity-100'}`}>
+                {s.value}
+              </span>
+              <span className="text-[10px] text-black/20 uppercase tracking-[0.3em] font-black group-hover:text-black/40 transition-colors">
+                {s.label}
+              </span>
             </div>
           ))}
         </div>
-        <h2
-          className="text-4xl md:text-5xl font-semibold bg-clip-text text-transparent tracking-tight mt-4"
-          style={{ backgroundImage: 'linear-gradient(180deg, #f0f0f2 0%, #a78bfa 100%)' }}
-        >
-          {t.headline.split('\n').map((line, i) => <span key={i}>{line}{i === 0 && <br />}</span>)}
+
+        <h2 className="text-4xl md:text-7xl font-black text-black tracking-tighter leading-[0.95] text-balance max-w-3xl">
+          {t.headline}
         </h2>
-        <Button variant="hero" className="px-10 py-4 text-base rounded-full mt-2">{t.cta}</Button>
-        <p className="text-muted-foreground text-xs">{t.ctaSub}</p>
+
+        <div className="flex flex-col items-center gap-6">
+          <Button size="lg" className="px-16 h-20 text-xs uppercase tracking-[0.25em] font-black rounded-xl bg-black text-white border-none hover-offset-expert transition-all">
+             {t.cta}
+          </Button>
+          <p className="text-black/30 text-[10px] font-black uppercase tracking-[0.35em]">{t.ctaSub}</p>
+        </div>
+      </div>
+
+      {/* Mascot Decoration */}
+      <div className="absolute -bottom-10 -left-10 opacity-10">
+         <Mascot type="beginner" size={200} />
+      </div>
+      <div className="absolute top-10 -right-10 opacity-10">
+         <Mascot type="expert" size={240} className="rotate-[15deg]" />
       </div>
     </section>
   )
