@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { Mascot } from '@/components/Mascot'
 import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function Navbar() {
   const { lang, setLang } = useLanguage()
   const t = translations[lang].nav
+  const { user } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const [featuresOpen, setFeaturesOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -170,6 +172,14 @@ export function Navbar() {
             </div>
           </div>
 
+          <Link
+            to="/account"
+            className="hidden md:flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.2em] transition-all no-underline text-black/40 hover:text-black"
+          >
+            <User className="w-3.5 h-3.5" />
+            {user ? 'Account' : 'Login'}
+          </Link>
+
           <Button size="sm" className="rounded-lg px-8 h-12 font-black text-[10px] tracking-widest uppercase hidden md:flex bg-black text-white border-none hover-offset-expert transition-all">
             {t.install}
           </Button>
@@ -206,6 +216,10 @@ export function Navbar() {
             </Link>
 
             <Link to="/pricing" className="text-xl font-black uppercase tracking-tighter text-white">{t.pricing}</Link>
+            <Link to="/account" className="flex items-center gap-3 text-xl font-black uppercase tracking-tighter text-white/60">
+              <User className="w-5 h-5" />
+              {user ? 'My Account' : 'Login'}
+            </Link>
             
             <div className="flex flex-col gap-6 pt-8 border-t-2 border-white/10">
                <span className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30">Language</span>
