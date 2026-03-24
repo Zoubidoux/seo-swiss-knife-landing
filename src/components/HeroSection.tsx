@@ -48,9 +48,9 @@ export function HeroSection() {
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 64, x: 72, y: 54, targetX: 72, targetY: 54, vx: 0, vy: 0, initialX: 72, initialY: 54, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 8,   opacity: 0.6, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
-    { id: 'm2', type: 'expert',       state: 'closed', size: 68, x: 26, y: 50, targetX: 26, targetY: 50, vx: 0, vy: 0, initialX: 26, initialY: 50, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -10, opacity: 0.6, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
-    { id: 'm3', type: 'beginner',     state: 'closed', size: 62, x: 60, y: 58, targetX: 60, targetY: 58, vx: 0, vy: 0, initialX: 60, initialY: 58, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 5,   opacity: 0.6, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 64, x: 14, y: 52, targetX: 14, targetY: 52, vx: 0, vy: 0, initialX: 14, initialY: 52, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 8,   opacity: 0.72, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
+    { id: 'm2', type: 'expert',       state: 'closed', size: 68, x: 86, y: 50, targetX: 86, targetY: 50, vx: 0, vy: 0, initialX: 86, initialY: 50, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -10, opacity: 0.72, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
+    { id: 'm3', type: 'beginner',     state: 'closed', size: 62, x: 83, y: 68, targetX: 83, targetY: 68, vx: 0, vy: 0, initialX: 83, initialY: 68, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 5,   opacity: 0.72, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
 
   const dragRef = useRef<{ id: string } | null>(null)
@@ -158,14 +158,15 @@ export function HeroSection() {
 
         // Flying with gravity + bounce
         let nextVx = m.vx * 0.994
-        let nextVy = m.vy * 0.994 + 0.07
+        let nextVy = m.vy * 0.994 + 0.006
         let nextX = m.x + nextVx
         let nextY = m.y + nextVy
 
-        if (nextX <= 3)  { nextVx =  Math.abs(nextVx) * 0.75; nextX = 3 }
-        if (nextX >= 97) { nextVx = -Math.abs(nextVx) * 0.75; nextX = 97 }
-        if (nextY <= 3)  { nextVy =  Math.abs(nextVy) * 0.75; nextY = 3 }
-        if (nextY >= 97) { nextVy = -Math.abs(nextVy) * 0.75; nextY = 97 }
+        // Always bounce on all 4 walls
+        if (nextX <= 3)  { nextVx =  Math.abs(nextVx) * 0.78; nextX = 3 }
+        if (nextX >= 97) { nextVx = -Math.abs(nextVx) * 0.78; nextX = 97 }
+        if (nextY <= 3)  { nextVy =  Math.abs(nextVy) * 0.78; nextY = 3 }
+        if (nextY >= 97) { nextVy = -Math.abs(nextVy) * 0.78; nextY = 97 }
 
         const speed = Math.sqrt(nextVx * nextVx + nextVy * nextVy)
         const mouthOpen = now < m.mouthOpenUntil || speed > 0.5

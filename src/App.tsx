@@ -10,6 +10,7 @@ import { AiAgentPage }        from '@/pages/AiAgentPage'
 import { PricingPage }        from '@/pages/PricingPage'
 import { AccountPage }        from '@/pages/AccountPage'
 import { ScrollToTop }        from '@/components/ScrollToTop'
+import { RoamingMascot }      from '@/components/RoamingMascot'
 
 function AppShell() {
   const location = useLocation()
@@ -20,6 +21,7 @@ function AppShell() {
       <ScrollToTop />
       <SchemaMarkup />
       {!isAccount && <PixelHeartsBackground />}
+      {!isAccount && <RoamingMascot />}
       {!isAccount && <Navbar />}
 
       <Routes>
