@@ -48,9 +48,9 @@ export function HeroSection() {
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 62, x:  8, y: 56, targetX:  8, targetY: 56, vx: 0, vy: 0, initialX:  8, initialY: 56, isDragging: false, isActive: false, lastActive: Date.now(), rotation:  10, opacity: 0.8, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
-    { id: 'm2', type: 'expert',       state: 'closed', size: 66, x: 92, y: 54, targetX: 92, targetY: 54, vx: 0, vy: 0, initialX: 92, initialY: 54, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.8, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
-    { id: 'm3', type: 'beginner',     state: 'closed', size: 58, x: 88, y: 70, targetX: 88, targetY: 70, vx: 0, vy: 0, initialX: 88, initialY: 70, isDragging: false, isActive: false, lastActive: Date.now(), rotation:   6, opacity: 0.8, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 62, x: 18, y: 46, targetX: 18, targetY: 46, vx: 0, vy: 0, initialX: 18, initialY: 46, isDragging: false, isActive: false, lastActive: Date.now(), rotation:  10, opacity: 0.85, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
+    { id: 'm2', type: 'expert',       state: 'closed', size: 66, x: 82, y: 43, targetX: 82, targetY: 43, vx: 0, vy: 0, initialX: 82, initialY: 43, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.85, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
+    { id: 'm3', type: 'beginner',     state: 'closed', size: 58, x: 80, y: 55, targetX: 80, targetY: 55, vx: 0, vy: 0, initialX: 80, initialY: 55, isDragging: false, isActive: false, lastActive: Date.now(), rotation:   6, opacity: 0.85, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
 
   const dragRef = useRef<{ id: string } | null>(null)
