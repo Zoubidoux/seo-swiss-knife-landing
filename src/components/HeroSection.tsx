@@ -112,9 +112,10 @@ export function HeroSection() {
         }
         lastDragPxRef.current = { x: e.clientX, y: e.clientY }
 
+        const dragId = dragRef.current.id  // capture before any async op
         const { px, py } = toSectionPct(e.clientX, e.clientY)
         setMascots(prev => prev.map(m =>
-          m.id === dragRef.current?.id
+          m.id === dragId
             ? { ...m, targetX: px, targetY: py, isActive: true, lastActive: Date.now(), opacity: 1 }
             : m
         ))
@@ -122,20 +123,21 @@ export function HeroSection() {
     }
     const onUp = () => {
       if (!dragRef.current) return
+      // Capture BEFORE nulling ref — setMascots updater runs deferred (after null)
+      const dragId = dragRef.current.id
       const { vx, vy } = dragVelPctRef.current
+      dragRef.current = null
+      dragVelPctRef.current = { vx: 0, vy: 0 }
       setMascots(prev => prev.map(m => {
-        if (m.id !== dragRef.current?.id) return m
+        if (m.id !== dragId) return m
         return {
           ...m, isDragging: false, lastActive: Date.now(),
           vx: vx * 0.5,
           vy: vy * 0.5,
-          // Keep rainbow on for 3s after release regardless of speed
           state: 'open',
           mouthOpenUntil: Date.now() + 3000,
         }
       }))
-      dragRef.current = null
-      dragVelPctRef.current = { vx: 0, vy: 0 }
     }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
