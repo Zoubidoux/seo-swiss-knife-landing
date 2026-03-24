@@ -122,18 +122,16 @@ export function HeroSection() {
     }
     const onUp = () => {
       if (!dragRef.current) return
-      // Use real mouse velocity (not spring lag) for throw
       const { vx, vy } = dragVelPctRef.current
-      const speed = Math.sqrt(vx * vx + vy * vy)
-      const isThrown = speed > 0.08
       setMascots(prev => prev.map(m => {
         if (m.id !== dragRef.current?.id) return m
         return {
           ...m, isDragging: false, lastActive: Date.now(),
-          vx: isThrown ? vx * 0.5 : 0,
-          vy: isThrown ? vy * 0.5 : 0,
-          state: isThrown ? 'open' : 'closed',
-          mouthOpenUntil: isThrown ? Date.now() + 3000 : 0,
+          vx: vx * 0.5,
+          vy: vy * 0.5,
+          // Keep rainbow on for 3s after release regardless of speed
+          state: 'open',
+          mouthOpenUntil: Date.now() + 3000,
         }
       }))
       dragRef.current = null
@@ -226,12 +224,15 @@ export function HeroSection() {
   const handleMascotDown = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
     const { px, py } = toSectionPct(e.clientX, e.clientY)
-    // Reset velocity tracking for fresh throw measurement
     lastDragPxRef.current = { x: e.clientX, y: e.clientY }
     dragVelPctRef.current = { vx: 0, vy: 0 }
     setMascots(prev => prev.map(m =>
-      m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(),
-        targetX: px, targetY: py, vx: 0, vy: 0, opacity: 1, mouthOpenUntil: 0 } : m
+      m.id === id ? {
+        ...m, isDragging: true, isActive: true, lastActive: Date.now(),
+        targetX: px, targetY: py, vx: 0, vy: 0, opacity: 1,
+        // Show rainbow tongue immediately on grab — same feel as RoamingMascot
+        state: 'open', mouthOpenUntil: Date.now() + 5000,
+      } : m
     ))
     dragRef.current = { id }
   }

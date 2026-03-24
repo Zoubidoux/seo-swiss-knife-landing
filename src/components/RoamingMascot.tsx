@@ -102,14 +102,14 @@ export function RoamingMascot() {
     }, 12000)
   }, [])
 
-  // Random spawn: first at 25-50s, then every 60-120s
+  // Spawn: first at 6-12s, then every ~60s
   useEffect(() => {
     let spawnTimer: ReturnType<typeof setTimeout>
     const scheduleNext = () => {
-      const delay = 60000 + Math.random() * 60000
+      const delay = 50000 + Math.random() * 20000
       spawnTimer = setTimeout(() => { spawn(); scheduleNext() }, delay)
     }
-    const firstDelay = 25000 + Math.random() * 25000
+    const firstDelay = 6000 + Math.random() * 6000
     spawnTimer = setTimeout(() => { spawn(); scheduleNext() }, firstDelay)
     return () => clearTimeout(spawnTimer)
   }, [spawn])
