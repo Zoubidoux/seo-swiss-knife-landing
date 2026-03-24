@@ -71,27 +71,21 @@ export function Navbar() {
     >
       <nav className="flex items-center justify-between py-6 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Left — Brand */}
-        <Link to="/" className="flex items-center gap-3 no-underline group shrink-0 relative z-50">
-          <Mascot type="beginner" size={28} className="group-hover:scale-110 transition-transform" />
-          <span className="font-black text-xl tracking-[-0.05em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
+        <Link to="/" className="flex items-center no-underline group shrink-0 relative z-50">
+          <span className="font-black text-sm tracking-[-0.03em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
             <span>SEARCHT</span>
-            <div className="relative flex items-center justify-center w-[1.1em] h-[1em] overflow-visible mx-[-0.01em]">
-              {/* Pink Mascot as Background - Aligned to hide natural eyes */}
-              <div className="absolute inset-0 flex items-center justify-center -z-10 transition-transform duration-500">
-                 <img 
-                   src="/assets/mascots/beginner-closed.png" 
-                   alt="" 
-                   className="w-[1.6em] h-[1.6em] object-contain translate-y-[12%] opacity-70"
-                 />
+            <div className="relative flex items-center justify-center overflow-visible mx-[0.02em]">
+              {/* Pixly in background — subtle */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{transform:'translateY(18%) scale(1.8)', opacity: 0.18}}>
+                <img src="/assets/mascots/beginner-closed.png" alt="" className="w-full h-full object-contain" />
               </div>
-              
-              {/* CSS Eyes */}
-              <div className="relative flex items-center gap-[0.05em] translate-y-[-2%]">
-                <div className="w-[0.44em] h-[0.44em] rounded-full bg-white border-[0.08em] border-black flex items-center justify-center shadow-sm">
-                   <div className="w-[45%] h-[45%] bg-black rounded-full" />
+              {/* OO eyes — same cap height as letters */}
+              <div className="relative flex items-center gap-[0.04em]">
+                <div className="w-[0.62em] h-[0.68em] rounded-full bg-white border-[0.07em] border-black flex items-center justify-center shadow-sm">
+                  <div className="w-[40%] h-[40%] bg-black rounded-full" />
                 </div>
-                <div className="w-[0.44em] h-[0.44em] rounded-full bg-white border-[0.08em] border-black flex items-center justify-center shadow-sm">
-                   <div className="w-[45%] h-[45%] bg-black rounded-full" />
+                <div className="w-[0.62em] h-[0.68em] rounded-full bg-white border-[0.07em] border-black flex items-center justify-center shadow-sm">
+                  <div className="w-[40%] h-[40%] bg-black rounded-full" />
                 </div>
               </div>
             </div>
