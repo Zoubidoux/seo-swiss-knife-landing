@@ -175,15 +175,19 @@ export function HeroSection() {
           <h1 className="text-4xl md:text-7xl lg:text-[5.5rem] font-black text-black tracking-[-0.08em] leading-none animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100 uppercase relative z-10 flex items-center justify-center flex-nowrap">
             <span>SEARCHT</span>
             <div className="relative flex items-center justify-center w-[1.1em] h-[1em] overflow-visible group/mascot select-none mx-[-0.05em]">
+              {/* Pixly pink body behind eyes */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{transform:'translateY(20%) scale(2)', opacity: 0.22}}>
+                <img src="/assets/mascots/beginner-closed.png" alt="" className="w-full h-full object-contain" />
+              </div>
               <div className="relative flex items-center gap-[0.02em] translate-y-[-2%]">
                 <div className="w-[0.52em] h-[0.52em] rounded-full bg-white border-[0.082em] border-black flex items-center justify-center shadow-inner overflow-hidden">
-                   <div 
+                   <div
                      className="w-[45%] h-[45%] bg-black rounded-full transition-transform duration-75"
                      style={{ transform: `translate(${pupilX}%, ${pupilY}%)` }}
                    />
                 </div>
                 <div className="w-[0.52em] h-[0.52em] rounded-full bg-white border-[0.082em] border-black flex items-center justify-center shadow-inner overflow-hidden">
-                   <div 
+                   <div
                      className="w-[45%] h-[45%] bg-black rounded-full transition-transform duration-75"
                      style={{ transform: `translate(${pupilX}%, ${pupilY}%)` }}
                    />

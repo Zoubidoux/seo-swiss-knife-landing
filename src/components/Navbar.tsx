@@ -69,7 +69,7 @@ export function Navbar() {
         borderBottom: scrolled || mobileMenuOpen ? '2px solid #000000' : '2px solid transparent'
       }}
     >
-      <nav className="flex items-center justify-between py-6 px-6 md:px-8 max-w-7xl mx-auto">
+      <nav className="relative flex items-center justify-between py-6 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Left — Brand */}
         <Link to="/" className="flex items-center no-underline group shrink-0 relative z-50">
           <span className="font-black text-sm tracking-[-0.03em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
@@ -93,8 +93,8 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Center — Navigation (Desktop) */}
-        <div className="hidden lg:flex items-center gap-10">
+        {/* Center — Navigation (Desktop) — truly centered */}
+        <div className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
           <Link to="/" className={`text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${location.pathname === '/' ? 'text-black underline underline-offset-8 decoration-2' : 'text-black/40 hover:text-black'}`}>
             {t.home}
           </Link>
