@@ -30,13 +30,13 @@ interface PhysicalMascot {
   floatY: number
 }
 
-const BUBBLE_MESSAGES = [
-  "Lance-moi ! 🎯",
-  "Attrape-moi ! 👐",
-  "Je rebondis bien ! 🏀",
-  "Essaie encore ! 🎉",
-  "Trop fort ! 💫",
-]
+const BUBBLE_MESSAGES: Record<string, string[]> = {
+  en: ["Throw me! 🎯", "I bounce! 🏀", "Catch me! 👐", "Wheee! 🎉", "Try again! 💫"],
+  fr: ["Lance-moi ! 🎯", "Je rebondis ! 🏀", "Attrape-moi ! 👐", "Youhou ! 🎉", "Encore ! 💫"],
+  de: ["Wirf mich! 🎯", "Ich bounce! 🏀", "Fang mich! 👐", "Wheee! 🎉", "Nochmal! 💫"],
+  it: ["Lanciami! 🎯", "Rimbalzo! 🏀", "Prendimi! 👐", "Evviva! 🎉", "Ancora! 💫"],
+  es: ["¡Lánzame! 🎯", "¡Reboto! 🏀", "¡Atrápame! 👐", "¡Yuhu! 🎉", "¡Otra vez! 💫"],
+}
 
 export function HeroSection() {
   const { lang } = useLanguage()
@@ -48,12 +48,20 @@ export function HeroSection() {
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 64, x: 14, y: 52, targetX: 14, targetY: 52, vx: 0, vy: 0, initialX: 14, initialY: 52, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 8,   opacity: 0.72, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
-    { id: 'm2', type: 'expert',       state: 'closed', size: 68, x: 86, y: 50, targetX: 86, targetY: 50, vx: 0, vy: 0, initialX: 86, initialY: 50, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -10, opacity: 0.72, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
-    { id: 'm3', type: 'beginner',     state: 'closed', size: 62, x: 83, y: 68, targetX: 83, targetY: 68, vx: 0, vy: 0, initialX: 83, initialY: 68, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 5,   opacity: 0.72, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 62, x:  8, y: 56, targetX:  8, targetY: 56, vx: 0, vy: 0, initialX:  8, initialY: 56, isDragging: false, isActive: false, lastActive: Date.now(), rotation:  10, opacity: 0.8, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
+    { id: 'm2', type: 'expert',       state: 'closed', size: 66, x: 92, y: 54, targetX: 92, targetY: 54, vx: 0, vy: 0, initialX: 92, initialY: 54, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.8, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
+    { id: 'm3', type: 'beginner',     state: 'closed', size: 58, x: 88, y: 70, targetX: 88, targetY: 70, vx: 0, vy: 0, initialX: 88, initialY: 70, isDragging: false, isActive: false, lastActive: Date.now(), rotation:   6, opacity: 0.8, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
 
   const dragRef = useRef<{ id: string } | null>(null)
+
+  // Preload open-rainbow images so tongue appears instantly on throw
+  useEffect(() => {
+    ['beginner', 'intermediate', 'expert'].forEach(t => {
+      const img = new Image()
+      img.src = `/assets/mascots/${t}-open-rainbow.png`
+    })
+  }, [])
 
   // ── Speech bubble timing ──
   useEffect(() => {
@@ -63,7 +71,8 @@ export function HeroSection() {
     let intervalId: ReturnType<typeof setInterval>
 
     const showBubble = () => {
-      setBubble({ mascotId: ids[mascotIdx % 3], message: BUBBLE_MESSAGES[msgIdx % BUBBLE_MESSAGES.length] })
+      const msgs = BUBBLE_MESSAGES[lang] ?? BUBBLE_MESSAGES.en
+      setBubble({ mascotId: ids[mascotIdx % 3], message: msgs[msgIdx % msgs.length] })
       msgIdx++
       mascotIdx++
       setTimeout(() => setBubble(null), 5000)
