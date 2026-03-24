@@ -47,23 +47,26 @@ export function HeroSection() {
   const timeRef = useRef(0)
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
-  // Mascots positioned around the subtitle text (~22-32% of section height)
+  // Mascots positioned around the subtitle text (~22-28% of section height)
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
     { id: 'm1', type: 'intermediate', state: 'closed', size: 64,
-      x: 11, y: 22, targetX: 11, targetY: 22, initialX: 11, initialY: 22,
+      x: 10, y: 24, targetX: 10, targetY: 24, initialX: 10, initialY: 24,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 10, opacity: 0.88, mouthOpenUntil: 0, phase: 0, floatY: 0 },
     { id: 'm2', type: 'expert', state: 'closed', size: 68,
-      x: 89, y: 19, targetX: 89, targetY: 19, initialX: 89, initialY: 19,
+      x: 90, y: 21, targetX: 90, targetY: 21, initialX: 90, initialY: 21,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
     { id: 'm3', type: 'beginner', state: 'closed', size: 60,
-      x: 87, y: 30, targetX: 87, targetY: 30, initialX: 87, initialY: 30,
+      x: 88, y: 28, targetX: 88, targetY: 28, initialX: 88, initialY: 28,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
 
   const dragRef = useRef<{ id: string } | null>(null)
+  // Track real mouse velocity for accurate throw (spring lag ≠ throw velocity)
+  const lastDragPxRef = useRef({ x: 0, y: 0 })
+  const dragVelPctRef = useRef({ vx: 0, vy: 0 })
 
   // Preload rainbow images for instant tongue
   useEffect(() => {
@@ -97,9 +100,18 @@ export function HeroSection() {
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (!sectionRef.current) return
-      const { left, top, width, height } = sectionRef.current.getBoundingClientRect()
-      setMousePos({ x: (e.clientX - left) / width - 0.5, y: (e.clientY - top) / height - 0.5 })
+      const r = sectionRef.current.getBoundingClientRect()
+      setMousePos({ x: (e.clientX - r.left) / r.width - 0.5, y: (e.clientY - r.top) / r.height - 0.5 })
       if (dragRef.current) {
+        // Track real mouse velocity (px → %) for accurate throw on release
+        const dx = (e.clientX - lastDragPxRef.current.x) / r.width * 100
+        const dy = (e.clientY - lastDragPxRef.current.y) / r.height * 100
+        dragVelPctRef.current = {
+          vx: dx * 0.65 + dragVelPctRef.current.vx * 0.35,
+          vy: dy * 0.65 + dragVelPctRef.current.vy * 0.35,
+        }
+        lastDragPxRef.current = { x: e.clientX, y: e.clientY }
+
         const { px, py } = toSectionPct(e.clientX, e.clientY)
         setMascots(prev => prev.map(m =>
           m.id === dragRef.current?.id
@@ -110,15 +122,22 @@ export function HeroSection() {
     }
     const onUp = () => {
       if (!dragRef.current) return
+      // Use real mouse velocity (not spring lag) for throw
+      const { vx, vy } = dragVelPctRef.current
+      const speed = Math.sqrt(vx * vx + vy * vy)
+      const isThrown = speed > 0.08
       setMascots(prev => prev.map(m => {
         if (m.id !== dragRef.current?.id) return m
-        const speed = Math.sqrt(m.vx * m.vx + m.vy * m.vy)
-        const isThrown = speed > 0.05
-        return { ...m, isDragging: false, lastActive: Date.now(),
+        return {
+          ...m, isDragging: false, lastActive: Date.now(),
+          vx: isThrown ? vx * 0.9 : 0,
+          vy: isThrown ? vy * 0.9 : 0,
           state: isThrown ? 'open' : 'closed',
-          mouthOpenUntil: isThrown ? Date.now() + 3000 : 0 }
+          mouthOpenUntil: isThrown ? Date.now() + 3000 : 0,
+        }
       }))
       dragRef.current = null
+      dragVelPctRef.current = { vx: 0, vy: 0 }
     }
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseup', onUp)
@@ -158,21 +177,35 @@ export function HeroSection() {
         }
 
         // Flying: gravity + friction + bounce
-        // Bounce margin = half mascot size as % of section dimensions
         const r = sectionRef.current?.getBoundingClientRect()
-        const mw = r ? (m.size * 0.5 / r.width  * 100) : 4
-        const mh = r ? (m.size * 0.5 / r.height * 100) : 4
+        const secW = r?.width  ?? window.innerWidth
+        const secH = r?.height ?? window.innerHeight
+        const secTop = r?.top ?? 0
 
-        let nvx = m.vx * 0.993
-        let nvy = m.vy * 0.993 + 0.012   // gravity: gentle, 0.012%/frame
+        // Half-mascot radius as % of section dimensions
+        const mwPct = m.size * 0.5 / secW * 100
+        const mhPct = m.size * 0.5 / secH * 100
+
+        // Bounce within the VISIBLE viewport slice of the section
+        // (section can be taller than viewport due to showcase below)
+        const visTopPct  = Math.max(0, -secTop) / secH * 100
+        const visBotPct  = Math.min(secH, window.innerHeight - secTop) / secH * 100
+
+        const minX = mwPct
+        const maxX = 100 - mwPct
+        const minY = visTopPct + mhPct
+        const maxY = visBotPct - mhPct
+
+        let nvx = m.vx * 0.991
+        let nvy = m.vy * 0.991 + 0.014   // gravity
         let nx = m.x + nvx
         let ny = m.y + nvy
 
-        // Bounce on all 4 walls (mascot stays fully visible)
-        if (nx < mw)        { nvx =  Math.abs(nvx) * 0.82; nx = mw }
-        if (nx > 100 - mw)  { nvx = -Math.abs(nvx) * 0.82; nx = 100 - mw }
-        if (ny < mh)        { nvy =  Math.abs(nvy) * 0.82; ny = mh }
-        if (ny > 100 - mh)  { nvy = -Math.abs(nvy) * 0.82; ny = 100 - mh }
+        // Elastic bounce on all 4 viewport-visible walls
+        if (nx < minX) { nvx =  Math.abs(nvx) * 0.78; nx = minX }
+        if (nx > maxX) { nvx = -Math.abs(nvx) * 0.78; nx = maxX }
+        if (ny < minY) { nvy =  Math.abs(nvy) * 0.78; ny = minY }
+        if (ny > maxY) { nvy = -Math.abs(nvy) * 0.78; ny = maxY }
 
         const speed = Math.sqrt(nvx * nvx + nvy * nvy)
         return {
@@ -191,6 +224,9 @@ export function HeroSection() {
   const handleMascotDown = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
     const { px, py } = toSectionPct(e.clientX, e.clientY)
+    // Reset velocity tracking for fresh throw measurement
+    lastDragPxRef.current = { x: e.clientX, y: e.clientY }
+    dragVelPctRef.current = { vx: 0, vy: 0 }
     setMascots(prev => prev.map(m =>
       m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(),
         targetX: px, targetY: py, vx: 0, vy: 0, opacity: 1, mouthOpenUntil: 0 } : m

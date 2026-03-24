@@ -69,7 +69,7 @@ export function Navbar() {
         borderBottom: scrolled || mobileMenuOpen ? '2px solid #000000' : '2px solid transparent'
       }}
     >
-      <nav className="relative flex items-center py-6 px-6 md:px-8 max-w-7xl mx-auto">
+      <nav className="relative flex items-center py-6 px-6 md:px-10 w-full">
         {/* Left — Brand */}
         <Link to="/" className="flex flex-1 items-center no-underline group shrink-0 relative z-50">
           <span className="font-black text-sm tracking-[-0.03em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
