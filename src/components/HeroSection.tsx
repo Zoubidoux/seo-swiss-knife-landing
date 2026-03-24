@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { createPortal } from 'react-dom'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { Button } from '@/components/ui/button'
@@ -8,17 +7,17 @@ import { ExtensionMockup } from '@/components/ExtensionMockup'
 import { Mascot } from '@/components/Mascot'
 import type { MascotVariety, MascotStatus } from '@/types/mascot'
 
-// Coordinates are viewport pixels (fixed positioning)
+// Coordinates = % of section (0–100)
 interface PhysicalMascot {
   id: string
   type: MascotVariety
   state: MascotStatus
   size: number
-  x: number        // px from left (viewport)
-  y: number        // px from top (viewport)
+  x: number
+  y: number
   targetX: number
   targetY: number
-  vx: number       // px/frame
+  vx: number
   vy: number
   initialX: number
   initialY: number
@@ -29,7 +28,7 @@ interface PhysicalMascot {
   opacity: number
   mouthOpenUntil: number
   phase: number
-  floatY: number   // px offset for idle float
+  floatY: number
 }
 
 const BUBBLE_MESSAGES: Record<string, string[]> = {
@@ -40,61 +39,33 @@ const BUBBLE_MESSAGES: Record<string, string[]> = {
   es: ["¡Lánzame! 🎯", "¡Reboto! 🏀", "¡Atrápame! 👐", "¡Yuhu! 🎉", "¡Otra vez! 💫"],
 }
 
-const makeMascots = (vw: number, vh: number): PhysicalMascot[] => {
-  // Position around the subtitle text block (centered, max-w-2xl ≈ 42rem)
-  // Subtitle area: horizontally centered, vertically ~45-55% of viewport
-  const subtitleY = vh * 0.48
-  const textHalfW = Math.min(vw * 0.38, 336) // half of max-w-2xl capped
-  const cx = vw / 2
-
-  return [
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 64,
-      x: cx - textHalfW - 50,  y: subtitleY,       // left of text block
-      targetX: cx - textHalfW - 50, targetY: subtitleY,
-      initialX: cx - textHalfW - 50, initialY: subtitleY,
-      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
-      rotation: 10, opacity: 0.88, mouthOpenUntil: 0, phase: 0, floatY: 0 },
-
-    { id: 'm2', type: 'expert', state: 'closed', size: 68,
-      x: cx + textHalfW + 50,  y: subtitleY - 20,   // right of text block
-      targetX: cx + textHalfW + 50, targetY: subtitleY - 20,
-      initialX: cx + textHalfW + 50, initialY: subtitleY - 20,
-      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
-      rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
-
-    { id: 'm3', type: 'beginner', state: 'closed', size: 60,
-      x: cx + textHalfW + 30,  y: subtitleY + 100,  // right, below
-      targetX: cx + textHalfW + 30, targetY: subtitleY + 100,
-      initialX: cx + textHalfW + 30, initialY: subtitleY + 100,
-      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
-      rotation: 6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
-  ]
-}
-
 export function HeroSection() {
   const { lang } = useLanguage()
   const t = translations[lang].hero
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const sectionRef = useRef<HTMLElement>(null)
   const timeRef = useRef(0)
-
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
-  const [mascots, setMascots] = useState<PhysicalMascot[]>([])
+
+  // Subtitle text is horizontally centered, vertically ~44–56% of section
+  const [mascots, setMascots] = useState<PhysicalMascot[]>([
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 64,
+      x: 16, y: 48, targetX: 16, targetY: 48, initialX: 16, initialY: 48,
+      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
+      rotation: 10, opacity: 0.88, mouthOpenUntil: 0, phase: 0, floatY: 0 },
+    { id: 'm2', type: 'expert', state: 'closed', size: 68,
+      x: 84, y: 45, targetX: 84, targetY: 45, initialX: 84, initialY: 45,
+      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
+      rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
+    { id: 'm3', type: 'beginner', state: 'closed', size: 60,
+      x: 82, y: 57, targetX: 82, targetY: 57, initialX: 82, initialY: 57,
+      vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
+      rotation: 6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
+  ])
+
   const dragRef = useRef<{ id: string } | null>(null)
 
-  // Init positions after mount (needs real viewport size)
-  useEffect(() => {
-    setMascots(makeMascots(window.innerWidth, window.innerHeight))
-    const onResize = () => setMascots(prev => {
-      // Only reset idle mascots on resize
-      const fresh = makeMascots(window.innerWidth, window.innerHeight)
-      return prev.map((m, i) => m.isActive ? m : fresh[i])
-    })
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-
-  // Preload rainbow images
+  // Preload rainbow images for instant tongue
   useEffect(() => {
     ['beginner', 'intermediate', 'expert'].forEach(type => {
       const img = new Image(); img.src = `/assets/mascots/${type}-open-rainbow.png`
@@ -116,17 +87,23 @@ export function HeroSection() {
     return () => { clearTimeout(timerId); clearInterval(intervalId) }
   }, [lang])
 
-  // Mouse / drag
+  const toSectionPct = (clientX: number, clientY: number) => {
+    const r = sectionRef.current?.getBoundingClientRect()
+    if (!r) return { px: 50, py: 50 }
+    return { px: (clientX - r.left) / r.width * 100, py: (clientY - r.top) / r.height * 100 }
+  }
+
+  // Mouse / drag events
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      if (sectionRef.current) {
-        const { left, top, width, height } = sectionRef.current.getBoundingClientRect()
-        setMousePos({ x: (e.clientX - left) / width - 0.5, y: (e.clientY - top) / height - 0.5 })
-      }
+      if (!sectionRef.current) return
+      const { left, top, width, height } = sectionRef.current.getBoundingClientRect()
+      setMousePos({ x: (e.clientX - left) / width - 0.5, y: (e.clientY - top) / height - 0.5 })
       if (dragRef.current) {
+        const { px, py } = toSectionPct(e.clientX, e.clientY)
         setMascots(prev => prev.map(m =>
           m.id === dragRef.current?.id
-            ? { ...m, targetX: e.clientX, targetY: e.clientY, isActive: true, lastActive: Date.now(), opacity: 1 }
+            ? { ...m, targetX: px, targetY: py, isActive: true, lastActive: Date.now(), opacity: 1 }
             : m
         ))
       }
@@ -136,7 +113,9 @@ export function HeroSection() {
       setMascots(prev => prev.map(m => {
         if (m.id !== dragRef.current?.id) return m
         const speed = Math.sqrt(m.vx * m.vx + m.vy * m.vy)
-        return { ...m, isDragging: false, lastActive: Date.now(), state: speed > 1 ? 'open' : 'closed', mouthOpenUntil: speed > 1 ? Date.now() + 2500 : 0 }
+        return { ...m, isDragging: false, lastActive: Date.now(),
+          state: speed > 0.1 ? 'open' : 'closed',
+          mouthOpenUntil: speed > 0.1 ? Date.now() + 2500 : 0 }
       }))
       dragRef.current = null
     }
@@ -145,65 +124,75 @@ export function HeroSection() {
     return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
   }, [])
 
-  // Physics loop (px/frame units)
+  // Physics loop
   useEffect(() => {
-    if (mascots.length === 0) return
     let frameId: number
     const update = () => {
       const now = Date.now()
       timeRef.current += 0.022
-      const vw = window.innerWidth
-      const vh = window.innerHeight
 
       setMascots(prev => prev.map(m => {
-        // Auto-reset after 10s
+        // Auto-reset after 10s inactivity
         if (m.isActive && !m.isDragging && now - m.lastActive > 10000) {
           if (m.opacity > 0.02) return { ...m, opacity: m.opacity * 0.94, vx: m.vx * 0.85, vy: m.vy * 0.85 }
-          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY, vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.88, mouthOpenUntil: 0, floatY: 0 }
+          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY,
+            vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.88, mouthOpenUntil: 0, floatY: 0 }
         }
 
-        // Idle float (px)
+        // Idle float
         if (!m.isActive && !m.isDragging) {
-          const floatY = Math.sin(timeRef.current + m.phase) * 8
-          const newRot = m.rotation + Math.sin(timeRef.current * 0.6 + m.phase) * 0.04
-          return { ...m, floatY, rotation: newRot }
+          return {
+            ...m,
+            floatY: Math.sin(timeRef.current + m.phase) * 1.2,
+            rotation: m.rotation + Math.sin(timeRef.current * 0.6 + m.phase) * 0.04,
+          }
         }
 
         // Spring drag with lag
         if (m.isDragging) {
-          const lerp = 0.2
-          const nx = m.x + (m.targetX - m.x) * lerp
-          const ny = m.y + (m.targetY - m.y) * lerp
+          const nx = m.x + (m.targetX - m.x) * 0.22
+          const ny = m.y + (m.targetY - m.y) * 0.22
           const vx = nx - m.x, vy = ny - m.y
-          return { ...m, x: nx, y: ny, vx, vy, floatY: 0, rotation: m.rotation + vx * 0.15 }
+          return { ...m, x: nx, y: ny, vx, vy, floatY: 0, rotation: m.rotation + vx * 2.5 }
         }
 
-        // Flying + gravity + bounce on viewport edges
-        let nvx = m.vx * 0.994
-        let nvy = m.vy * 0.994 + 0.25   // gravity in px/frame
+        // Flying: gravity + friction + bounce
+        // Bounce margin = half mascot size as % of section dimensions
+        const r = sectionRef.current?.getBoundingClientRect()
+        const mw = r ? (m.size * 0.5 / r.width  * 100) : 4
+        const mh = r ? (m.size * 0.5 / r.height * 100) : 4
+
+        let nvx = m.vx * 0.993
+        let nvy = m.vy * 0.993 + 0.012   // gravity: gentle, 0.012%/frame
         let nx = m.x + nvx
         let ny = m.y + nvy
-        const half = m.size / 2
 
-        if (nx < half)      { nvx =  Math.abs(nvx) * 0.8; nx = half }
-        if (nx > vw - half) { nvx = -Math.abs(nvx) * 0.8; nx = vw - half }
-        if (ny < half)      { nvy =  Math.abs(nvy) * 0.8; ny = half }
-        if (ny > vh - half) { nvy = -Math.abs(nvy) * 0.8; ny = vh - half }
+        // Bounce on all 4 walls (mascot stays fully visible)
+        if (nx < mw)        { nvx =  Math.abs(nvx) * 0.82; nx = mw }
+        if (nx > 100 - mw)  { nvx = -Math.abs(nvx) * 0.82; nx = 100 - mw }
+        if (ny < mh)        { nvy =  Math.abs(nvy) * 0.82; ny = mh }
+        if (ny > 100 - mh)  { nvy = -Math.abs(nvy) * 0.82; ny = 100 - mh }
 
         const speed = Math.sqrt(nvx * nvx + nvy * nvy)
-        const mouthOpen = now < m.mouthOpenUntil || speed > 2
-        return { ...m, x: nx, y: ny, vx: nvx, vy: nvy, rotation: m.rotation + nvx * 0.12, state: mouthOpen ? 'open' : 'closed', floatY: 0 }
+        return {
+          ...m, x: nx, y: ny, vx: nvx, vy: nvy,
+          rotation: m.rotation + nvx * 2,
+          state: (now < m.mouthOpenUntil || speed > 0.3) ? 'open' : 'closed',
+          floatY: 0,
+        }
       }))
       frameId = requestAnimationFrame(update)
     }
     frameId = requestAnimationFrame(update)
     return () => cancelAnimationFrame(frameId)
-  }, [mascots.length > 0])  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [mousePos])
 
   const handleMascotDown = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
+    const { px, py } = toSectionPct(e.clientX, e.clientY)
     setMascots(prev => prev.map(m =>
-      m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(), targetX: e.clientX, targetY: e.clientY, vx: 0, vy: 0, opacity: 1, mouthOpenUntil: 0 } : m
+      m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(),
+        targetX: px, targetY: py, vx: 0, vy: 0, opacity: 1, mouthOpenUntil: 0 } : m
     ))
     dragRef.current = { id }
   }
@@ -211,22 +200,28 @@ export function HeroSection() {
   const pupilX = mousePos.x * 85
   const pupilY = mousePos.y * 85
 
-  const mascotsPortal = typeof document !== 'undefined' ? createPortal(
-    <>
+  return (
+    <section ref={sectionRef} className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-32 px-6 grid-bg bg-white select-none">
+      {/* Visual effects – clipped separately so mascots can bounce to edges */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 opacity-[0.05] grain-bg" />
+        <div className="absolute top-40 left-0 w-full h-[1px] bg-steel/40" />
+        <div className="absolute top-0 right-[20%] w-[1px] h-full bg-steel/40" />
+      </div>
+
+      {/* ── Physics Mascots (absolute, scroll with section) ── */}
       {mascots.map(mascot => (
         <div
           key={mascot.id}
-          onMouseDown={(e) => handleMascotDown(mascot.id, e)}
-          className="cursor-grab active:cursor-grabbing select-none"
+          onMouseDown={e => handleMascotDown(mascot.id, e)}
+          className="absolute z-[5] cursor-grab active:cursor-grabbing pointer-events-auto"
           style={{
-            position: 'fixed',
-            left: mascot.x,
-            top: mascot.y + mascot.floatY,
+            left: `${mascot.x}%`,
+            top: `${mascot.y + mascot.floatY}%`,
             transform: `translate(-50%, -50%) rotate(${mascot.rotation}deg)`,
             opacity: mascot.opacity,
-            zIndex: 40,
-            willChange: 'transform, left, top',
             transition: mascot.isDragging ? 'none' : 'opacity 0.4s',
+            willChange: 'left, top, transform',
           }}
         >
           <Mascot type={mascot.type} state={mascot.state} size={mascot.size} className="pointer-events-none" />
@@ -242,25 +237,13 @@ export function HeroSection() {
           )}
         </div>
       ))}
-    </>,
-    document.body
-  ) : null
 
-  return (
-    <section ref={sectionRef} className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-32 px-6 overflow-hidden grid-bg bg-white select-none">
-      <div className="absolute inset-0 pointer-events-none opacity-[0.05] grain-bg" />
-      <div className="absolute top-40 left-0 w-full h-[1px] bg-steel/40 pointer-events-none" />
-      <div className="absolute top-0 right-[20%] w-[1px] h-full bg-steel/40 pointer-events-none" />
-
-      {mascotsPortal}
-
-      {/* Content */}
+      {/* ── Content ── */}
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center gap-10 pointer-events-none">
 
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 pointer-events-auto">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg border-2 border-black bg-white offset-expert text-[10px] font-black uppercase tracking-[0.2em] text-black">
-            <span className="w-2 h-2 bg-expert animate-pulse" />
-            {t.badge}
+            <span className="w-2 h-2 bg-expert animate-pulse" />{t.badge}
           </div>
         </div>
 
