@@ -48,9 +48,9 @@ export function HeroSection() {
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 62, x: 18, y: 46, targetX: 18, targetY: 46, vx: 0, vy: 0, initialX: 18, initialY: 46, isDragging: false, isActive: false, lastActive: Date.now(), rotation:  10, opacity: 0.85, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
-    { id: 'm2', type: 'expert',       state: 'closed', size: 66, x: 82, y: 43, targetX: 82, targetY: 43, vx: 0, vy: 0, initialX: 82, initialY: 43, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.85, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
-    { id: 'm3', type: 'beginner',     state: 'closed', size: 58, x: 80, y: 55, targetX: 80, targetY: 55, vx: 0, vy: 0, initialX: 80, initialY: 55, isDragging: false, isActive: false, lastActive: Date.now(), rotation:   6, opacity: 0.85, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 64, x:  6, y: 46, targetX:  6, targetY: 46, vx: 0, vy: 0, initialX:  6, initialY: 46, isDragging: false, isActive: false, lastActive: Date.now(), rotation:  10, opacity: 0.88, mouthOpenUntil: 0, phase: 0,   floatY: 0 },
+    { id: 'm2', type: 'expert',       state: 'closed', size: 68, x: 94, y: 44, targetX: 94, targetY: 44, vx: 0, vy: 0, initialX: 94, initialY: 44, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
+    { id: 'm3', type: 'beginner',     state: 'closed', size: 60, x: 91, y: 60, targetX: 91, targetY: 60, vx: 0, vy: 0, initialX: 91, initialY: 60, isDragging: false, isActive: false, lastActive: Date.now(), rotation:   6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
 
   const dragRef = useRef<{ id: string } | null>(null)
@@ -118,8 +118,8 @@ export function HeroSection() {
             ...m,
             isDragging: false,
             lastActive: Date.now(),
-            state: speed > 0.6 ? 'open' : 'closed',
-            mouthOpenUntil: speed > 0.6 ? Date.now() + 1800 : 0,
+            state: speed > 0.15 ? 'open' : 'closed',
+            mouthOpenUntil: speed > 0.15 ? Date.now() + 2500 : 0,
           }
         }))
         dragRef.current = null
@@ -145,7 +145,7 @@ export function HeroSection() {
         // Auto-reset after 10s inactivity
         if (m.isActive && !m.isDragging && now - m.lastActive > 10000) {
           if (m.opacity > 0.02) return { ...m, opacity: m.opacity * 0.94, vx: m.vx * 0.85, vy: m.vy * 0.85 }
-          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY, vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.6, mouthOpenUntil: 0, floatY: 0 }
+          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY, vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.88, mouthOpenUntil: 0, floatY: 0 }
         }
 
         // Idle float
@@ -212,7 +212,7 @@ export function HeroSection() {
         <div
           key={mascot.id}
           onMouseDown={(e) => handleMascotDown(mascot.id, e)}
-          className="absolute z-30 cursor-grab active:cursor-grabbing pointer-events-auto"
+          className="absolute z-[5] cursor-grab active:cursor-grabbing pointer-events-auto"
           style={{
             left: `${mascot.x}%`,
             top: `${mascot.y + mascot.floatY}%`,
