@@ -47,18 +47,18 @@ export function HeroSection() {
   const timeRef = useRef(0)
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
-  // Mascots positioned around the subtitle text (~22-28% of section height)
+  // Mascots flanking the subtitle text — closer to content, not viewport edges
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
     { id: 'm1', type: 'intermediate', state: 'closed', size: 64,
-      x: 10, y: 24, targetX: 10, targetY: 24, initialX: 10, initialY: 24,
+      x: 18, y: 24, targetX: 18, targetY: 24, initialX: 18, initialY: 24,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 10, opacity: 0.88, mouthOpenUntil: 0, phase: 0, floatY: 0 },
     { id: 'm2', type: 'expert', state: 'closed', size: 68,
-      x: 90, y: 21, targetX: 90, targetY: 21, initialX: 90, initialY: 21,
+      x: 82, y: 21, targetX: 82, targetY: 21, initialX: 82, initialY: 21,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
     { id: 'm3', type: 'beginner', state: 'closed', size: 60,
-      x: 88, y: 28, targetX: 88, targetY: 28, initialX: 88, initialY: 28,
+      x: 80, y: 29, targetX: 80, targetY: 29, initialX: 80, initialY: 29,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
@@ -130,8 +130,8 @@ export function HeroSection() {
         if (m.id !== dragRef.current?.id) return m
         return {
           ...m, isDragging: false, lastActive: Date.now(),
-          vx: isThrown ? vx * 0.9 : 0,
-          vy: isThrown ? vy * 0.9 : 0,
+          vx: isThrown ? vx * 0.5 : 0,
+          vy: isThrown ? vy * 0.5 : 0,
           state: isThrown ? 'open' : 'closed',
           mouthOpenUntil: isThrown ? Date.now() + 3000 : 0,
         }
@@ -176,36 +176,38 @@ export function HeroSection() {
           return { ...m, x: nx, y: ny, vx, vy, floatY: 0, rotation: m.rotation + vx * 2.5 }
         }
 
-        // Flying: gravity + friction + bounce
+        // Flying: gravity + friction + bounce off VIEWPORT edges
+        // Same approach as RoamingMascot: convert to viewport px, check, convert back
         const r = sectionRef.current?.getBoundingClientRect()
-        const secW = r?.width  ?? window.innerWidth
-        const secH = r?.height ?? window.innerHeight
-        const secTop = r?.top ?? 0
+        if (!r) return m   // section not mounted yet, skip frame
 
-        // Half-mascot radius as % of section dimensions
-        const mwPct = m.size * 0.5 / secW * 100
-        const mhPct = m.size * 0.5 / secH * 100
-
-        // Bounce within the VISIBLE viewport slice of the section
-        // (section can be taller than viewport due to showcase below)
-        const visTopPct  = Math.max(0, -secTop) / secH * 100
-        const visBotPct  = Math.min(secH, window.innerHeight - secTop) / secH * 100
-
-        const minX = mwPct
-        const maxX = 100 - mwPct
-        const minY = visTopPct + mhPct
-        const maxY = visBotPct - mhPct
+        const half = m.size * 0.5
 
         let nvx = m.vx * 0.991
-        let nvy = m.vy * 0.991 + 0.014   // gravity
+        let nvy = m.vy * 0.991 + 0.013
         let nx = m.x + nvx
         let ny = m.y + nvy
 
-        // Elastic bounce on all 4 viewport-visible walls
-        if (nx < minX) { nvx =  Math.abs(nvx) * 0.78; nx = minX }
-        if (nx > maxX) { nvx = -Math.abs(nvx) * 0.78; nx = maxX }
-        if (ny < minY) { nvy =  Math.abs(nvy) * 0.78; ny = minY }
-        if (ny > maxY) { nvy = -Math.abs(nvy) * 0.78; ny = maxY }
+        // Convert current section-% position → viewport px
+        const vpX = r.left + nx / 100 * r.width
+        const vpY = r.top  + ny / 100 * r.height
+
+        // Bounce on viewport left/right
+        if (vpX < half) {
+          nvx =  Math.abs(nvx) * 0.78
+          nx = (half - r.left) / r.width * 100
+        } else if (vpX > window.innerWidth - half) {
+          nvx = -Math.abs(nvx) * 0.78
+          nx = (window.innerWidth - half - r.left) / r.width * 100
+        }
+        // Bounce on viewport top/bottom
+        if (vpY < half) {
+          nvy =  Math.abs(nvy) * 0.78
+          ny = (half - r.top) / r.height * 100
+        } else if (vpY > window.innerHeight - half) {
+          nvy = -Math.abs(nvy) * 0.78
+          ny = (window.innerHeight - half - r.top) / r.height * 100
+        }
 
         const speed = Math.sqrt(nvx * nvx + nvy * nvy)
         return {
