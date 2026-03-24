@@ -47,18 +47,18 @@ export function HeroSection() {
   const timeRef = useRef(0)
   const [bubble, setBubble] = useState<{ mascotId: string; message: string } | null>(null)
 
-  // Subtitle text is horizontally centered, vertically ~44–56% of section
+  // Mascots positioned around the subtitle text (~22-32% of section height)
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
     { id: 'm1', type: 'intermediate', state: 'closed', size: 64,
-      x: 16, y: 48, targetX: 16, targetY: 48, initialX: 16, initialY: 48,
+      x: 11, y: 22, targetX: 11, targetY: 22, initialX: 11, initialY: 22,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 10, opacity: 0.88, mouthOpenUntil: 0, phase: 0, floatY: 0 },
     { id: 'm2', type: 'expert', state: 'closed', size: 68,
-      x: 84, y: 45, targetX: 84, targetY: 45, initialX: 84, initialY: 45,
+      x: 89, y: 19, targetX: 89, targetY: 19, initialX: 89, initialY: 19,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: -12, opacity: 0.88, mouthOpenUntil: 0, phase: 2.1, floatY: 0 },
     { id: 'm3', type: 'beginner', state: 'closed', size: 60,
-      x: 82, y: 57, targetX: 82, targetY: 57, initialX: 82, initialY: 57,
+      x: 87, y: 30, targetX: 87, targetY: 30, initialX: 87, initialY: 30,
       vx: 0, vy: 0, isDragging: false, isActive: false, lastActive: Date.now(),
       rotation: 6, opacity: 0.88, mouthOpenUntil: 0, phase: 4.2, floatY: 0 },
   ])
@@ -113,9 +113,10 @@ export function HeroSection() {
       setMascots(prev => prev.map(m => {
         if (m.id !== dragRef.current?.id) return m
         const speed = Math.sqrt(m.vx * m.vx + m.vy * m.vy)
+        const isThrown = speed > 0.05
         return { ...m, isDragging: false, lastActive: Date.now(),
-          state: speed > 0.1 ? 'open' : 'closed',
-          mouthOpenUntil: speed > 0.1 ? Date.now() + 2500 : 0 }
+          state: isThrown ? 'open' : 'closed',
+          mouthOpenUntil: isThrown ? Date.now() + 3000 : 0 }
       }))
       dragRef.current = null
     }
@@ -177,7 +178,7 @@ export function HeroSection() {
         return {
           ...m, x: nx, y: ny, vx: nvx, vy: nvy,
           rotation: m.rotation + nvx * 2,
-          state: (now < m.mouthOpenUntil || speed > 0.3) ? 'open' : 'closed',
+          state: (now < m.mouthOpenUntil || speed > 0.15) ? 'open' : 'closed',
           floatY: 0,
         }
       }))
@@ -185,7 +186,7 @@ export function HeroSection() {
     }
     frameId = requestAnimationFrame(update)
     return () => cancelAnimationFrame(frameId)
-  }, [mousePos])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleMascotDown = (id: string, e: React.MouseEvent) => {
     e.preventDefault()

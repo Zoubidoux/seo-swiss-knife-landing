@@ -69,9 +69,9 @@ export function Navbar() {
         borderBottom: scrolled || mobileMenuOpen ? '2px solid #000000' : '2px solid transparent'
       }}
     >
-      <nav className="relative flex items-center justify-between py-6 px-6 md:px-8 max-w-7xl mx-auto">
+      <nav className="relative flex items-center py-6 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Left — Brand */}
-        <Link to="/" className="flex items-center no-underline group shrink-0 relative z-50">
+        <Link to="/" className="flex flex-1 items-center no-underline group shrink-0 relative z-50">
           <span className="font-black text-sm tracking-[-0.03em] uppercase text-black flex items-center group-hover:scale-[1.02] transition-transform">
             <span>SEARCHT</span>
             <div className="relative flex items-center justify-center overflow-visible mx-[0.02em]">
@@ -134,7 +134,7 @@ export function Navbar() {
         </div>
 
         {/* Right — Lang & CTA */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-1 items-center justify-end gap-4">
           <div className="relative group hidden sm:block">
             <button className="flex items-center gap-2 text-[11px] font-black text-black/40 hover:text-black transition-all uppercase tracking-[0.2em] py-2">
               <span className="text-base leading-none">
