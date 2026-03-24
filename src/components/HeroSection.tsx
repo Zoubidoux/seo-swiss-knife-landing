@@ -176,7 +176,7 @@ export function HeroSection() {
             <span>SEARCHT</span>
             <div className="relative flex items-center justify-center w-[1.1em] h-[1em] overflow-visible group/mascot select-none mx-[-0.05em]">
               {/* Pixly pink body behind eyes */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{transform:'translateY(20%) scale(2)', opacity: 0.22}}>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{transform:'translateY(28%) scale(1.35)', opacity: 0.18}}>
                 <img src="/assets/mascots/beginner-closed.png" alt="" className="w-full h-full object-contain" />
               </div>
               <div className="relative flex items-center gap-[0.02em] translate-y-[-2%]">

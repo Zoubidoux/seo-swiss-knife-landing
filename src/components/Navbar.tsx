@@ -93,8 +93,8 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Center — Navigation (Desktop) — truly centered */}
-        <div className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
+        {/* Center — Navigation (Desktop) */}
+        <div className="hidden lg:flex items-center gap-10">
           <Link to="/" className={`text-[11px] uppercase tracking-[0.2em] font-black transition-all no-underline ${location.pathname === '/' ? 'text-black underline underline-offset-8 decoration-2' : 'text-black/40 hover:text-black'}`}>
             {t.home}
           </Link>
@@ -134,7 +134,7 @@ export function Navbar() {
         </div>
 
         {/* Right — Lang & CTA */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <div className="relative group hidden sm:block">
             <button className="flex items-center gap-2 text-[11px] font-black text-black/40 hover:text-black transition-all uppercase tracking-[0.2em] py-2">
               <span className="text-base leading-none">
