@@ -14,6 +14,8 @@ interface PhysicalMascot {
   size: number
   x: number
   y: number
+  targetX: number
+  targetY: number
   vx: number
   vy: number
   initialX: number
@@ -33,39 +35,42 @@ export function HeroSection() {
   
   // Physics State
   const [mascots, setMascots] = useState<PhysicalMascot[]>([
-    { id: 'm1', type: 'intermediate', state: 'closed', size: 60, x: 75, y: 25, vx: 0, vy: 0, initialX: 75, initialY: 25, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 12, opacity: 0.3 },
-    { id: 'm2', type: 'expert', state: 'open', size: 70, x: 25, y: 75, vx: 0, vy: 0, initialX: 25, initialY: 75, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -12, opacity: 0.3 },
-    { id: 'm3', type: 'beginner', state: 'open', size: 65, x: 80, y: 70, vx: 0, vy: 0, initialX: 80, initialY: 70, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 3, opacity: 0.3 },
+    { id: 'm1', type: 'intermediate', state: 'closed', size: 64, x: 70, y: 52, targetX: 70, targetY: 52, vx: 0, vy: 0, initialX: 70, initialY: 52, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 8, opacity: 0.55 },
+    { id: 'm2', type: 'expert',       state: 'closed', size: 68, x: 28, y: 48, targetX: 28, targetY: 48, vx: 0, vy: 0, initialX: 28, initialY: 48, isDragging: false, isActive: false, lastActive: Date.now(), rotation: -10, opacity: 0.55 },
+    { id: 'm3', type: 'beginner',     state: 'closed', size: 62, x: 58, y: 56, targetX: 58, targetY: 56, vx: 0, vy: 0, initialX: 58, initialY: 56, isDragging: false, isActive: false, lastActive: Date.now(), rotation: 5, opacity: 0.55 },
   ])
   
-  const dragRef = useRef<{ id: string; startX: number; startY: number; lastX: number; lastY: number } | null>(null)
+  const dragRef = useRef<{ id: string } | null>(null)
+
+  const toPercent = (clientX: number, clientY: number) => {
+    const r = sectionRef.current?.getBoundingClientRect()
+    if (!r) return { px: 0, py: 0 }
+    return { px: (clientX - r.left) / r.width * 100, py: (clientY - r.top) / r.height * 100 }
+  }
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!sectionRef.current) return
       const { left, top, width, height } = sectionRef.current.getBoundingClientRect()
-      
-      const x = (e.clientX - left) / width - 0.5
-      const y = (e.clientY - top) / height - 0.5
-      setMousePos({ x, y })
+      setMousePos({ x: (e.clientX - left) / width - 0.5, y: (e.clientY - top) / height - 0.5 })
 
       if (dragRef.current) {
-        const mascotX = (e.clientX - left) / width * 100
-        const mascotY = (e.clientY - top) / height * 100
-        
-        setMascots(prev => prev.map(m => 
-          m.id === dragRef.current?.id 
-            ? { ...m, x: mascotX, y: mascotY, vx: mascotX - (dragRef.current?.lastX ?? 0), vy: mascotY - (dragRef.current?.lastY ?? 0), isActive: true, lastActive: Date.now(), opacity: 1 } 
+        const { px, py } = toPercent(e.clientX, e.clientY)
+        setMascots(prev => prev.map(m =>
+          m.id === dragRef.current?.id
+            ? { ...m, targetX: px, targetY: py, isActive: true, lastActive: Date.now(), opacity: 1 }
             : m
         ))
-        dragRef.current.lastX = mascotX
-        dragRef.current.lastY = mascotY
       }
     }
 
     const handleMouseUp = () => {
       if (dragRef.current) {
-        setMascots(prev => prev.map(m => m.id === dragRef.current?.id ? { ...m, isDragging: false, lastActive: Date.now() } : m))
+        setMascots(prev => prev.map(m => {
+          if (m.id !== dragRef.current?.id) return m
+          const speed = Math.sqrt(m.vx * m.vx + m.vy * m.vy)
+          return { ...m, isDragging: false, lastActive: Date.now(), state: speed > 1.5 ? 'open' : 'closed' }
+        }))
         dragRef.current = null
       }
     }
@@ -84,36 +89,41 @@ export function HeroSection() {
     const update = () => {
       const now = Date.now()
       setMascots(prev => prev.map(m => {
-        // Handle reset logic (12 seconds of inactivity)
-        if (m.isActive && !m.isDragging && now - m.lastActive > 12000) {
-           // Reset animation: fade out
-           if (m.opacity > 0.01) {
-             return { ...m, opacity: m.opacity * 0.95, vx: m.vx * 0.9, vy: m.vy * 0.9 }
-           } else {
-             // Snap to initial and fade in
-             return { ...m, x: m.initialX, y: m.initialY, vx: 0, vy: 0, isActive: false, opacity: 0.3 }
-           }
+        // Reset after 10s inactivity
+        if (m.isActive && !m.isDragging && now - m.lastActive > 10000) {
+          if (m.opacity > 0.02) return { ...m, opacity: m.opacity * 0.94, vx: m.vx * 0.85, vy: m.vy * 0.85 }
+          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY, vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.55 }
         }
 
-        if (!m.isActive || m.isDragging) return m
-
-        let nextX = m.x + m.vx
-        let nextY = m.y + m.vy
-        let nextVx = m.vx * 0.98 // Friction
-        let nextVy = m.vy * 0.98
-
-        // Bounce Left/Right
-        if (nextX <= 2 || nextX >= 98) {
-          nextVx *= -0.8
-          nextX = nextX <= 2 ? 2.1 : 97.9
-        }
-        // Bounce Top/Bottom
-        if (nextY <= 2 || nextY >= 98) {
-          nextVy *= -0.8
-          nextY = nextY <= 2 ? 2.1 : 97.9
+        // Spring follow during drag
+        if (m.isDragging) {
+          const lerpFactor = 0.22
+          const newX = m.x + (m.targetX - m.x) * lerpFactor
+          const newY = m.y + (m.targetY - m.y) * lerpFactor
+          const vx = newX - m.x
+          const vy = newY - m.y
+          return { ...m, x: newX, y: newY, vx, vy, rotation: m.rotation + vx * 3 }
         }
 
-        return { ...m, x: nextX, y: nextY, vx: nextVx, vy: nextVy, rotation: m.rotation + m.vx * 2 }
+        if (!m.isActive) return m
+
+        // Gravity + friction
+        let nextVx = m.vx * 0.993
+        let nextVy = m.vy * 0.993 + 0.06
+        let nextX = m.x + nextVx
+        let nextY = m.y + nextVy
+
+        // Bounce walls
+        if (nextX <= 2)  { nextVx = Math.abs(nextVx) * 0.75; nextX = 2 }
+        if (nextX >= 98) { nextVx = -Math.abs(nextVx) * 0.75; nextX = 98 }
+        if (nextY <= 2)  { nextVy = Math.abs(nextVy) * 0.75; nextY = 2 }
+        if (nextY >= 98) { nextVy = -Math.abs(nextVy) * 0.75; nextY = 98 }
+
+        // Close mouth when slow
+        const speed = Math.sqrt(nextVx * nextVx + nextVy * nextVy)
+        const nextState: MascotStatus = speed > 0.8 ? 'open' : 'closed'
+
+        return { ...m, x: nextX, y: nextY, vx: nextVx, vy: nextVy, rotation: m.rotation + nextVx * 2.5, state: nextState }
       }))
       frameId = requestAnimationFrame(update)
     }
@@ -123,8 +133,9 @@ export function HeroSection() {
 
   const handleMascotDown = (id: string, e: React.MouseEvent) => {
     e.preventDefault()
-    setMascots(prev => prev.map(m => m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(), vx: 0, vy: 0, opacity: 1 } : m))
-    dragRef.current = { id, startX: e.clientX, startY: e.clientY, lastX: (e.clientX - (sectionRef.current?.getBoundingClientRect().left ?? 0)) / (sectionRef.current?.offsetWidth ?? 1) * 100, lastY: (e.clientY - (sectionRef.current?.getBoundingClientRect().top ?? 0)) / (sectionRef.current?.offsetHeight ?? 1) * 100 }
+    const { px, py } = toPercent(e.clientX, e.clientY)
+    setMascots(prev => prev.map(m => m.id === id ? { ...m, isDragging: true, isActive: true, lastActive: Date.now(), targetX: px, targetY: py, vx: 0, vy: 0, opacity: 1 } : m))
+    dragRef.current = { id }
   }
 
   // Calculate pupil offset
