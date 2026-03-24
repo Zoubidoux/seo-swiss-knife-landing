@@ -174,13 +174,13 @@ function Dashboard() {
   const { user, profile, signOut } = useAuth()
   const [portalLoading, setPortalLoading] = useState(false)
 
-  const plan = PLAN_META[profile?.subscription_status ?? 'free']
-  const isPaid = profile?.subscription_status !== 'free'
+  const plan = PLAN_META[profile?.plan ?? 'free']
+  const isPaid = profile?.plan !== 'free' && !!profile?.plan
   const isCancelled = profile?.cancel_at_period_end === true
   const isPastDue = profile?.payment_status === 'past_due'
 
-  const periodEnd = profile?.subscription_period_end
-    ? new Date(profile.subscription_period_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  const periodEnd = profile?.period_end
+    ? new Date(profile.period_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : null
 
   const intervalLabel = profile?.subscription_interval === 'year' ? 'Annual' : profile?.subscription_interval === 'month' ? 'Monthly' : null

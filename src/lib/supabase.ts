@@ -5,19 +5,42 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export type SubscriptionStatus = 'free' | 'pro' | 'enterprise'
-export type PaymentStatus = 'active' | 'past_due' | 'unpaid' | null
-
-export interface Profile {
-  id: string
-  email: string
+// Mirrors the existing user_profiles table
+export interface UserProfile {
+  user_id: string
   stripe_customer_id: string | null
-  stripe_subscription_id: string | null
-  subscription_status: SubscriptionStatus
-  subscription_plan: string | null          // e.g. "pro_monthly" / "pro_yearly"
-  subscription_interval: 'month' | 'year' | null
-  subscription_period_end: string | null
-  cancel_at_period_end: boolean             // true = cancelled, active until period_end
-  payment_status: PaymentStatus
+  display_name: string | null
+  avatar_url: string | null
   created_at: string
+  updated_at: string
+}
+
+// Mirrors the existing user_entitlements table (+ 3 new columns we'll add)
+export interface UserEntitlement {
+  user_id: string
+  plan: string                          // 'free' | 'pro' | 'enterprise'
+  credits_remaining: number | null
+  credits_total: number | null
+  period_end: string | null
+  stripe_subscription_id: string | null
+  updated_at: string
+  // New columns (added via migration)
+  cancel_at_period_end: boolean
+  subscription_interval: 'month' | 'year' | null
+  payment_status: 'active' | 'past_due' | 'unpaid' | null
+}
+
+// Combined shape used throughout the landing page
+export interface Profile {
+  user_id: string
+  stripe_customer_id: string | null
+  display_name: string | null
+  avatar_url: string | null
+  plan: string
+  credits_remaining: number | null
+  period_end: string | null
+  stripe_subscription_id: string | null
+  cancel_at_period_end: boolean
+  subscription_interval: 'month' | 'year' | null
+  payment_status: 'active' | 'past_due' | 'unpaid' | null
 }
