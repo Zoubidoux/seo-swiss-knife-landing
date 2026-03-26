@@ -6,11 +6,11 @@ import { useState } from 'react'
 
 // STRIPE LINKS CONFIGURATION
 const STRIPE_LINKS = {
-  FREE: 'https://chrome.google.com/webstore/detail/your-extension-id',
-  PRO_MONTHLY: 'https://buy.stripe.com/test_pro_monthly',
-  PRO_YEARLY: 'https://buy.stripe.com/test_pro_yearly',
-  UNLIMITED_MONTHLY: 'https://buy.stripe.com/test_unlimited_monthly',
-  UNLIMITED_YEARLY: 'https://buy.stripe.com/test_unlimited_yearly'
+  FREE: 'https://chromewebstore.google.com/detail/search-toolbox',
+  PRO_MONTHLY: 'https://buy.stripe.com/test_6oU4gB8Pi3l5gNk6Fl0sU00',
+  PRO_YEARLY: 'https://buy.stripe.com/test_4gMdRb0iM1cX40ybZF0sU01',
+  UNLIMITED_MONTHLY: 'https://buy.stripe.com/test_00w7sN8Pi08TgNkd3J0sU02',
+  UNLIMITED_YEARLY: 'https://buy.stripe.com/test_5kQbJ3fdG9Jtbt0bZF0sU03'
 }
 
 export function PricingSection() {
