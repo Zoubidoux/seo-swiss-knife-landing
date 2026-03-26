@@ -28,7 +28,14 @@ function Dashboard({ extSession }: DashboardProps) {
   const [linkingStatus, setLinkingStatus] = useState<'idle' | 'linking' | 'success' | 'error'>('idle')
   const [linkingError, setLinkingError] = useState<string | null>(null)
 
-  if (!profile) return null
+  if (!profile) {
+    return (
+      <div className="min-h-[400px] flex flex-col items-center justify-center gap-4">
+        <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Finalizing setup...</p>
+      </div>
+    )
+  }
 
   const plan = PLAN_META[profile.plan ?? 'free']
   const isPaid = profile.plan !== 'free' && !!profile.plan
