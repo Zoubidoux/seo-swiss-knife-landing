@@ -841,23 +841,30 @@ const fr: typeof en = {
   legal: {
     privacy: {
       title: "Politique de Confidentialité",
-      lastUpdated: "Mise à jour : 26 mars 2026",
-      introduction: "Bienvenue sur SEO & GEO Toolkit. Nous nous engageons à protéger votre vie privée et à être transparents sur l'utilisation de vos données.",
+      lastUpdated: "Dernière mise à jour : 26 mars 2026",
+      introduction: "Bienvenue sur SEO & GEO Toolkit. Votre vie privée n'est pas une 'option'—c'est un pilier central de notre architecture. Cette politique décrit comment nous collectons, utilisons et protégeons vos données sur notre site, notre extension Chrome et nos services d'IA.",
       sections: [
-        { title: "1. Données collectées", content: "Nous collectons uniquement le nécessaire : email, données de compte et logs techniques pour la sécurité." },
-        { title: "2. Accès Chrome", content: "Nous respectons la politique 'Limited Use' de Google. L'accès est limité aux fonctionnalités de l'outil. Aucune publicité." },
-        { title: "3. Partage de données", content: "Partage limité aux prestataires essentiels comme Supabase (Stockage) et Stripe (Paiement)." },
-        { title: "4. Vos droits", content: "Vous disposez d'un droit d'accès et de suppression (RGPD). Contact : devtool.genius@gmail.com" }
+        { title: "1. Architecture 'Local-First'", content: "95% de nos audits techniques se déroulent entièrement dans votre navigateur. Nous ne transmettons pas le contenu des pages pour analyse générale ; il est supprimé à la fermeture de la session." },
+        { title: "2. Données Collectées", content: "Nous collectons uniquement le strict nécessaire : Email et métadonnées d'identité (via Supabase), et confirmation du statut d'abonnement (via Stripe). Nous ne stockons aucune coordonnée bancaire." },
+        { title: "3. Données de l'Agent IA", content: "Lors de l'utilisation de l'Expert SEO IA, des fragments HTML spécifiques et vos questions sont traités pour générer des recommandations. Ces données ne sont jamais utilisées pour entraîner des modèles d'IA tiers." },
+        { title: "4. Protection Chrome Store", content: "Nous respectons strictement la politique de données utilisateur du Chrome Web Store. Nous ne vendons aucune donnée à des tiers et ne les utilisons pas à des fins publicitaires." },
+        { title: "5. Sécurité et Hébergement", content: "Toutes les données sont chiffrées en transit (TLS 1.2+) et au repos (AES-256). Nous utilisons des sous-traitants de confiance : Supabase, Stripe et Vercel." },
+        { title: "6. Vos Droits et Rétention", content: "Vous avez le droit d'accéder, d'exporter ou de supprimer votre compte à tout moment via votre Tableau de Bord. Nous respectons la transparence RGPD pour tous nos utilisateurs." },
+        { title: "7. Contact", content: "Pour toute question juridique ou relative à la vie privée : devtool.genius@gmail.com" }
       ]
     },
     terms: {
       title: "Conditions d'Utilisation",
-      lastUpdated: "Mise à jour : 26 mars 2026",
-      introduction: "En utilisant SEO & GEO Toolkit, vous acceptez ces conditions. Veuillez les lire attentivement.",
+      lastUpdated: "Dernière mise à jour : 26 mars 2026",
+      introduction: "En accédant à SEO & GEO Toolkit, en installant notre extension Chrome ou en créant un compte, vous acceptez d'être lié par ces conditions d'utilisation.",
       sections: [
-        { title: "1. Service", content: "Outils d'analyse SEO professionnels via web et extension Chrome." },
-        { title: "2. Utilisation", content: "Usage légal uniquement. Pas de reverse engineering ou d'abus de scraping." },
-        { title: "3. Facturation", content: "Paiements via Stripe. Annulation possible à tout moment dans votre compte." }
+        { title: "1. Éligibilité et Comptes", content: "Un seul utilisateur par compte. Vous êtes responsable de la sécurité de vos identifiants et de toute activité effectuée sous votre compte." },
+        { title: "2. Abonnements et Crédits IA", content: "Les forfaits payants débloquent l'Agent IA. Les crédits expirent à la fin de chaque cycle et ne sont pas remboursables une fois consommés. Annulation possible à tout moment." },
+        { title: "3. Politique d'Usage Acceptable", content: "Usage licite uniquement. Toute tentative de rétro-ingénierie, de scraping abusif ou d'épuisement automatisé des crédits est strictement interdite." },
+        { title: "4. Propriété Intellectuelle", content: "La marque SEO & GEO Toolkit, les mascottes, les algorithmes et l'interface sont notre propriété exclusive. Nous vous accordons une licence limitée pour un usage professionnel." },
+        { title: "5. Limites et Résultats", content: "Le SEO est un domaine complexe ; nous fournissons l'outil 'EN L'ÉTAT' et ne garantissons aucune amélioration de classement ou résultat commercial spécifique." },
+        { title: "6. Limitation de Responsabilité", content: "Nous ne sommes pas responsables des dommages indirects ou de la perte de positions. Notre responsabilité est limitée au montant payé au cours des 12 derniers mois." },
+        { title: "7. Droit Applicable", content: "Ces conditions sont régies par les lois locales où le service est enregistré. Contact : devtool.genius@gmail.com" }
       ]
     }
   }
