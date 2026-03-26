@@ -86,7 +86,7 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
         </div>
 
         {/* Right Column: Pricing Cards */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
           {t.plans.map((plan, i) => {
             const dynamicData = getPlanData(i)
             return (
