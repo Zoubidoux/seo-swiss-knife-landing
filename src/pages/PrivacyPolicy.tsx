@@ -7,7 +7,6 @@ import { translations } from '@/i18n/index'
 export function PrivacyPolicy() {
   const { lang } = useLanguage()
   const t = translations[lang].legal.privacy
-  const common = translations[lang].nav
 
   return (
     <div className="min-h-screen bg-white grid-bg py-24 px-6 relative overflow-hidden">

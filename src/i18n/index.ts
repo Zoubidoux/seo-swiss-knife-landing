@@ -418,6 +418,7 @@ const en = {
     terms: {
       title: "Terms of Use",
       lastUpdated: "Last updated: March 26, 2026",
+      introduction: "By using SEO & GEO Toolkit, you agree to these terms. Please read them carefully.",
       sections: [
         { title: "1. Service", content: "Professional SEO analysis tools via web and Chrome extension." },
         { title: "2. Use", content: "Lawful use only. No reverse engineering or scraping abuse." },
@@ -845,6 +846,7 @@ const fr: typeof en = {
     terms: {
       title: "Conditions d'Utilisation",
       lastUpdated: "Mise à jour : 26 mars 2026",
+      introduction: "En utilisant SEO & GEO Toolkit, vous acceptez ces conditions. Veuillez les lire attentivement.",
       sections: [
         { title: "1. Service", content: "Outils d'analyse SEO professionnels via web et extension Chrome." },
         { title: "2. Utilisation", content: "Usage légal uniquement. Pas de reverse engineering ou d'abus de scraping." },
@@ -1266,6 +1268,7 @@ const de: typeof en = {
     terms: {
       title: "Nutzungsbedingungen",
       lastUpdated: "Zuletzt aktualisiert: 26. März 2026",
+      introduction: "Durch die Nutzung des SEO & GEO Toolkits erklären Sie sich mit diesen Bedingungen einverstanden.",
       sections: [
         { title: "1. Dienstleistung", content: "Professionelle SEO-Analyse-Tools über Web und Chrome-Erweiterung." },
         { title: "2. Nutzung", content: "Nur rechtmäßige Nutzung. Kein Reverse Engineering oder Scraping-Missbrauch." },
@@ -1687,6 +1690,7 @@ const it: typeof en = {
     terms: {
       title: "Condizioni d'Uso",
       lastUpdated: "Ultimo aggiornamento: 26 marzo 2026",
+      introduction: "Utilizzando SEO & GEO Toolkit, accetti i presenti termini. Ti preghiamo di leggerli attentamente.",
       sections: [
         { title: "1. Servizio", content: "Strumenti di analisi SEO professionale via web ed estensione Chrome." },
         { title: "2. Utilizzo", content: "Solo uso lecito. Nessun reverse engineering o abuso di scraping." },
@@ -2109,6 +2113,7 @@ const es: typeof en = {
     terms: {
       title: "Términos de Uso",
       lastUpdated: "Última actualización: 26 de marzo de 2026",
+      introduction: "Al utilizar SEO & GEO Toolkit, usted acepta estos términos. Por favor, léalos detenidamente.",
       sections: [
         { title: "1. Servicio", content: "Herramientas de análisis SEO profesional vía web y extensión de Chrome." },
         { title: "2. Uso", content: "Solo uso legal. Sin ingeniería inversa ni abuso de scraping." },
