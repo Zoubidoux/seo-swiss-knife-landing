@@ -407,22 +407,29 @@ const en = {
     privacy: {
       title: "Privacy Policy",
       lastUpdated: "Last updated: March 26, 2026",
-      introduction: "Welcome to SEO & GEO Toolkit. We are committed to protecting your privacy and providing a transparent overview of how we handle your information.",
+      introduction: "Welcome to SEO & GEO Toolkit. Your privacy is not a 'feature'—it is a core pillar of our product architecture. This policy describes how we collect, use, and protect your data across our website, Chrome Extension, and account system.",
       sections: [
-        { title: "1. Information We Collect", content: "We collect only what is necessary: email, account data, and technical logs for security and debugging." },
-        { title: "2. Chrome Access", content: "We adhere to Google's Limited Use policy. Access is restricted to providing features. No advertising use." },
-        { title: "3. Data Sharing", content: "We share data only with essential processors like Supabase (DB) and Stripe (Payments)." },
-        { title: "4. Your Rights", content: "You have rights to access or delete your data under GDPR. Contact: devtool.genius@gmail.com" }
+        { title: "1. The 'Local-First' Architecture", content: "95% of our technical audits occur entirely within your local browser. We do not transmit page content to our servers for general analysis; it is discarded when you close the session." },
+        { title: "2. Data We Collect", content: "We collect only what is necessary: Email and identity metadata (via Supabase), and Subscription status confirmation (via Stripe). We do not store credit card details." },
+        { title: "3. AI Agent Data", content: "When using the AI SEO Expert, specific HTML fragments and your prompts are processed to generate recommendations. This data is never used to train base AI models." },
+        { title: "4. Chrome Store Protection", content: "We strictly adhere to the Google Chrome Web Store User Data Policy. We do not sell data to third parties or use it for advertising purposes." },
+        { title: "5. Data Security & Hosting", content: "All data is encrypted in transit (TLS 1.2+) and at rest (AES-256). We use trusted sub-processors like Supabase, Stripe, and Vercel." },
+        { title: "6. Your Rights & Retention", content: "You have the right to access, export, or delete your account at any time via your Dashboard. We respect GDPR-style transparency for all users." },
+        { title: "7. Contact", content: "For legal or privacy inquiries: devtool.genius@gmail.com" }
       ]
     },
     terms: {
       title: "Terms of Use",
       lastUpdated: "Last updated: March 26, 2026",
-      introduction: "By using SEO & GEO Toolkit, you agree to these terms. Please read them carefully.",
+      introduction: "By accessing SEO & GEO Toolkit, installing our Chrome Extension, or creating an account, you enter into a legally binding agreement to comply with these Terms of Use.",
       sections: [
-        { title: "1. Service", content: "Professional SEO analysis tools via web and Chrome extension." },
-        { title: "2. Use", content: "Lawful use only. No reverse engineering or scraping abuse." },
-        { title: "3. Billing", content: "Payments handled by Stripe. Cancel anytime in account settings." }
+        { title: "1. Eligibility & Accounts", content: "One user per account. You are responsible for safeguarding your credentials and all activity occurring under your account." },
+        { title: "2. Subscriptions & AI Credits", content: "Paid plans unlock the AI Agent. Credits expire at the end of each cycle and are non-refundable once consumed. Cancel anytime in Dashboard." },
+        { title: "3. Acceptable Use Policy", content: "Lawful use only. No reverse engineering, scraping abuse, or automated credit exhaustion is permitted." },
+        { title: "4. Intellectual Property", content: "The SEO & GEO Toolkit brand, mascots, algorithms, and UI are our exclusive property. We grant you a limited license for professional use." },
+        { title: "5. Disclaimers & Results", content: "SEO is complex; we provide the tool 'AS IS' and do not guarantee ranking improvements or specific commercial outcomes." },
+        { title: "6. Limitation of Liability", content: "We are not liable for indirect damages or loss of rankings. Total liability is limited to the amount paid in the last 12 months." },
+        { title: "7. Governing Law", content: "These terms are governed by local laws where the service is registered. Contact: devtool.genius@gmail.com" }
       ]
     }
   }
