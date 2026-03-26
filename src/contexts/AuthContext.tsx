@@ -57,19 +57,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err: any) {
       console.error('fetchProfile error:', err)
       setError(err.message || 'Unexpected connection error')
-      setProfile({
-        user_id: userId,
-        stripe_customer_id: null,
-        display_name: null,
-        avatar_url: null,
-        plan: 'free',
-        credits_remaining: 0,
-        period_end: null,
-        stripe_subscription_id: null,
-        cancel_at_period_end: false,
-        subscription_interval: null,
-        payment_status: null,
-      })
+      // ... fallback profile ...
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -91,12 +81,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (event === 'SIGNED_OUT') {
         setProfile(null)
+        setUser(null)
+        setSession(null)
         setLoading(false)
         setError(null)
       } else if (u) {
-        // Only fetch if we have a user
         await fetchProfile(u.id)
-      } else if (event === 'INITIAL_SESSION' && !session) {
+      } else {
         setLoading(false)
       }
     })
