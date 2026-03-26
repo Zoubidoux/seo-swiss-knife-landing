@@ -402,6 +402,28 @@ const en = {
     privacy: "Privacy Policy",
     store: "Chrome Web Store",
     rights: "© {year} SearchToolbox SEO. All rights reserved."
+  },
+  legal: {
+    privacy: {
+      title: "Privacy Policy",
+      lastUpdated: "Last updated: March 26, 2026",
+      introduction: "Welcome to SEO & GEO Toolkit. We are committed to protecting your privacy and providing a transparent overview of how we handle your information.",
+      sections: [
+        { title: "1. Information We Collect", content: "We collect only what is necessary: email, account data, and technical logs for security and debugging." },
+        { title: "2. Chrome Access", content: "We adhere to Google's Limited Use policy. Access is restricted to providing features. No advertising use." },
+        { title: "3. Data Sharing", content: "We share data only with essential processors like Supabase (DB) and Stripe (Payments)." },
+        { title: "4. Your Rights", content: "You have rights to access or delete your data under GDPR. Contact: devtool.genius@gmail.com" }
+      ]
+    },
+    terms: {
+      title: "Terms of Use",
+      lastUpdated: "Last updated: March 26, 2026",
+      sections: [
+        { title: "1. Service", content: "Professional SEO analysis tools via web and Chrome extension." },
+        { title: "2. Use", content: "Lawful use only. No reverse engineering or scraping abuse." },
+        { title: "3. Billing", content: "Payments handled by Stripe. Cancel anytime in account settings." }
+      ]
+    }
   }
 }
 
@@ -807,6 +829,28 @@ const fr: typeof en = {
     privacy: "Confidentialité",
     store: "Chrome Web Store",
     rights: "© {year} SearchToolbox SEO. Tous droits réservés."
+  },
+  legal: {
+    privacy: {
+      title: "Politique de Confidentialité",
+      lastUpdated: "Mise à jour : 26 mars 2026",
+      introduction: "Bienvenue sur SEO & GEO Toolkit. Nous nous engageons à protéger votre vie privée et à être transparents sur l'utilisation de vos données.",
+      sections: [
+        { title: "1. Données collectées", content: "Nous collectons uniquement le nécessaire : email, données de compte et logs techniques pour la sécurité." },
+        { title: "2. Accès Chrome", content: "Nous respectons la politique 'Limited Use' de Google. L'accès est limité aux fonctionnalités de l'outil. Aucune publicité." },
+        { title: "3. Partage de données", content: "Partage limité aux prestataires essentiels comme Supabase (Stockage) et Stripe (Paiement)." },
+        { title: "4. Vos droits", content: "Vous disposez d'un droit d'accès et de suppression (RGPD). Contact : devtool.genius@gmail.com" }
+      ]
+    },
+    terms: {
+      title: "Conditions d'Utilisation",
+      lastUpdated: "Mise à jour : 26 mars 2026",
+      sections: [
+        { title: "1. Service", content: "Outils d'analyse SEO professionnels via web et extension Chrome." },
+        { title: "2. Utilisation", content: "Usage légal uniquement. Pas de reverse engineering ou d'abus de scraping." },
+        { title: "3. Facturation", content: "Paiements via Stripe. Annulation possible à tout moment dans votre compte." }
+      ]
+    }
   }
 }
 
@@ -1206,6 +1250,28 @@ const de: typeof en = {
     privacy: "Datenschutz",
     store: "Chrome Web Store",
     rights: "© {year} SearchToolbox SEO. Alle Rechte vorbehalten."
+  },
+  legal: {
+    privacy: {
+      title: "Datenschutzerklärung",
+      lastUpdated: "Zuletzt aktualisiert: 26. März 2026",
+      introduction: "Willkommen beim SEO & GEO Toolkit. Wir verpflichten uns, Ihre Privatsphäre zu schützen und Transparenz über Ihre Daten zu gewährleisten.",
+      sections: [
+        { title: "1. Datenerhebung", content: "Wir erheben nur das Notwendige: E-Mail, Kontodaten und technische Protokolle zur Sicherheit." },
+        { title: "2. Chrome-Zugriff", content: "Wir halten uns an die Google-Richtlinien für eingeschränkte Nutzung. Kein Datenverkauf oder Werbung." },
+        { title: "3. Datenweitergabe", content: "Weitergabe nur an wichtige Dienstleister wie Supabase und Stripe." },
+        { title: "4. Ihre Rechte", content: "Sie haben das Recht auf Auskunft und Löschung gemäß DSGVO. Kontakt: devtool.genius@gmail.com" }
+      ]
+    },
+    terms: {
+      title: "Nutzungsbedingungen",
+      lastUpdated: "Zuletzt aktualisiert: 26. März 2026",
+      sections: [
+        { title: "1. Dienstleistung", content: "Professionelle SEO-Analyse-Tools über Web und Chrome-Erweiterung." },
+        { title: "2. Nutzung", content: "Nur rechtmäßige Nutzung. Kein Reverse Engineering oder Scraping-Missbrauch." },
+        { title: "3. Abrechnung", content: "Zahlungen über Stripe. Jederzeit in den Kontoeinstellungen kündbar." }
+      ]
+    }
   }
 }
 
@@ -1605,6 +1671,28 @@ const it: typeof en = {
     privacy: "Privacy",
     store: "Chrome Web Store",
     rights: "© {year} SearchToolbox SEO. Tutti i diritti riservati."
+  },
+  legal: {
+    privacy: {
+      title: "Informativa sulla Privacy",
+      lastUpdated: "Ultimo aggiornamento: 26 marzo 2026",
+      introduction: "Benvenuti in SEO & GEO Toolkit. Ci impegniamo a proteggere la vostra privacy e a fornire una panoramica trasparente di come gestiamo le vostre informazioni.",
+      sections: [
+        { title: "1. Informazioni raccolte", content: "Raccogliamo solo il necessario: email, dati dell'account e log tecnici per la sicurezza." },
+        { title: "2. Accesso Chrome", content: "Rispettiamo la politica di utilizzo limitato di Google. L'accesso è limitato alle funzionalità descritte. Nessun uso pubblicitario." },
+        { title: "3. Condivisione dei dati", content: "Condividiamo i dati solo con i responsabili del trattamento essenziali come Supabase (DB) e Stripe (Pagamenti)." },
+        { title: "4. I vostri diritti", content: "Avete il diritto di accedere o cancellare i vostri dati ai sensi del GDPR. Contatto: devtool.genius@gmail.com" }
+      ]
+    },
+    terms: {
+      title: "Condizioni d'Uso",
+      lastUpdated: "Ultimo aggiornamento: 26 marzo 2026",
+      sections: [
+        { title: "1. Servizio", content: "Strumenti di analisi SEO professionale via web ed estensione Chrome." },
+        { title: "2. Utilizzo", content: "Solo uso lecito. Nessun reverse engineering o abuso di scraping." },
+        { title: "3. Fatturazione", content: "Pagamenti gestiti da Stripe. Annulla in qualsiasi momento nelle impostazioni dell'account." }
+      ]
+    }
   }
 }
 
@@ -2005,6 +2093,28 @@ const es: typeof en = {
     privacy: "Privacidad",
     store: "Chrome Web Store",
     rights: "© {year} SearchToolbox SEO. Todos los derechos reservados."
+  },
+  legal: {
+    privacy: {
+      title: "Política de Privacidad",
+      lastUpdated: "Última actualización: 26 de marzo de 2026",
+      introduction: "Bienvenido a SEO & GEO Toolkit. Nos comprometemos a proteger su privacidad y a ofrecer una visión transparente de cómo manejamos su información.",
+      sections: [
+        { title: "1. Información recopilada", content: "Solo recopilamos lo necesario: correo electrónico, datos de la cuenta y registros técnicos para seguridad." },
+        { title: "2. Acceso a Chrome", content: "Cumplimos con la política de uso limitado de Google. El acceso está restringido a las funciones indicadas. Sin uso publicitario." },
+        { title: "3. Intercambio de datos", content: "Compartimos datos solo con procesadores esenciales como Supabase (Base de datos) e Stripe (Pagos)." },
+        { title: "4. Sus derechos", content: "Tiene derecho a acceder o eliminar sus datos según el RGPD. Contacto: devtool.genius@gmail.com" }
+      ]
+    },
+    terms: {
+      title: "Términos de Uso",
+      lastUpdated: "Última actualización: 26 de marzo de 2026",
+      sections: [
+        { title: "1. Servicio", content: "Herramientas de análisis SEO profesional vía web y extensión de Chrome." },
+        { title: "2. Uso", content: "Solo uso legal. Sin ingeniería inversa ni abuso de scraping." },
+        { title: "3. Facturación", content: "Pagos gestionados por Stripe. Cancele en cualquier momento en la configuración de la cuenta." }
+      ]
+    }
   }
 }
 
