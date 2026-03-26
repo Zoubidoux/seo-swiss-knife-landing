@@ -348,8 +348,14 @@ function Dashboard({ extSession }: DashboardProps) {
 
 // ── Page wrapper ──────────────────────────────────────────────────────────────
 export function AccountPage() {
-  const { user, loading } = useAuth()
   const [searchParams] = useSearchParams()
+  const auth = useAuth()
+  
+  if (!auth) {
+    return <div className="p-20 text-center font-black uppercase text-gray-400">Loading Context...</div>
+  }
+
+  const { user, loading } = auth
   const extSession = searchParams.get('ext_session')
 
   if (loading) {

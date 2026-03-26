@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     let mounted = true
     let initialEventHandled = false
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (!mounted) return
       
       console.log('Auth Event:', event)
@@ -98,23 +98,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(false)
         setError(null)
       } else if (u) {
-        // Only fetch profile if we haven't already or if it's a new login
-        await fetchProfile(u.id)
+        // Use timeout to move fetch out of the immediate render cycle
+        setTimeout(async () => {
+          if (mounted) await fetchProfile(u.id)
+        }, 0)
       } else {
-        // No user, stop loading
         setLoading(false)
       }
       
       initialEventHandled = true
     })
 
-    // Safety timeout: If no auth event fires in 3 seconds, stop loading
     const timer = setTimeout(() => {
       if (mounted && !initialEventHandled) {
-        console.warn('Auth fallback triggered after timeout')
         setLoading(false)
       }
-    }, 3000)
+    }, 5000)
 
     return () => {
       mounted = false
