@@ -322,14 +322,16 @@ function Dashboard({ extSession }: DashboardProps) {
 
         {/* ── Pricing section (embedded) ── */}
         {!isPaid && (
-          <div ref={pricingRef} className="mt-32 pt-12 border-t-2 border-dashed border-gray-100 -mx-4 md:-mx-8 lg:-mx-12 xl:-mx-20 bg-white/50 pb-32">
-            <div className="px-6 mb-12 text-center max-w-xl mx-auto">
-              <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Level Up Your Toolkit</h3>
-              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-3 leading-relaxed">
+          <div ref={pricingRef} className="mt-48 pt-24 border-t-2 border-dashed border-gray-100 -mx-4 md:-mx-8 lg:-mx-12 xl:-mx-32 bg-white/80 pb-64">
+            <div className="px-6 mb-20 text-center max-w-2xl mx-auto">
+              <h3 className="text-4xl font-black text-gray-900 uppercase tracking-tight">Level Up Your Toolkit</h3>
+              <p className="text-xs text-gray-400 font-bold uppercase tracking-[0.4em] mt-4 leading-relaxed">
                 Save 27% with yearly billing. Unlimited generations, higher limits, and priority expert support.
               </p>
             </div>
-            <PricingSection isEmbedded={true} />
+            <div className="max-w-6xl mx-auto px-6">
+              <PricingSection isEmbedded={true} />
+            </div>
           </div>
         )}
 

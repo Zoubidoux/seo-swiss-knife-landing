@@ -80,30 +80,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true
 
-    const init = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
-        if (!mounted) return
-        
-        setSession(session)
-        const u = session?.user ?? null
-        setUser(u)
-        
-        if (u) {
-          await fetchProfile(u.id)
-        }
-      } catch (err) {
-        console.error('Auth init error:', err)
-      } finally {
-        if (mounted) setLoading(false)
-      }
-    }
-
-    init()
-
+    // Set up listener first
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return
       
+      console.log('Auth Event:', event)
       setSession(session)
       const u = session?.user ?? null
       setUser(u)
@@ -113,9 +94,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(false)
         setError(null)
       } else if (u) {
+        // Only fetch if we have a user
         await fetchProfile(u.id)
+      } else if (event === 'INITIAL_SESSION' && !session) {
+        setLoading(false)
       }
     })
+
+    // Fallback if no event fires
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (mounted && !session) {
+        setLoading(false)
+      }
+    }
+    checkSession()
 
     return () => {
       mounted = false
@@ -123,15 +116,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error: error?.message ?? null }
-  }
-
-  const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({ email, password })
-    return { error: error?.message ?? null }
-  }
+  const signIn = async (email: string, password: string) => { ... SAME ... }
+  const signUp = async (email: string, password: string) => { ... SAME ... }
 
   const signOut = async () => {
     try {
@@ -139,8 +125,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setProfile(null)
       setUser(null)
       setSession(null)
+      window.location.href = '/' // Force redirect to clear everything
     } catch (err) {
       console.error('Sign out error:', err)
+      window.location.href = '/'
     }
   }
 
