@@ -57,7 +57,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err: any) {
       console.error('fetchProfile error:', err)
       setError(err.message || 'Unexpected connection error')
-      // ... fallback profile ...
+      setProfile({
+        user_id: userId,
+        stripe_customer_id: null,
+        display_name: null,
+        avatar_url: null,
+        plan: 'free',
+        credits_remaining: 0,
+        period_end: null,
+        stripe_subscription_id: null,
+        cancel_at_period_end: false,
+        subscription_interval: null,
+        payment_status: null,
+      })
     } finally {
       setLoading(false)
     }
