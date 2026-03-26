@@ -8,6 +8,8 @@ interface AuthContextValue {
   session: Session | null
   profile: Profile | null
   loading: boolean
+  error: string | null
+  debugInfo?: { upFound: boolean; ueFound: boolean }
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signUp: (email: string, password: string) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
@@ -21,16 +23,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [debugInfo, setDebugInfo] = useState<{ upFound: boolean; ueFound: boolean }>({ upFound: false, ueFound: false })
 
   const fetchProfile = async (userId: string) => {
     try {
-      // Fetch user_profiles and user_entitlements — use maybeSingle to avoid 0-row errors
-      const [{ data: up }, { data: ue }] = await Promise.all([
+      setError(null)
+      const [{ data: up, error: upError }, { data: ue, error: ueError }] = await Promise.all([
         supabase.from('user_profiles').select('*').eq('user_id', userId).maybeSingle(),
         supabase.from('user_entitlements').select('*').eq('user_id', userId).maybeSingle(),
       ])
 
-      // Always set a profile object (even if records are missing) to prevent Dashboard hang
+      if (upError || ueError) {
+        console.error('Fetch error:', upError || ueError)
+        setError((upError?.message || ueError?.message) ?? 'Database error')
+      }
+
+      setDebugInfo({ upFound: !!up, ueFound: !!ue })
+
       setProfile({
         user_id: userId,
         stripe_customer_id: up?.stripe_customer_id ?? null,
@@ -44,9 +54,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         subscription_interval: ue?.subscription_interval ?? null,
         payment_status: ue?.payment_status ?? null,
       })
-    } catch (err) {
+    } catch (err: any) {
       console.error('fetchProfile error:', err)
-      // Provide a fallback profile so the UI doesn't hang indefinitely
+      setError(err.message || 'Unexpected connection error')
       setProfile({
         user_id: userId,
         stripe_customer_id: null,
@@ -114,7 +124,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, profile, loading, signIn, signUp, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, error, debugInfo, signIn, signUp, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )

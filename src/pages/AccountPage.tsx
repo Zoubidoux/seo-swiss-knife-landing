@@ -23,7 +23,7 @@ interface DashboardProps {
 }
 
 function Dashboard({ extSession }: DashboardProps) {
-  const { user, session, profile, signOut, error: loadError } = useAuth()
+  const { user, session, profile, signOut, error: loadError, debugInfo } = useAuth()
   const [portalLoading, setPortalLoading] = useState(false)
   const [linkingStatus, setLinkingStatus] = useState<'idle' | 'linking' | 'success' | 'error'>('idle')
   const [linkingError, setLinkingError] = useState<string | null>(null)
@@ -307,7 +307,7 @@ function Dashboard({ extSession }: DashboardProps) {
         {/* Diagnostic info (opacity: 10% by default) */}
         <div className="mt-8 pt-8 border-t border-gray-100 opacity-10 hover:opacity-100 transition-all">
            <p className="text-[8px] font-mono text-gray-400 leading-relaxed">
-             DEBUG: UID={user?.id} | Email={user?.email} | DB_Plan={profile.plan} | Customer={profile.stripe_customer_id || 'None'} | Error={loadError || 'None'}
+             DEBUG: UID={user?.id} | Email={user?.email} | DB_Plan={profile.plan} | UP={debugInfo?.upFound ? 'Yes' : 'No'} | UE={debugInfo?.ueFound ? 'Yes' : 'No'} | Customer={profile.stripe_customer_id || 'None'} | Error={loadError || 'None'}
            </p>
         </div>
       </div>
