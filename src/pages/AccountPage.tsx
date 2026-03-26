@@ -23,7 +23,7 @@ interface DashboardProps {
 }
 
 function Dashboard({ extSession }: DashboardProps) {
-  const { user, session, profile, signOut } = useAuth()
+  const { user, session, profile, signOut, error: loadError } = useAuth()
   const [portalLoading, setPortalLoading] = useState(false)
   const [linkingStatus, setLinkingStatus] = useState<'idle' | 'linking' | 'success' | 'error'>('idle')
   const [linkingError, setLinkingError] = useState<string | null>(null)
@@ -37,16 +37,19 @@ function Dashboard({ extSession }: DashboardProps) {
     )
   }
 
-  const plan = PLAN_META[profile.plan ?? 'free']
-  const isPaid = profile.plan !== 'free' && !!profile.plan
+  // Normalize plan string to match PLAN_META keys
+  const planKey = (profile.plan || 'free').toLowerCase()
+  const plan = PLAN_META[planKey] || PLAN_META.free
+  
+  const isPaid = planKey !== 'free'
   const isCancelled = profile.cancel_at_period_end === true
   const isPastDue = profile.payment_status === 'past_due'
 
-  const periodEnd = profile?.period_end
+  const periodEnd = profile.period_end
     ? new Date(profile.period_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : null
 
-  const intervalLabel = profile?.subscription_interval === 'year' ? 'Annual' : profile?.subscription_interval === 'month' ? 'Monthly' : null
+  const intervalLabel = profile.subscription_interval === 'year' ? 'Annual' : profile.subscription_interval === 'month' ? 'Monthly' : null
 
   useEffect(() => {
     if (extSession && user && session && linkingStatus === 'idle') {
@@ -75,7 +78,7 @@ function Dashboard({ extSession }: DashboardProps) {
   }
 
   const openPortal = async () => {
-    if (!profile?.stripe_customer_id) {
+    if (!profile.stripe_customer_id) {
       alert("Billing portal is only available after your first payment. Please check back in a few minutes or contact support.")
       return
     }
@@ -111,6 +114,17 @@ function Dashboard({ extSession }: DashboardProps) {
             <LogOut className="w-4 h-4" /> Sign out
           </button>
         </div>
+
+        {/* ── Data Fetch Error Banner ── */}
+        {loadError && (loadError !== 'Database error') && (
+          <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-2xl mb-8">
+            <AlertCircle className="w-5 h-5 text-amber-500 shrink-0" />
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-amber-600">Sync Warning</p>
+              <p className="text-xs text-amber-700/60 font-medium">We're having trouble reaching the database ({loadError}). Your plan info might be outdated.</p>
+            </div>
+          </div>
+        )}
 
         {/* ── Extension linking status ── */}
         {extSession && (
@@ -241,7 +255,7 @@ function Dashboard({ extSession }: DashboardProps) {
             <div className="relative z-10">
               <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2">AI Credits</p>
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-4xl font-black text-gray-900">{profile?.credits_remaining ?? 0}</span>
+                <span className="text-4xl font-black text-gray-900">{profile.credits_remaining ?? 0}</span>
                 <span className="text-sm font-bold text-gray-300 uppercase tracking-widest">Remaining</span>
               </div>
 
@@ -249,13 +263,13 @@ function Dashboard({ extSession }: DashboardProps) {
               <div className="w-full h-2 bg-gray-50 rounded-full overflow-hidden mb-4 border border-gray-100/50">
                 <div 
                   className="h-full bg-indigo-500 transition-all duration-1000" 
-                  style={{ width: `${Math.min(100, ((profile?.credits_remaining ?? 0) / (profile?.plan === 'enterprise' ? 1000 : 150)) * 100)}%` }}
+                  style={{ width: `${Math.min(100, ((profile.credits_remaining ?? 0) / (planKey === 'enterprise' ? 1000 : 150)) * 100)}%` }}
                 />
               </div>
 
               <div className="flex items-center justify-between">
                 <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                  {profile?.plan === 'free' ? 'Standard Limit: 10' : `Limit: ${profile?.plan === 'enterprise' ? '1000' : '150'}`}
+                  {planKey === 'free' ? 'Standard Limit: 10' : `Limit: ${planKey === 'enterprise' ? '1000' : '150'}`}
                 </p>
                 {/* Refill CTA if low */}
                 {profile.credits_remaining !== null && profile.credits_remaining < 10 && (
@@ -288,6 +302,13 @@ function Dashboard({ extSession }: DashboardProps) {
               Open <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
+        </div>
+
+        {/* Diagnostic info (opacity: 10% by default) */}
+        <div className="mt-8 pt-8 border-t border-gray-100 opacity-10 hover:opacity-100 transition-all">
+           <p className="text-[8px] font-mono text-gray-400 leading-relaxed">
+             DEBUG: UID={user?.id} | Email={user?.email} | DB_Plan={profile.plan} | Customer={profile.stripe_customer_id || 'None'} | Error={loadError || 'None'}
+           </p>
         </div>
       </div>
     </div>
