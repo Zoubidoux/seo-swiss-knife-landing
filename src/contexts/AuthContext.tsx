@@ -23,27 +23,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   const fetchProfile = async (userId: string) => {
-    // Fetch user_profiles and user_entitlements in parallel — same tables as the extension
-    const [{ data: up }, { data: ue }] = await Promise.all([
-      supabase.from('user_profiles').select('*').eq('user_id', userId).single(),
-      supabase.from('user_entitlements').select('*').eq('user_id', userId).single(),
-    ])
+    try {
+      // Fetch user_profiles and user_entitlements — use maybeSingle to avoid 0-row errors
+      const [{ data: up }, { data: ue }] = await Promise.all([
+        supabase.from('user_profiles').select('*').eq('user_id', userId).maybeSingle(),
+        supabase.from('user_entitlements').select('*').eq('user_id', userId).maybeSingle(),
+      ])
 
-    if (!up && !ue) { setProfile(null); return }
-
-    setProfile({
-      user_id: userId,
-      stripe_customer_id: up?.stripe_customer_id ?? null,
-      display_name: up?.display_name ?? null,
-      avatar_url: up?.avatar_url ?? null,
-      plan: ue?.plan ?? 'free',
-      credits_remaining: ue?.credits_remaining ?? null,
-      period_end: ue?.period_end ?? null,
-      stripe_subscription_id: ue?.stripe_subscription_id ?? null,
-      cancel_at_period_end: ue?.cancel_at_period_end ?? false,
-      subscription_interval: ue?.subscription_interval ?? null,
-      payment_status: ue?.payment_status ?? null,
-    })
+      // Always set a profile object (even if records are missing) to prevent Dashboard hang
+      setProfile({
+        user_id: userId,
+        stripe_customer_id: up?.stripe_customer_id ?? null,
+        display_name: up?.display_name ?? null,
+        avatar_url: up?.avatar_url ?? null,
+        plan: ue?.plan ?? 'free',
+        credits_remaining: ue?.credits_remaining ?? 0,
+        period_end: ue?.period_end ?? null,
+        stripe_subscription_id: ue?.stripe_subscription_id ?? null,
+        cancel_at_period_end: ue?.cancel_at_period_end ?? false,
+        subscription_interval: ue?.subscription_interval ?? null,
+        payment_status: ue?.payment_status ?? null,
+      })
+    } catch (err) {
+      console.error('fetchProfile error:', err)
+      // Provide a fallback profile so the UI doesn't hang indefinitely
+      setProfile({
+        user_id: userId,
+        stripe_customer_id: null,
+        display_name: null,
+        avatar_url: null,
+        plan: 'free',
+        credits_remaining: 0,
+        period_end: null,
+        stripe_subscription_id: null,
+        cancel_at_period_end: false,
+        subscription_interval: null,
+        payment_status: null,
+      })
+    }
   }
 
   const refreshProfile = async () => {
