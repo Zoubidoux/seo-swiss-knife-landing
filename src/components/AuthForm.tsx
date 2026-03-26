@@ -49,6 +49,21 @@ export function AuthForm({ onSuccess, redirectPath }: AuthFormProps) {
     }
   }
 
+  const handleAppleSignIn = async () => {
+    setLoading(true)
+    setError(null)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'apple',
+      options: {
+        redirectTo: redirectPath ? `${window.location.origin}${redirectPath}` : `${window.location.origin}/account`,
+      },
+    })
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
@@ -87,15 +102,29 @@ export function AuthForm({ onSuccess, redirectPath }: AuthFormProps) {
           </p>
         </div>
 
-        {/* Social Link */}
-        <button
-          onClick={handleGoogleSignIn}
-          disabled={googleLoading}
-          className="w-full flex items-center justify-center gap-3 h-14 rounded-xl font-bold text-sm transition-all bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 disabled:opacity-50 mb-6"
-        >
-          {googleLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <GoogleIcon />}
-          Continue with Google
-        </button>
+        {/* Social Links */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <button
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading || loading}
+            className="flex items-center justify-center gap-2 h-14 rounded-xl font-bold text-xs transition-all bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 disabled:opacity-50"
+          >
+            {googleLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <GoogleIcon />}
+            Google
+          </button>
+          <button
+            onClick={handleAppleSignIn}
+            disabled={googleLoading || loading}
+            className="flex items-center justify-center gap-2 h-14 rounded-xl font-bold text-xs transition-all bg-black text-white hover:bg-gray-900 disabled:opacity-50"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987s2.355.987 3.96.948c1.653-.026 2.686-1.48 3.692-2.948 1.166-1.69 1.639-3.328 1.665-3.415-.038-.013-3.182-1.221-3.22-4.832-.038-3.003 2.454-4.446 2.568-4.512-1.404-2.058-3.559-2.292-4.326-2.355-1.898-.155-3.53 1.002-4.464 1.002v-.004zm-.524-1.81c.822-1 1.366-2.392 1.214-3.771-1.176.052-2.593.793-3.441 1.791-.758.887-1.417 2.311-1.234 3.655 1.3.104 2.64-.675 3.461-1.675z"/>
+              </svg>
+            )}
+            Apple
+          </button>
+        </div>
 
         <div className="flex items-center gap-4 mb-6">
           <div className="h-px flex-1 bg-gray-100" />
