@@ -149,6 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Final verified auth context
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used inside AuthProvider')
