@@ -72,15 +72,25 @@ function Dashboard({ extSession }: DashboardProps) {
   const linkExtension = async () => {
     setLinkingStatus('linking')
     try {
-      const { error: updateError } = await supabase
+      // Use upsert to be safe, though update is usually enough if the extension inserted it.
+      // But we MUST check if it actually matched a row.
+      const { data, error: updateError } = await supabase
         .from('auth_pending_sessions')
-        .update({
+        .upsert({
+          code: extSession,
           access_token: session?.access_token,
           refresh_token: session?.refresh_token,
-        })
-        .eq('code', extSession)
+          user_id: user?.id
+        }, { onConflict: 'code' })
+        .select()
 
       if (updateError) throw updateError
+      
+      // If we are using upsert with select(), data should be there.
+      if (!data || data.length === 0) {
+        throw new Error("Handshake record not found or could not be created.")
+      }
+
       setLinkingStatus('success')
     } catch (err: any) {
       console.error('Linking error:', err)
