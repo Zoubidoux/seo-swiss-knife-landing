@@ -78,35 +78,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    let mounted = true
+
     const init = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession()
+        if (!mounted) return
+        
         setSession(session)
-        setUser(session?.user ?? null)
-        if (session?.user) {
-          await fetchProfile(session.user.id)
+        const u = session?.user ?? null
+        setUser(u)
+        
+        if (u) {
+          await fetchProfile(u.id)
         }
       } catch (err) {
         console.error('Auth init error:', err)
       } finally {
-        setLoading(false)
+        if (mounted) setLoading(false)
       }
     }
 
     init()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return
+      
       setSession(session)
       const u = session?.user ?? null
       setUser(u)
-      if (u) {
-        await fetchProfile(u.id)
-      } else {
+
+      if (event === 'SIGNED_OUT') {
         setProfile(null)
+        setLoading(false)
+        setError(null)
+      } else if (u) {
+        await fetchProfile(u.id)
       }
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
   }, [])
 
   const signIn = async (email: string, password: string) => {
@@ -120,7 +134,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    try {
+      await supabase.auth.signOut()
+      setProfile(null)
+      setUser(null)
+      setSession(null)
+    } catch (err) {
+      console.error('Sign out error:', err)
+    }
   }
 
   return (

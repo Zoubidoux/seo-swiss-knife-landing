@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { SEO } from '@/components/SEO'
 import { Link } from 'react-router-dom'
 import { AuthForm } from '@/components/AuthForm'
+import { PricingSection } from '@/components/PricingSection'
 import {
   LogOut, User, CreditCard, Zap, Crown,
   ExternalLink, AlertTriangle, RefreshCw, Calendar, CheckCircle2, Loader2, AlertCircle
@@ -110,7 +111,10 @@ function Dashboard({ extSession }: DashboardProps) {
           <Link to="/" className="inline-flex items-center gap-3 no-underline">
             <span className="font-black text-xl text-gray-900 tracking-tight uppercase">Search Toolbox<span className="text-indigo-600">.</span></span>
           </Link>
-          <button onClick={signOut} className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gray-950 transition-colors bg-transparent border-none">
+          <button 
+            onClick={() => signOut()} 
+            className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gray-950 transition-colors bg-transparent border-none cursor-pointer"
+          >
             <LogOut className="w-4 h-4" /> Sign out
           </button>
         </div>
@@ -283,7 +287,7 @@ function Dashboard({ extSession }: DashboardProps) {
         </div>
 
         {/* Extension link */}
-        <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8">
+        <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8 mb-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
@@ -303,6 +307,17 @@ function Dashboard({ extSession }: DashboardProps) {
             </a>
           </div>
         </div>
+
+        {/* ── Pricing section (embedded) ── */}
+        {!isPaid && (
+          <div className="mt-20 -mx-4 md:-mx-8 lg:-mx-12 xl:-mx-20">
+            <div className="px-6 mb-8">
+              <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Upgrade Your Account</h3>
+              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-2">Get unlimited credits and premium features</p>
+            </div>
+            <PricingSection />
+          </div>
+        )}
 
         {/* Diagnostic info (opacity: 10% by default) */}
         <div className="mt-8 pt-8 border-t border-gray-100 opacity-10 hover:opacity-100 transition-all">
