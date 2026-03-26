@@ -7,7 +7,7 @@ import { SEO } from '@/components/SEO'
 import { Link } from 'react-router-dom'
 import { AuthForm } from '@/components/AuthForm'
 import {
-  LogOut, User, CreditCard, CheckCircle, Zap, Crown,
+  LogOut, User, CreditCard, Zap, Crown,
   ExternalLink, AlertTriangle, RefreshCw, Calendar, CheckCircle2, Loader2, AlertCircle
 } from 'lucide-react'
 
@@ -28,10 +28,12 @@ function Dashboard({ extSession }: DashboardProps) {
   const [linkingStatus, setLinkingStatus] = useState<'idle' | 'linking' | 'success' | 'error'>('idle')
   const [linkingError, setLinkingError] = useState<string | null>(null)
 
-  const plan = PLAN_META[profile?.plan ?? 'free']
-  const isPaid = profile?.plan !== 'free' && !!profile?.plan
-  const isCancelled = profile?.cancel_at_period_end === true
-  const isPastDue = profile?.payment_status === 'past_due'
+  if (!profile) return null
+
+  const plan = PLAN_META[profile.plan ?? 'free']
+  const isPaid = profile.plan !== 'free' && !!profile.plan
+  const isCancelled = profile.cancel_at_period_end === true
+  const isPastDue = profile.payment_status === 'past_due'
 
   const periodEnd = profile?.period_end
     ? new Date(profile.period_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -66,16 +68,28 @@ function Dashboard({ extSession }: DashboardProps) {
   }
 
   const openPortal = async () => {
-    if (!profile?.stripe_customer_id) return
+    if (!profile?.stripe_customer_id) {
+      alert("Billing portal is only available after your first payment. Please check back in a few minutes or contact support.")
+      return
+    }
     setPortalLoading(true)
-    const res = await fetch('/api/create-portal-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ customerId: profile.stripe_customer_id }),
-    })
-    const data = await res.json()
-    if (data.url) window.location.href = data.url
-    else setPortalLoading(false)
+    try {
+      const res = await fetch('/api/create-portal-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerId: profile.stripe_customer_id }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error(data.error || 'Failed to create portal session')
+      }
+    } catch (err: any) {
+      console.error('Portal error:', err)
+      alert('Could not open the billing portal. Please try again later.')
+      setPortalLoading(false)
+    }
   }
 
   return (
@@ -162,77 +176,107 @@ function Dashboard({ extSession }: DashboardProps) {
           </div>
         )}
 
-        {/* ── Plan card ── */}
-        <div className="mb-5 bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.03)] rounded-[24px] p-8">
-          <div className="flex items-start justify-between mb-8">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2">Current Plan</p>
-              <div className="flex items-center gap-2 mb-1">
-                <span style={{ color: plan.color }}>{plan.icon}</span>
-                <span className="text-3xl font-black text-gray-900">{plan.label}</span>
-                {intervalLabel && (
-                  <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md bg-gray-50 text-gray-400 border border-gray-100">
-                    {intervalLabel}
-                  </span>
+        {/* ── Plan & Usage Grid ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+          {/* Plan Card */}
+          <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8 flex flex-col">
+            <div className="flex items-start justify-between mb-8">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2">Current Plan</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <span style={{ color: plan.color }}>{plan.icon}</span>
+                  <span className="text-3xl font-black text-gray-900">{plan.label}</span>
+                </div>
+                {periodEnd && isPaid && (
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight flex items-center gap-1.5 mt-2">
+                    {isCancelled
+                      ? <><Calendar className="w-3 h-3" /> Ends {periodEnd}</>
+                      : <><RefreshCw className="w-3 h-3" /> {intervalLabel} · Renews {periodEnd}</>
+                    }
+                  </p>
                 )}
               </div>
-              {periodEnd && isPaid && (
-                <p className="text-xs text-gray-400 font-medium flex items-center gap-1.5 mt-2">
-                  {isCancelled
-                    ? <><Calendar className="w-3.5 h-3.5" /> Ends {periodEnd}</>
-                    : <><RefreshCw className="w-3.5 h-3.5" /> Renews {periodEnd}</>
-                  }
-                </p>
-              )}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider" style={{
+                background: isPastDue ? '#FEF2F2' : isPaid ? '#EEF2FF' : '#F9FAFB',
+                border: `1px solid ${isPastDue ? '#FEE2E2' : isPaid ? '#E0E7FF' : '#F3F4F6'}`,
+                color: isPastDue ? '#EF4444' : isPaid ? '#4F46E5' : '#9CA3AF',
+              }}>
+                {isPastDue ? 'Past due' : 'Active'}
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider" style={{
-              background: isPastDue ? '#FEF2F2' : isPaid ? '#EEF2FF' : '#F9FAFB',
-              border: `1px solid ${isPastDue ? '#FEE2E2' : isPaid ? '#E0E7FF' : '#F3F4F6'}`,
-              color: isPastDue ? '#EF4444' : isPaid ? '#4F46E5' : '#9CA3AF',
-            }}>
-              {isPastDue ? <AlertTriangle className="w-3.5 h-3.5" /> : <CheckCircle className="w-3.5 h-3.5" />}
-              {isPastDue ? 'Past due' : 'Active'}
+            <div className="mt-auto">
+              {!isPaid ? (
+                <Link to="/pricing" className="no-underline">
+                  <Button className="w-full h-12 font-black text-[10px] uppercase tracking-[0.2em] rounded-xl bg-gray-900 text-white hover:bg-black border-none shadow-lg transition-all">
+                    Upgrade to Pro
+                  </Button>
+                </Link>
+              ) : (
+                <button
+                  onClick={openPortal}
+                  disabled={portalLoading}
+                  className="w-full h-12 font-black text-[10px] uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 transition-all bg-gray-50 border border-gray-100 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+                >
+                  {portalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                  {isCancelled ? 'Reactivate' : 'Manage Billing'}
+                </button>
+              )}
             </div>
           </div>
 
-          {/* CTA */}
-          {!isPaid ? (
-            <Link to="/pricing" className="no-underline">
-              <Button className="w-full h-14 font-black text-xs uppercase tracking-[0.2em] rounded-xl bg-[#6366F1] text-white hover:bg-[#5558e3] border-none shadow-lg shadow-indigo-100 transition-all">
-                Upgrade to Pro
-              </Button>
-            </Link>
-          ) : (
-            <button
-              onClick={openPortal}
-              disabled={portalLoading}
-              className="w-full h-14 font-black text-xs uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 transition-all bg-gray-50 border border-gray-100 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
-            >
-              <CreditCard className="w-4 h-4" />
-              {isCancelled ? 'Reactivate or manage plan' : 'Manage subscription'}
-            </button>
-          )}
+          {/* AI Usage Card */}
+          <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8 flex flex-col relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity rotate-12">
+              <Zap size={160} fill="currentColor" className="text-indigo-600" />
+            </div>
+            
+            <div className="relative z-10">
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2">AI Credits</p>
+              <div className="flex items-baseline gap-1 mb-6">
+                <span className="text-4xl font-black text-gray-900">{profile?.credits_remaining ?? 0}</span>
+                <span className="text-sm font-bold text-gray-300 uppercase tracking-widest">Remaining</span>
+              </div>
 
-          {isPaid && !isCancelled && (
-            <p className="text-center text-[10px] text-gray-300 font-medium mt-4 uppercase tracking-widest">
-              Cancel anytime from the portal
-            </p>
-          )}
+              {/* Progress bar */}
+              <div className="w-full h-2 bg-gray-50 rounded-full overflow-hidden mb-4 border border-gray-100/50">
+                <div 
+                  className="h-full bg-indigo-500 transition-all duration-1000" 
+                  style={{ width: `${Math.min(100, ((profile?.credits_remaining ?? 0) / (profile?.plan === 'enterprise' ? 1000 : 150)) * 100)}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                  {profile?.plan === 'free' ? 'Standard Limit: 10' : `Limit: ${profile?.plan === 'enterprise' ? '1000' : '150'}`}
+                </p>
+                {/* Refill CTA if low */}
+                {profile.credits_remaining !== null && profile.credits_remaining < 10 && (
+                  <Link to="/pricing" className="text-[9px] font-black text-indigo-600 uppercase tracking-widest hover:underline">
+                    Refill Credits
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Extension link */}
-        <div className="bg-gray-50 border border-gray-100 rounded-[20px] p-6">
-          <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-3">Chrome Extension</p>
+        <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8">
           <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-bold text-gray-900">SEO & GEO Toolkit</p>
-              <p className="text-xs text-gray-400 mt-1 font-medium">Synced with your account</p>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
+                <Zap className="w-6 h-6 text-indigo-600" />
+              </div>
+              <div>
+                <p className="text-sm font-black text-gray-900 mb-0.5">Chrome Extension</p>
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">SEO & GEO Toolkit · Synced</p>
+              </div>
             </div>
             <a
               href="https://chromewebstore.google.com/detail/search-toolbox"
               target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-indigo-600 hover:text-indigo-700 transition-colors no-underline shrink-0 ml-4"
+              className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-indigo-600 hover:text-indigo-700 transition-colors no-underline shrink-0 px-5 py-2.5 rounded-xl bg-indigo-50 border border-indigo-100"
             >
               Open <ExternalLink className="w-3.5 h-3.5" />
             </a>
