@@ -40,23 +40,84 @@ export function TermsOfUse() {
             </p>
 
             <div className="prose prose-sm max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-headings:text-black prose-p:text-black/70 prose-p:leading-relaxed prose-li:text-black/70">
-              <p>{t.introduction}</p>
+              <p className="text-lg font-medium text-black/80 mb-12">
+                {t.introduction}
+              </p>
 
-              {t.sections.map((section, idx) => (
-                <div key={idx} className="mb-8">
-                  <h2 className="text-xl font-black mb-4 tracking-tight text-black flex items-center gap-3">
-                    {section.title}
-                  </h2>
-                  <p className="text-black/70 leading-relaxed font-medium">
-                    {section.content}
-                  </p>
+              {/* In a Nutshell Block */}
+              <div className="grid md:grid-cols-2 gap-4 mb-16">
+                <div className="bg-intermediate/5 border border-intermediate/20 rounded-2xl p-6">
+                  <h3 className="text-intermediate font-black uppercase tracking-widest text-[10px] mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-intermediate rounded-full" />
+                    {lang === 'fr' ? 'Points clés' : 'Key points'}
+                  </h3>
+                  <ul className="space-y-3">
+                    {[
+                      lang === 'fr' 
+                        ? 'Compte personnel et sécurisé' 
+                        : 'Personal and secure account',
+                      lang === 'fr'
+                        ? 'Usage pro uniquement (pas de robot)'
+                        : 'Professional use only (no bots)',
+                      lang === 'fr'
+                        ? 'Annulation Stripe en 1 clic'
+                        : '1-click Stripe cancellation'
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-[11px] font-bold text-black/60 leading-tight">
+                        <span className="text-intermediate mt-0.5">✓</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
+                <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-6">
+                  <h3 className="text-black/40 font-black uppercase tracking-widest text-[10px] mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-black/20 rounded-full" />
+                    {lang === 'fr' ? 'Ce qui est interdit' : 'What is prohibited'}
+                  </h3>
+                  <ul className="space-y-3">
+                    {[
+                      lang === 'fr'
+                        ? 'Partager son compte avec des tiers'
+                        : 'Sharing account with others',
+                      lang === 'fr'
+                        ? 'Automatiser l\'utilisation de l\'IA'
+                        : 'Automating AI usage',
+                      lang === 'fr'
+                        ? 'Copier notre mascot Pixly'
+                        : 'Copying our mascot Pixly'
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-2 text-[11px] font-bold text-black/40 leading-tight line-through decoration-black/10">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
 
-              <div className="mt-12 pt-12 border-t border-black/5">
+              <div className="space-y-12">
+                {t.sections.map((section, idx) => (
+                  <div key={idx} className="relative group/section">
+                    <div className="absolute -left-8 top-1 w-1 h-0 bg-black group-hover/section:h-6 transition-all duration-300" />
+                    <h2 className="text-xl font-black mb-4 tracking-tight text-black flex items-center gap-3">
+                      {section.title}
+                    </h2>
+                    <p className="text-black/70 leading-relaxed font-medium text-sm">
+                      {section.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-24 pt-12 border-t border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <p className="text-[11px] font-bold text-black/40 italic">
                   Questions? devtool.genius@gmail.com
                 </p>
+                <div className="flex items-center gap-4">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-black/20">Version 1.2.0</span>
+                  <div className="w-8 h-px bg-black/5" />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-black/20 italic">Signed by Team SearchToolbox</span>
+                </div>
               </div>
             </div>
           </div>
