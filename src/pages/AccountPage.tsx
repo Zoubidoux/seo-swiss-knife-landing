@@ -80,7 +80,8 @@ function Dashboard({ extSession }: DashboardProps) {
           code: extSession,
           access_token: session?.access_token,
           refresh_token: session?.refresh_token,
-          user_id: user?.id
+          user_id: user?.id,
+          expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 mins
         }, { onConflict: 'code' })
         .select()
 
