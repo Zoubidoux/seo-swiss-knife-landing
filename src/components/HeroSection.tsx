@@ -152,18 +152,32 @@ export function HeroSection() {
       timeRef.current += 0.022
 
       setMascots(prev => prev.map(m => {
-        // Auto-reset after 10s inactivity
+        // Physics loop: Gravity + Levitation + Smooth Return
+        const r = sectionRef.current?.getBoundingClientRect()
+        
+        // Auto-reset after Inactivity (Smooth Return)
+        // If inactive > 10s, move back to initial position using lerp
         if (m.isActive && !m.isDragging && now - m.lastActive > 10000) {
-          if (m.opacity > 0.02) return { ...m, opacity: m.opacity * 0.94, vx: m.vx * 0.85, vy: m.vy * 0.85 }
-          return { ...m, x: m.initialX, y: m.initialY, targetX: m.initialX, targetY: m.initialY,
-            vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.88, mouthOpenUntil: 0, floatY: 0 }
+          const lerp = 0.04
+          const dx = m.initialX - m.x
+          const dy = m.initialY - m.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          
+          if (dist < 0.1) {
+            // Snap final position
+            return { ...m, x: m.initialX, y: m.initialY, vx: 0, vy: 0, isActive: false, state: 'closed', opacity: 0.88, floatY: 0 }
+          }
+          
+          const nx = m.x + dx * lerp
+          const ny = m.y + dy * lerp
+          return { ...m, x: nx, y: ny, vx: 0, vy: 0, rotation: m.rotation * 0.95, state: 'closed', opacity: 0.88, floatY: 0 }
         }
 
-        // Idle float
+        // Idle float (only if not active)
         if (!m.isActive && !m.isDragging) {
           return {
             ...m,
-            floatY: Math.sin(timeRef.current + m.phase) * 1.2,
+            floatY: Math.sin(timeRef.current + m.phase) * 1.5,
             rotation: m.rotation + Math.sin(timeRef.current * 0.6 + m.phase) * 0.04,
           }
         }
@@ -176,44 +190,36 @@ export function HeroSection() {
           return { ...m, x: nx, y: ny, vx, vy, floatY: 0, rotation: m.rotation + vx * 2.5 }
         }
 
-        // Flying: gravity + friction + bounce off VIEWPORT edges
-        // Same approach as RoamingMascot: convert to viewport px, check, convert back
-        const r = sectionRef.current?.getBoundingClientRect()
-        if (!r) return m   // section not mounted yet, skip frame
+        // Flying: Lower gravity (Levitation) + Friction + Viewport Bounce
+        if (!r) return m
 
-        const half = m.size * 0.5
-
-        let nvx = m.vx * 0.991
-        let nvy = m.vy * 0.991 + 0.013
+        let nvx = m.vx * 0.995 // Less friction (glides longer)
+        let nvy = m.vy * 0.995 + 0.002 // MUCH lower gravity (0.013 -> 0.002)
         let nx = m.x + nvx
         let ny = m.y + nvy
 
-        // Convert current section-% position → viewport px
+        // Viewport Bounce Logic
         const vpX = r.left + nx / 100 * r.width
         const vpY = r.top  + ny / 100 * r.height
+        const h = m.size * 0.5
 
-        // Bounce on viewport left/right
-        if (vpX < half) {
-          nvx =  Math.abs(nvx) * 0.78
-          nx = (half - r.left) / r.width * 100
-        } else if (vpX > window.innerWidth - half) {
-          nvx = -Math.abs(nvx) * 0.78
-          nx = (window.innerWidth - half - r.left) / r.width * 100
+        if (vpX < h) {
+          nvx = Math.abs(nvx) * 0.7; nx = (h - r.left) / r.width * 100
+        } else if (vpX > window.innerWidth - h) {
+          nvx = -Math.abs(nvx) * 0.7; nx = (window.innerWidth - h - r.left) / r.width * 100
         }
-        // Bounce on viewport top/bottom
-        if (vpY < half) {
-          nvy =  Math.abs(nvy) * 0.78
-          ny = (half - r.top) / r.height * 100
-        } else if (vpY > window.innerHeight - half) {
-          nvy = -Math.abs(nvy) * 0.78
-          ny = (window.innerHeight - half - r.top) / r.height * 100
+
+        if (vpY < h) {
+          nvy = Math.abs(nvy) * 0.7; ny = (h - r.top) / r.height * 100
+        } else if (vpY > window.innerHeight - h) {
+          nvy = -Math.abs(nvy) * 0.7; ny = (window.innerHeight - h - r.top) / r.height * 100
         }
 
         const speed = Math.sqrt(nvx * nvx + nvy * nvy)
         return {
           ...m, x: nx, y: ny, vx: nvx, vy: nvy,
-          rotation: m.rotation + nvx * 2,
-          state: (now < m.mouthOpenUntil || speed > 0.15) ? 'open' : 'closed',
+          rotation: m.rotation + nvx * 1.5,
+          state: (now < m.mouthOpenUntil || speed > 0.1) ? 'open' : 'closed',
           floatY: 0,
         }
       }))
