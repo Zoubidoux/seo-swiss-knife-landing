@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -11,6 +11,11 @@ import {
   LogOut, User, CreditCard, Zap, Crown,
   ExternalLink, AlertTriangle, RefreshCw, Calendar, CheckCircle2, Loader2, AlertCircle
 } from 'lucide-react'
+
+// ── Skeletons ──
+const Skeleton = ({ className }: { className: string }) => (
+  <div className={`animate-pulse bg-gray-200 rounded-lg ${className}`} />
+)
 
 // ── Dashboard (logged in) ─────────────────────────────────────────────────────
 const PLAN_META: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
@@ -28,6 +33,12 @@ function Dashboard({ extSession }: DashboardProps) {
   const [portalLoading, setPortalLoading] = useState(false)
   const [linkingStatus, setLinkingStatus] = useState<'idle' | 'linking' | 'success' | 'error'>('idle')
   const [linkingError, setLinkingError] = useState<string | null>(null)
+  
+  const pricingRef = useRef<HTMLDivElement>(null)
+
+  const scrollToPricing = () => {
+    pricingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   if (!profile) {
     return (
@@ -232,11 +243,12 @@ function Dashboard({ extSession }: DashboardProps) {
 
             <div className="mt-auto">
               {!isPaid ? (
-                <Link to="/pricing" className="no-underline">
-                  <Button className="w-full h-12 font-black text-[10px] uppercase tracking-[0.2em] rounded-xl bg-gray-900 text-white hover:bg-black border-none shadow-lg transition-all">
-                    Upgrade to Pro
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={scrollToPricing}
+                  className="w-full h-12 font-black text-[10px] uppercase tracking-[0.2em] rounded-xl bg-gray-900 text-white hover:bg-black border-none shadow-lg transition-all"
+                >
+                  Upgrade to Pro
+                </Button>
               ) : (
                 <button
                   onClick={openPortal}
@@ -310,12 +322,14 @@ function Dashboard({ extSession }: DashboardProps) {
 
         {/* ── Pricing section (embedded) ── */}
         {!isPaid && (
-          <div className="mt-20 -mx-4 md:-mx-8 lg:-mx-12 xl:-mx-20">
-            <div className="px-6 mb-8">
-              <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight">Upgrade Your Account</h3>
-              <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-2">Get unlimited credits and premium features</p>
+          <div ref={pricingRef} className="mt-32 pt-12 border-t-2 border-dashed border-gray-100 -mx-4 md:-mx-8 lg:-mx-12 xl:-mx-20 bg-white/50 pb-32">
+            <div className="px-6 mb-12 text-center max-w-xl mx-auto">
+              <h3 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Level Up Your Toolkit</h3>
+              <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-3 leading-relaxed">
+                Save 27% with yearly billing. Unlimited generations, higher limits, and priority expert support.
+              </p>
             </div>
-            <PricingSection />
+            <PricingSection isEmbedded={true} />
           </div>
         )}
 
@@ -338,8 +352,25 @@ export function AccountPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F9FAFB]">
-        <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+      <div className="min-h-screen bg-[#F9FAFB] p-8">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex justify-between mb-20">
+            <Skeleton className="h-8 w-40" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+          <div className="flex gap-4 mb-12">
+            <Skeleton className="w-12 h-12 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <Skeleton className="h-64 rounded-[32px]" />
+            <Skeleton className="h-64 rounded-[32px]" />
+          </div>
+          <Skeleton className="h-32 rounded-[32px]" />
+        </div>
       </div>
     )
   }

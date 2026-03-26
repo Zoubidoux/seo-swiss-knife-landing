@@ -13,7 +13,7 @@ const STRIPE_LINKS = {
   UNLIMITED_YEARLY: 'https://buy.stripe.com/test_5kQbJ3fdG9Jtbt0bZF0sU03'
 }
 
-export function PricingSection() {
+export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const { lang } = useLanguage()
   const t = translations[lang].pricing
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
@@ -48,6 +48,79 @@ export function PricingSection() {
     }
 
     return { price: "0", period: "month", cta: "Unlock", href: "#" }
+  }
+
+  if (isEmbedded) {
+    return (
+      <div className="grid lg:grid-cols-[1.2fr_3fr] gap-12 lg:gap-20 items-start">
+        {/* Left Column: Intro & Controls (Sticky) */}
+        <div className="lg:sticky lg:top-32 flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-lg border-2 border-black bg-white text-[9px] font-black uppercase tracking-[0.3em] text-black mb-8 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+             <span className="w-1.5 h-1.5 bg-expert rounded-full" />
+             PRICING
+          </div>
+          <h2 className="text-3xl md:text-5xl font-black mb-8 tracking-tighter text-black leading-[0.9] text-balance">
+            {t.headline}
+          </h2>
+          
+          <div className="flex flex-col items-center lg:items-start gap-4">
+            <div className="flex items-center p-1 bg-bone border-2 border-black rounded-xl">
+              <button
+                onClick={() => setBillingCycle('monthly')}
+                className={`px-6 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${
+                  billingCycle === 'monthly' ? 'bg-black text-white' : 'text-black/40 hover:text-black'
+                }`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingCycle('yearly')}
+                className={`px-6 py-2.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all relative ${
+                  billingCycle === 'yearly' ? 'bg-black text-white' : 'text-black/40 hover:text-black'
+                }`}
+              >
+                Yearly
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Pricing Cards */}
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {t.plans.map((plan, i) => {
+            const dynamicData = getPlanData(i)
+            return (
+              <div 
+                key={i} 
+                className={`flex flex-col p-6 rounded-[22px] border-2 border-black bg-white relative group ${planExpertise[i].color}`}
+              >
+                <div className="mb-6 relative">
+                  <div className="text-[8px] font-black uppercase tracking-[0.3em] text-black/30 mb-3">{plan.name}</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-black text-black tracking-tighter">${dynamicData.price}</span>
+                  </div>
+                </div>
+
+                <ul className="flex-1 space-y-3 mb-8">
+                  {plan.features.slice(0, 5).map((feature, j) => (
+                    <li key={j} className="flex items-start gap-3">
+                      <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 mt-0.5 border border-black/10 ${i === 2 ? 'bg-expert text-white' : 'bg-gray-100'}`}>
+                        <Check className="w-2.5 h-2.5" />
+                      </div>
+                      <span className="text-[9px] font-bold text-black/70 leading-tight uppercase tracking-widest">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a href={dynamicData.href} className="w-full h-11 rounded-lg flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] bg-black text-white no-underline">
+                  {dynamicData.cta}
+                </a>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
   }
 
   return (
