@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Mail, Lock, Loader2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 // ── Google icon SVG ──────────────────────────────────────────────────────────
 function GoogleIcon() {
@@ -186,10 +187,16 @@ export function AuthForm({ onSuccess, redirectPath }: AuthFormProps) {
           </Button>
         </form>
       </div>
-      <p className="text-center text-xs text-gray-400 font-medium mt-8 flex items-center justify-center gap-2">
-         <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> 
-         Same account as your Chrome extension
-      </p>
+      <div className="mt-8 pt-6 border-t border-gray-100">
+        <p className="text-center text-[10px] text-gray-400 font-medium leading-relaxed">
+          By signing in, you agree to our <br />
+          <Link to="/terms" className="text-indigo-600 hover:underline">Terms of Use</Link> and <Link to="/privacy-policy" className="text-indigo-600 hover:underline">Privacy Policy</Link>.
+        </p>
+        <p className="text-center text-[10px] text-gray-400 font-medium mt-4 flex items-center justify-center gap-2">
+           <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> 
+           Same account as your Chrome extension
+        </p>
+      </div>
     </div>
   )
 }

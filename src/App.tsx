@@ -9,6 +9,8 @@ import { Home }               from '@/pages/Home'
 import { AiAgentPage }        from '@/pages/AiAgentPage'
 import { PricingPage }        from '@/pages/PricingPage'
 import { AccountPage }        from '@/pages/AccountPage'
+import { PrivacyPolicy }      from '@/pages/PrivacyPolicy'
+import { TermsOfUse }        from '@/pages/TermsOfUse'
 import { ScrollToTop }        from '@/components/ScrollToTop'
 import { RoamingMascot }      from '@/components/RoamingMascot'
 
@@ -29,6 +31,8 @@ function AppShell() {
         <Route path="/ai-agent" element={<AiAgentPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/account" element={<AccountPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfUse />} />
       </Routes>
 
       {!isAccount && <Footer />}

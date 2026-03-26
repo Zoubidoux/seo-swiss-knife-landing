@@ -1,6 +1,7 @@
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
 import { Mascot } from '@/components/Mascot'
+import { Link } from 'react-router-dom'
 
 export function Footer() {
   const { lang } = useLanguage()
@@ -27,7 +28,8 @@ export function Footer() {
         </div>
         
         <div className="flex gap-10">
-          <a href="#" className="hover:text-black transition-colors uppercase tracking-[0.3em] text-[10px] font-black">{t.privacy}</a>
+          <Link to="/privacy-policy" className="hover:text-black transition-colors uppercase tracking-[0.3em] text-[10px] font-black">{t.privacy}</Link>
+          <Link to="/terms" className="hover:text-black transition-colors uppercase tracking-[0.3em] text-[10px] font-black">Terms</Link>
           <a href="#" className="hover:text-black transition-colors uppercase tracking-[0.3em] text-[10px] font-black">{t.store}</a>
         </div>
 
