@@ -302,12 +302,28 @@ function Dashboard({ extSession }: DashboardProps) {
         <div className="bg-white border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.02)] rounded-[32px] p-8 mb-12">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
-                <Zap className="w-6 h-6 text-indigo-600" />
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border ${
+                linkingStatus === 'success' ? 'bg-green-50 border-green-100 text-green-600' :
+                linkingStatus === 'error' ? 'bg-red-50 border-red-100 text-red-600' :
+                'bg-indigo-50 border-indigo-100 text-indigo-600'
+              }`}>
+                {linkingStatus === 'linking' ? <Loader2 className="w-6 h-6 animate-spin" /> : <Zap className="w-6 h-6" />}
               </div>
               <div>
                 <p className="text-sm font-black text-gray-900 mb-0.5">Chrome Extension</p>
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">SEO & GEO Toolkit · Synced</p>
+                <div className="flex items-center gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${
+                    linkingStatus === 'success' ? 'bg-green-500' : 
+                    linkingStatus === 'error' ? 'bg-red-500' : 
+                    'bg-indigo-400 animate-pulse'
+                  }`} />
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">
+                    {linkingStatus === 'linking' ? 'Linking in progress...' :
+                     linkingStatus === 'success' ? 'SEO & GEO Toolkit · SYNCED' :
+                     linkingStatus === 'error' ? 'Sync Failed' :
+                     'SEO & GEO Toolkit · Waiting for handshake'}
+                  </p>
+                </div>
               </div>
             </div>
             <a
@@ -318,6 +334,11 @@ function Dashboard({ extSession }: DashboardProps) {
               Open <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
+          {linkingError && (
+            <p className="mt-4 text-[10px] text-red-400 font-medium bg-red-50 p-3 rounded-lg border border-red-100/50">
+              Error details: {linkingError}
+            </p>
+          )}
         </div>
 
         {/* ── Pricing section (embedded) ── */}
