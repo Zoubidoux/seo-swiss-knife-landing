@@ -81,8 +81,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // ── Auto-renewal succeeded ────────────────────────────────────────────
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice
-        if (!invoice.subscription) break
-        const sub = await stripe.subscriptions.retrieve(invoice.subscription as string)
+        const invoiceSubId = (invoice as any).subscription as string | undefined
+        if (!invoiceSubId) break
+        const sub = await stripe.subscriptions.retrieve(invoiceSubId)
         await syncEntitlement(sub)
         break
       }
@@ -90,8 +91,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // ── Payment failed ────────────────────────────────────────────────────
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
-        if (!invoice.subscription) break
-        await markPaymentFailed(invoice.subscription as string, invoice.customer as string)
+        const invoiceSubId = (invoice as any).subscription as string | undefined
+        if (!invoiceSubId) break
+        await markPaymentFailed(invoiceSubId, invoice.customer as string)
         break
       }
 
@@ -166,7 +168,7 @@ async function syncEntitlement(sub: Stripe.Subscription, userId?: string) {
     user_id: profileId,
     plan: isActive ? plan : 'free',
     stripe_subscription_id: sub.id,
-    period_end: new Date(sub.current_period_end * 1000).toISOString(),
+    period_end: new Date(((sub as any).current_period_end ?? 0) * 1000).toISOString(),
     cancel_at_period_end: sub.cancel_at_period_end,
     subscription_interval: interval,
     payment_status: sub.status === 'past_due' ? 'past_due' : isActive ? 'active' : null,
