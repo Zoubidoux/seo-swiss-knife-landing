@@ -5,31 +5,32 @@ import { AuthForm } from '@/components/AuthForm'
 import { SEO } from '@/components/SEO'
 import { ArrowRight, Loader2, Zap, ShieldCheck, Chrome } from 'lucide-react'
 
-// STRIPE PRICE IDs (matching PricingSection.tsx)
-const PLAN_DATA: Record<string, { name: string; price: string; period: string; priceId: string }> = {
-  'pro-monthly': { 
-    name: 'Pro Monthly', 
-    price: '9', 
+// STRIPE PAYMENT LINKS — must match PricingSection.tsx
+// To switch to production: replace test_ URLs with live buy.stripe.com URLs
+const PLAN_DATA: Record<string, { name: string; price: string; period: string; stripeUrl: string }> = {
+  'pro-monthly': {
+    name: 'Pro Monthly',
+    price: '9',
     period: 'month',
-    priceId: 'test_6oU4gB8Pi3l5gNk6Fl0sU00'
+    stripeUrl: 'https://buy.stripe.com/test_6oU4gB8Pi3l5gNk6Fl0sU00'
   },
-  'pro-yearly': { 
-    name: 'Pro Yearly', 
-    price: '79', 
+  'pro-yearly': {
+    name: 'Pro Yearly',
+    price: '79',
     period: 'year',
-    priceId: 'test_4gMdRb0iM1cX40ybZF0sU01'
+    stripeUrl: 'https://buy.stripe.com/test_4gMdRb0iM1cX40ybZF0sU01'
   },
-  'unlimited-monthly': { 
-    name: 'Unlimited Monthly', 
-    price: '19', 
+  'unlimited-monthly': {
+    name: 'Unlimited Monthly',
+    price: '19',
     period: 'month',
-    priceId: 'test_00w7sN8Pi08TgNkd3J0sU02'
+    stripeUrl: 'https://buy.stripe.com/test_00w7sN8Pi08TgNkd3J0sU02'
   },
-  'unlimited-yearly': { 
-    name: 'Unlimited Yearly', 
-    price: '179', 
+  'unlimited-yearly': {
+    name: 'Unlimited Yearly',
+    price: '179',
     period: 'year',
-    priceId: 'test_5kQbJ3fdG9Jtbt0bZF0sU03'
+    stripeUrl: 'https://buy.stripe.com/test_5kQbJ3fdG9Jtbt0bZF0sU03'
   }
 }
 
@@ -37,7 +38,7 @@ export function CheckoutContinuePage() {
   const [searchParams] = useSearchParams()
   const { user } = useAuth()
   const [isRedirecting, setIsRedirecting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
 
   const planKey = searchParams.get('plan') || ''
   const billing = searchParams.get('billing') || 'monthly'
@@ -51,32 +52,14 @@ export function CheckoutContinuePage() {
     }
   }, [user])
 
-  const handleDirectToStripe = async () => {
+  const handleDirectToStripe = () => {
     setIsRedirecting(true)
-    setError(null)
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          priceId: plan.priceId,
-          userId: user?.id,
-          email: user?.email,
-          planName: planKey
-        }),
-      })
-
-      const data = await response.json()
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error(data.error || 'Failed to initiate checkout.')
-      }
-    } catch (err: any) {
-      console.error('Checkout error:', err)
-      setError(err.message)
-      setIsRedirecting(false)
-    }
+    // Direct redirect to Stripe payment link with user context.
+    // client_reference_id lets the webhook attribute the subscription to this user.
+    const url = new URL(plan.stripeUrl)
+    url.searchParams.set('client_reference_id', user?.id ?? '')
+    url.searchParams.set('prefilled_email', user?.email ?? '')
+    window.location.href = url.toString()
   }
 
   if (isRedirecting) {

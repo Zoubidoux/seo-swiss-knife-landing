@@ -6,13 +6,24 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 
-// STRIPE LINKS CONFIGURATION
+// STRIPE PAYMENT LINKS
+// To switch to production: replace test_ URLs with live buy.stripe.com URLs
 const STRIPE_LINKS = {
   FREE: 'https://chromewebstore.google.com/detail/search-toolbox',
   PRO_MONTHLY: 'https://buy.stripe.com/test_6oU4gB8Pi3l5gNk6Fl0sU00',
   PRO_YEARLY: 'https://buy.stripe.com/test_4gMdRb0iM1cX40ybZF0sU01',
   UNLIMITED_MONTHLY: 'https://buy.stripe.com/test_00w7sN8Pi08TgNkd3J0sU02',
   UNLIMITED_YEARLY: 'https://buy.stripe.com/test_5kQbJ3fdG9Jtbt0bZF0sU03'
+}
+
+// Build a payment link URL that pre-fills the user's email and ties the
+// checkout session to their Supabase user ID via client_reference_id.
+// Stripe webhooks will receive this ID in checkout.session.completed.
+function buildStripeUrl(baseUrl: string, userId: string, email: string): string {
+  const url = new URL(baseUrl)
+  url.searchParams.set('client_reference_id', userId)
+  url.searchParams.set('prefilled_email', email)
+  return url.toString()
 }
 
 export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean }) {
@@ -56,7 +67,7 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
   const { user } = useAuth()
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
 
-  const handleCheckout = async (index: number) => {
+  const handleCheckout = (index: number) => {
     if (index === 0) { // Free
       window.open(STRIPE_LINKS.FREE, '_blank')
       return
@@ -65,40 +76,19 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
     const planKey = index === 1 ? 'pro' : 'unlimited'
     const planId = `${planKey}-${billingCycle}`
 
-    // ACCOUNT-FIRST: If not logged in, go to bridge page
+    // ACCOUNT-FIRST: not logged in → bridge page
     if (!user) {
       navigate(`/checkout/continue?plan=${planKey}&billing=${billingCycle}`)
       return
     }
 
-    // If logged in, trigger Stripe Checkout session creation
+    // Logged in → direct redirect to Stripe payment link with user context.
+    // client_reference_id lets the webhook attribute the subscription to this user.
     setLoadingPlan(planId)
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          priceId: index === 1 
-            ? (billingCycle === 'monthly' ? STRIPE_LINKS.PRO_MONTHLY : STRIPE_LINKS.PRO_YEARLY)
-            : (billingCycle === 'monthly' ? STRIPE_LINKS.UNLIMITED_MONTHLY : STRIPE_LINKS.UNLIMITED_YEARLY),
-          userId: user.id,
-          email: user.email,
-          planName: planKey
-        }),
-      })
-
-      const data = await response.json()
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        alert(data.error || 'Failed to start checkout.')
-      }
-    } catch (err) {
-      console.error('Checkout error:', err)
-      alert('An error occurred. Please try again.')
-    } finally {
-      setLoadingPlan(null)
-    }
+    const baseUrl = index === 1
+      ? (billingCycle === 'monthly' ? STRIPE_LINKS.PRO_MONTHLY : STRIPE_LINKS.PRO_YEARLY)
+      : (billingCycle === 'monthly' ? STRIPE_LINKS.UNLIMITED_MONTHLY : STRIPE_LINKS.UNLIMITED_YEARLY)
+    window.location.href = buildStripeUrl(baseUrl, user.id, user.email ?? '')
   }
 
   if (isEmbedded) {

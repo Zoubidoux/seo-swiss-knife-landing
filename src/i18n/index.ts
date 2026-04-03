@@ -432,6 +432,39 @@ const en = {
         { title: "7. Governing Law", content: "These terms are governed by local laws where the service is registered. Contact: devtool.genius@gmail.com" }
       ]
     }
+  },
+  account: {
+    signOut: "Sign out",
+    currentPlan: "Current Plan",
+    active: "Active",
+    pastDue: "Past due",
+    aiCredits: "AI Credits",
+    remaining: "Remaining",
+    upgradePro: "Upgrade to Pro",
+    manageBilling: "Manage Billing",
+    reactivate: "Reactivate",
+    paymentFailed: "Payment failed",
+    paymentFailedDesc: "Your last payment couldn't be processed. Update your card to keep your plan active.",
+    fixNow: "Fix now",
+    cancelled: "Subscription cancelled",
+    cancelledDesc: "Your {plan} plan stays active until {date}, then reverts to Free.",
+    memberSince: "Member since",
+    chromeExtension: "Chrome Extension",
+    synced: "SEO & GEO Toolkit · SYNCED",
+    waiting: "SEO & GEO Toolkit · Waiting for handshake",
+    linking: "Linking in progress...",
+    linkFailed: "Sync Failed",
+    linkSuccess: "Extension Linked Successfully!",
+    linkSuccessDesc: "You can now close this window and return to the extension.",
+    closeWindow: "Close Window",
+    tryAgain: "Try Again",
+    open: "Open",
+    monthly: "Monthly",
+    annual: "Annual",
+    renews: "Renews",
+    ends: "Ends",
+    levelUp: "Level Up Your Toolkit",
+    levelUpSub: "Save 27% with yearly billing. Unlimited generations, higher limits, and priority expert support.",
   }
 }
 
@@ -867,6 +900,39 @@ const fr: typeof en = {
         { title: "7. Droit Applicable", content: "Ces conditions sont régies par les lois locales où le service est enregistré. Contact : devtool.genius@gmail.com" }
       ]
     }
+  },
+  account: {
+    signOut: "Se déconnecter",
+    currentPlan: "Forfait actuel",
+    active: "Actif",
+    pastDue: "Impayé",
+    aiCredits: "Crédits IA",
+    remaining: "Restants",
+    upgradePro: "Passer à Pro",
+    manageBilling: "Gérer l'abonnement",
+    reactivate: "Réactiver",
+    paymentFailed: "Paiement échoué",
+    paymentFailedDesc: "Votre dernier paiement n'a pas pu être traité. Mettez à jour votre carte pour conserver votre abonnement.",
+    fixNow: "Corriger",
+    cancelled: "Abonnement annulé",
+    cancelledDesc: "Votre forfait {plan} reste actif jusqu'au {date}, puis repasse en Gratuit.",
+    memberSince: "Membre depuis",
+    chromeExtension: "Extension Chrome",
+    synced: "SEO & GEO Toolkit · SYNCHRONISÉ",
+    waiting: "SEO & GEO Toolkit · En attente",
+    linking: "Liaison en cours...",
+    linkFailed: "Sync échoué",
+    linkSuccess: "Extension liée avec succès !",
+    linkSuccessDesc: "Vous pouvez fermer cette fenêtre et retourner à l'extension.",
+    closeWindow: "Fermer",
+    tryAgain: "Réessayer",
+    open: "Ouvrir",
+    monthly: "Mensuel",
+    annual: "Annuel",
+    renews: "Renouvèle",
+    ends: "Expire",
+    levelUp: "Améliorez votre boîte à outils",
+    levelUpSub: "Économisez 27 % avec la facturation annuelle. Générations illimitées et support prioritaire.",
   }
 }
 
@@ -1289,6 +1355,39 @@ const de: typeof en = {
         { title: "3. Abrechnung", content: "Zahlungen über Stripe. Jederzeit in den Kontoeinstellungen kündbar." }
       ]
     }
+  },
+  account: {
+    signOut: "Abmelden",
+    currentPlan: "Aktueller Plan",
+    active: "Aktiv",
+    pastDue: "Überfällig",
+    aiCredits: "KI-Guthaben",
+    remaining: "Verbleibend",
+    upgradePro: "Auf Pro upgraden",
+    manageBilling: "Abrechnung verwalten",
+    reactivate: "Reaktivieren",
+    paymentFailed: "Zahlung fehlgeschlagen",
+    paymentFailedDesc: "Ihre letzte Zahlung konnte nicht verarbeitet werden. Aktualisieren Sie Ihre Karte.",
+    fixNow: "Jetzt beheben",
+    cancelled: "Abonnement gekündigt",
+    cancelledDesc: "Ihr {plan}-Plan bleibt bis {date} aktiv, danach wird auf Kostenlos zurückgestellt.",
+    memberSince: "Mitglied seit",
+    chromeExtension: "Chrome-Erweiterung",
+    synced: "SEO & GEO Toolkit · SYNCHRONISIERT",
+    waiting: "SEO & GEO Toolkit · Wartet",
+    linking: "Verknüpfung läuft...",
+    linkFailed: "Sync fehlgeschlagen",
+    linkSuccess: "Erweiterung erfolgreich verknüpft!",
+    linkSuccessDesc: "Sie können dieses Fenster schließen und zur Erweiterung zurückkehren.",
+    closeWindow: "Schließen",
+    tryAgain: "Erneut versuchen",
+    open: "Öffnen",
+    monthly: "Monatlich",
+    annual: "Jährlich",
+    renews: "Verlängert",
+    ends: "Endet",
+    levelUp: "Verbessern Sie Ihr Toolkit",
+    levelUpSub: "Sparen Sie 27 % mit jährlicher Abrechnung. Unbegrenzte Generierungen und Prioritätssupport.",
   }
 }
 
@@ -1711,6 +1810,39 @@ const it: typeof en = {
         { title: "3. Fatturazione", content: "Pagamenti gestiti da Stripe. Annulla in qualsiasi momento nelle impostazioni dell'account." }
       ]
     }
+  },
+  account: {
+    signOut: "Disconnetti",
+    currentPlan: "Piano attuale",
+    active: "Attivo",
+    pastDue: "Scaduto",
+    aiCredits: "Crediti IA",
+    remaining: "Rimanenti",
+    upgradePro: "Passa a Pro",
+    manageBilling: "Gestisci abbonamento",
+    reactivate: "Riattiva",
+    paymentFailed: "Pagamento fallito",
+    paymentFailedDesc: "L'ultimo pagamento non è andato a buon fine. Aggiorna la tua carta per mantenere il piano.",
+    fixNow: "Risolvi ora",
+    cancelled: "Abbonamento annullato",
+    cancelledDesc: "Il piano {plan} rimane attivo fino al {date}, poi torna a Gratuito.",
+    memberSince: "Membro dal",
+    chromeExtension: "Estensione Chrome",
+    synced: "SEO & GEO Toolkit · SINCRONIZZATO",
+    waiting: "SEO & GEO Toolkit · In attesa",
+    linking: "Collegamento in corso...",
+    linkFailed: "Sync fallito",
+    linkSuccess: "Estensione collegata con successo!",
+    linkSuccessDesc: "Puoi chiudere questa finestra e tornare all'estensione.",
+    closeWindow: "Chiudi",
+    tryAgain: "Riprova",
+    open: "Apri",
+    monthly: "Mensile",
+    annual: "Annuale",
+    renews: "Rinnova",
+    ends: "Scade",
+    levelUp: "Potenzia il tuo toolkit",
+    levelUpSub: "Risparmia il 27% con la fatturazione annuale. Generazioni illimitate e supporto prioritario.",
   }
 }
 
@@ -2134,6 +2266,39 @@ const es: typeof en = {
         { title: "3. Facturación", content: "Pagos gestionados por Stripe. Cancele en cualquier momento en la configuración de la cuenta." }
       ]
     }
+  },
+  account: {
+    signOut: "Cerrar sesión",
+    currentPlan: "Plan actual",
+    active: "Activo",
+    pastDue: "Vencido",
+    aiCredits: "Créditos IA",
+    remaining: "Restantes",
+    upgradePro: "Actualizar a Pro",
+    manageBilling: "Gestionar facturación",
+    reactivate: "Reactivar",
+    paymentFailed: "Pago fallido",
+    paymentFailedDesc: "Su último pago no pudo procesarse. Actualice su tarjeta para mantener su plan activo.",
+    fixNow: "Solucionar",
+    cancelled: "Suscripción cancelada",
+    cancelledDesc: "Su plan {plan} permanece activo hasta el {date}, luego vuelve a Gratis.",
+    memberSince: "Miembro desde",
+    chromeExtension: "Extensión de Chrome",
+    synced: "SEO & GEO Toolkit · SINCRONIZADO",
+    waiting: "SEO & GEO Toolkit · Esperando",
+    linking: "Vinculando...",
+    linkFailed: "Sync fallido",
+    linkSuccess: "¡Extensión vinculada con éxito!",
+    linkSuccessDesc: "Puede cerrar esta ventana y volver a la extensión.",
+    closeWindow: "Cerrar",
+    tryAgain: "Intentar de nuevo",
+    open: "Abrir",
+    monthly: "Mensual",
+    annual: "Anual",
+    renews: "Renueva",
+    ends: "Expira",
+    levelUp: "Mejora tu toolkit",
+    levelUpSub: "Ahorra un 27% con facturación anual. Generaciones ilimitadas y soporte prioritario.",
   }
 }
 
