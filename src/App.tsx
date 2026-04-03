@@ -11,6 +11,9 @@ import { PricingPage }        from '@/pages/PricingPage'
 import { AccountPage }        from '@/pages/AccountPage'
 import { PrivacyPolicy }      from '@/pages/PrivacyPolicy'
 import { TermsOfUse }        from '@/pages/TermsOfUse'
+import { CheckoutContinuePage } from '@/pages/CheckoutContinuePage'
+import { CheckoutSuccessPage } from '@/pages/CheckoutSuccessPage'
+import { CheckoutCancelPage }  from '@/pages/CheckoutCancelPage'
 import { ScrollToTop }        from '@/components/ScrollToTop'
 import { RoamingMascot }      from '@/components/RoamingMascot'
 
@@ -33,6 +36,9 @@ function AppShell() {
         <Route path="/account" element={<AccountPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfUse />} />
+        <Route path="/checkout/continue" element={<CheckoutContinuePage />} />
+        <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+        <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
       </Routes>
 
       {!isAccount && <Footer />}

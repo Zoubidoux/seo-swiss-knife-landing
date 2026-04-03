@@ -1,8 +1,10 @@
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/i18n/index'
-import { Check } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import { Mascot } from '@/components/Mascot'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 
 // STRIPE LINKS CONFIGURATION
 const STRIPE_LINKS = {
@@ -48,6 +50,55 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
     }
 
     return { price: "0", period: "month", cta: "Unlock", href: "#" }
+  }
+
+  const navigate = useNavigate()
+  const { user } = useAuth()
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+
+  const handleCheckout = async (index: number) => {
+    if (index === 0) { // Free
+      window.open(STRIPE_LINKS.FREE, '_blank')
+      return
+    }
+
+    const planKey = index === 1 ? 'pro' : 'unlimited'
+    const planId = `${planKey}-${billingCycle}`
+
+    // ACCOUNT-FIRST: If not logged in, go to bridge page
+    if (!user) {
+      navigate(`/checkout/continue?plan=${planKey}&billing=${billingCycle}`)
+      return
+    }
+
+    // If logged in, trigger Stripe Checkout session creation
+    setLoadingPlan(planId)
+    try {
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          priceId: index === 1 
+            ? (billingCycle === 'monthly' ? STRIPE_LINKS.PRO_MONTHLY : STRIPE_LINKS.PRO_YEARLY)
+            : (billingCycle === 'monthly' ? STRIPE_LINKS.UNLIMITED_MONTHLY : STRIPE_LINKS.UNLIMITED_YEARLY),
+          userId: user.id,
+          email: user.email,
+          planName: planKey
+        }),
+      })
+
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert(data.error || 'Failed to start checkout.')
+      }
+    } catch (err) {
+      console.error('Checkout error:', err)
+      alert('An error occurred. Please try again.')
+    } finally {
+      setLoadingPlan(null)
+    }
   }
 
   if (isEmbedded) {
@@ -112,9 +163,15 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
                   ))}
                 </ul>
 
-                <a href={dynamicData.href} className="w-full h-11 rounded-lg flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] bg-black text-white no-underline">
-                  {dynamicData.cta}
-                </a>
+                <button 
+                  onClick={() => handleCheckout(i)}
+                  disabled={loadingPlan === `${i === 1 ? 'pro' : 'unlimited'}-${billingCycle}`}
+                  className="w-full h-11 rounded-lg flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] bg-black text-white border-none cursor-pointer disabled:opacity-50"
+                >
+                  {loadingPlan === `${i === 1 ? 'pro' : 'unlimited'}-${billingCycle}` ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : dynamicData.cta}
+                </button>
               </div>
             )
           })}
@@ -211,16 +268,19 @@ export function PricingSection({ isEmbedded = false }: { isEmbedded?: boolean })
                   ))}
                 </ul>
 
-                <a 
-                  href={dynamicData.href}
-                  className={`w-full h-12 rounded-xl flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] transition-all border-none no-underline ${
+                <button 
+                  onClick={() => handleCheckout(i)}
+                  disabled={loadingPlan === `${i === 1 ? 'pro' : 'unlimited'}-${billingCycle}`}
+                  className={`w-full h-12 rounded-xl flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] transition-all border-none cursor-pointer disabled:opacity-50 ${
                     i === 0 ? 'bg-black text-white hover-offset-beginner' : 
                     i === 1 ? 'bg-black text-white hover-offset-intermediate' : 
                     'bg-black text-white hover-offset-expert shadow-[4px_4px_0_0_rgba(59,130,246,0.1)]'
                   }`}
                 >
-                  {dynamicData.cta}
-                </a>
+                  {loadingPlan === `${i === 1 ? 'pro' : 'unlimited'}-${billingCycle}` ? (
+                    <Loader2 className="w-3 h-3 animate-spin text-white" />
+                  ) : dynamicData.cta}
+                </button>
               </div>
             )
           })}
